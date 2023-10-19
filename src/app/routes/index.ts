@@ -1,8 +1,11 @@
 import express from 'express';
 import { AuthRoutes } from '../modules/auth/auth.route';
 
+import { BlogRoutes } from '../modules/blogs/blog.route';
 import { BookingRoutes } from '../modules/booking/booking.route';
+import { ContentRoutes } from '../modules/contents/content.route';
 import { CourseRoutes } from '../modules/course/course.routes';
+import { FeedbackRoutes } from '../modules/feedback/feedback.route';
 import { ProfileRoutes } from '../modules/profile/profile.route';
 import { ReviewRoutes } from '../modules/review/review.route';
 import { ServiceRoutes } from '../modules/service/service.routes';
@@ -45,6 +48,18 @@ const moduleRoutes = [
   {
     path: '/reviews',
     route: ReviewRoutes,
+  },
+  {
+    path: '/blogs',
+    route: BlogRoutes,
+  },
+  {
+    path: '/contents',
+    route: ContentRoutes,
+  },
+  {
+    path: '/feedbacks',
+    route: FeedbackRoutes,
   }
 ];
 
