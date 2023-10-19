@@ -1,10 +1,38 @@
 import { Prisma, User } from "@prisma/client";
+import config from "../../../config";
+
+import { bcryptHelpers } from "../../../helpers/bycryptHelpers";
 import { paginationHelpers } from "../../../helpers/paginationHelper";
 import { IGenericResponse } from "../../../interfaces/common";
 import { IPaginationOptions } from "../../../interfaces/pagination";
 import { prisma } from "../../../shared/prisma";
-import { userSearchableFields, userSelect } from "./user.constant";
+import { userSearchableFields } from "./user.constant";
 import { IUserFilters } from "./user.interface";
+
+
+
+const insertIntoDB = async (
+	userData: any
+): Promise<User> => {
+
+
+	const defaultPassword = config.default_user_pass as string;
+	const hashedPassword = await bcryptHelpers.hashedPassword(defaultPassword);
+	console.log("USER DATA", {
+		...userData,
+		password: await hashedPassword,
+	},);
+
+	const user = await prisma.user.create({
+		data: {
+			...userData,
+			password: await hashedPassword,
+		},
+	});
+	//create access token & refresh token
+	return user;
+
+};
 
 const getAllUsers = async (
 	filters: IUserFilters,
@@ -45,7 +73,6 @@ const getAllUsers = async (
 
 	const result = await prisma.user.findMany({
 		where: whereConditions,
-		select: userSelect,
 		skip,
 		take: limit,
 		orderBy: { [sortBy]: sortOrder },
@@ -69,7 +96,6 @@ const getSingleUser = async (id: string): Promise<Partial<User> | null> => {
 		where: {
 			id,
 		},
-		select: userSelect
 	});
 
 	return result;
@@ -81,7 +107,6 @@ const updateUser = async (id: string, payload: Partial<User>): Promise<Partial<U
 			id,
 		},
 		data: payload,
-		select: userSelect
 	});
 
 	return result;
@@ -90,8 +115,7 @@ const deleteUser = async (id: string): Promise<Partial<User> | null> => {
 	const result = await prisma.user.delete({
 		where: {
 			id,
-		},
-		select: userSelect
+		}
 	});
 	return result;
 };
@@ -102,5 +126,6 @@ export const UserService = {
 	getAllUsers,
 	getSingleUser,
 	updateUser,
-	deleteUser
+	deleteUser,
+	insertIntoDB
 };

@@ -5,26 +5,19 @@ const create = z.object({
         title: z.string({
             required_error: "Title is required"
         }),
-        price: z.number({
-            required_error: 'Price is required',
+
+        imageUrl: z.string({
+            required_error: 'Image is required',
         }),
-        location: z.string({
-            required_error: "Location is required"
-        }),
+
     })
 });
 
 const update = z.object({
     body: z.object({
-        title: z.string({
-            required_error: "Title is required"
-        }).optional(),
-        price: z.number({
-            required_error: 'Price is required',
-        }).optional(),
-        location: z.string({
-            required_error: "Location is required"
-        }).optional(),
+        title: z.string().optional(),
+        imageUrl: z.string().optional(),
+
     })
 });
 

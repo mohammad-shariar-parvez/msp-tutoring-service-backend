@@ -1,12 +1,11 @@
-import { User } from "@prisma/client";
+
 import { Request, Response } from "express";
 import httpStatus from "http-status";
 import { paginationFields } from "../../../constants/pagination";
 import catchAsync from "../../../shared/catchAsync";
 import pick from "../../../shared/pick";
 import sendResponse from "../../../shared/sendResponse";
-import { userFilterableFields } from "./user.constant";
-import { UserService } from "./user.service";
+import { UserService } from "./tutor.service";
 
 
 
@@ -16,17 +15,16 @@ const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
 	sendResponse(res, {
 		statusCode: httpStatus.OK,
 		success: true,
-		message: 'User created successfully',
+		message: 'Tutor created successfully',
 		data: result
 	});
 });
 
-const getAllUsers = catchAsync(async (req: Request, res: Response) => {
-	const filters = pick(req.query, userFilterableFields);
+const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
+
 	const paginationOptions = pick(req.query, paginationFields);
 
-	const result = await UserService.getAllUsers(
-		filters,
+	const result = await UserService.getAllFromDB(
 		paginationOptions
 	);
 
@@ -39,11 +37,11 @@ const getAllUsers = catchAsync(async (req: Request, res: Response) => {
 	});
 });
 
-const getSingleUser = catchAsync(async (req: Request, res: Response) => {
+const getByIdFromDB = catchAsync(async (req: Request, res: Response) => {
 	const id = req.params.id;
-	const result = await UserService.getSingleUser(id);
+	const result = await UserService.getByIdFromDB(id);
 
-	sendResponse<Partial<User>>(res, {
+	sendResponse(res, {
 		statusCode: httpStatus.OK,
 		success: true,
 		message: 'User getched successfully !',
@@ -51,13 +49,13 @@ const getSingleUser = catchAsync(async (req: Request, res: Response) => {
 	});
 });
 
-const updateUser = catchAsync(async (req: Request, res: Response) => {
+const updateOneInDB = catchAsync(async (req: Request, res: Response) => {
 	const id = req.params.id;
 	const updatedData = req.body;
 
-	const result = await UserService.updateUser(id, updatedData);
+	const result = await UserService.updateOneInDB(id, updatedData);
 
-	sendResponse<Partial<User>>(res, {
+	sendResponse(res, {
 		statusCode: httpStatus.OK,
 		success: true,
 		message: 'user updated successfully !',
@@ -66,12 +64,12 @@ const updateUser = catchAsync(async (req: Request, res: Response) => {
 });
 
 
-const deleteUser = catchAsync(async (req: Request, res: Response) => {
+const deleteByIdFromDB = catchAsync(async (req: Request, res: Response) => {
 	const id = req.params.id;
 
-	const result = await UserService.deleteUser(id);
+	const result = await UserService.deleteByIdFromDB(id);
 
-	sendResponse<Partial<User>>(res, {
+	sendResponse(res, {
 		statusCode: httpStatus.OK,
 		success: true,
 		message: 'User deleted successfully !',
@@ -81,9 +79,9 @@ const deleteUser = catchAsync(async (req: Request, res: Response) => {
 
 export const UserController = {
 
-	getAllUsers,
-	getSingleUser,
-	updateUser,
-	deleteUser,
-	insertIntoDB
+	insertIntoDB,
+	getAllFromDB,
+	getByIdFromDB,
+	updateOneInDB,
+	deleteByIdFromDB,
 };

@@ -22,3 +22,21 @@ export type IUser = {
   iat: number,
   exp: number;
 };
+
+export type IProfile = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  middleName: string;
+  profileImage: string;
+  useEmail: string;
+  contactNo: string;
+  bio: string;
+  createdAt: Date;
+  updatedAt: Date;
+  userId: string;
+  role: string,
+  iat: number,
+  exp: number;
+  // Assuming User is defined as another type
+};

@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import httpStatus from "http-status";
 import { IUser } from "../../../interfaces/common";
 import catchAsync from "../../../shared/catchAsync";
+import pick from "../../../shared/pick";
 import sendResponse from "../../../shared/sendResponse";
 import { BookingService } from "./booking.service";
 
@@ -23,8 +24,8 @@ const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
 
 const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
 	const user: IUser = (req as any).user;
-
-	const result = await BookingService.getAllFromDB(user);
+	const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
+	const result = await BookingService.getAllFromDB(user, options);
 	sendResponse(res, {
 		statusCode: httpStatus.OK,
 		success: true,
@@ -36,6 +37,8 @@ const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
 const updateOneInDB = catchAsync(async (req: Request, res: Response) => {
 
 	const { id } = req.params;
+	console.log("BIKAL", id);
+	console.log("BIKAL", req.body);
 	const result = await BookingService.updateOneInDB(id, req.body);
 	sendResponse(res, {
 		statusCode: httpStatus.OK,

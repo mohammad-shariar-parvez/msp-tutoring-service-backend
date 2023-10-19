@@ -29,7 +29,7 @@ async function bootstrap() {
   process.on('unhandledRejection', unexpectedErrorHandler);
 
   process.on('SIGTERM', () => {
-    console.log('SIGTERM received');
+    // console.log('SIGTERM received');
     if (server) {
       server.close();
     }

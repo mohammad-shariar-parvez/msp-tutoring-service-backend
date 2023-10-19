@@ -1,16 +1,19 @@
+import { courseConditionalFiledsMapper } from './couorse.constants';
 /* eslint-disable no-undef */
-import { Course, Prisma } from "@prisma/client";
+import { Course, CourseStatus, Prisma } from "@prisma/client";
 import { paginationHelpers } from "../../../helpers/paginationHelper";
 import { IGenericResponse } from "../../../interfaces/common";
 import { IPaginationOptions } from "../../../interfaces/pagination";
 
 import { prisma } from "../../../shared/prisma";
-import { courseRelationalFileds, courseRelationalFiledsMapper, courseSearchableFields } from "./couorse.constants";
+import { courseConditionalFileds, courseRelationalFileds, courseRelationalFiledsMapper, courseSearchableFields } from "./couorse.constants";
 import { ICourseFilterRequest } from "./course.interface";
 
 
 
 const insertIntoDB = async (data: Course): Promise<Course> => {
+    console.log("DATA__", data);
+
     const result = await prisma.course.create({
         data
     });
@@ -40,6 +43,7 @@ const getCoursesByService = async (
         where: {
             serviceId
         },
+
     });
 
     return {
@@ -60,6 +64,7 @@ const getAllFromDB = async (
     const { searchTerm, ...filterData } = filters;
 
     const andConditions = [];
+    console.log("SEARCH term", searchTerm);
 
     if (searchTerm) {
         andConditions.push({
@@ -67,12 +72,13 @@ const getAllFromDB = async (
                 [field]: {
                     contains: searchTerm,
                     mode: 'insensitive'
-                }
-            }))
+                },
+            })),
+
         });
     }
 
-
+    console.log("------and condition", filterData);
     if (Object.keys(filterData).length > 0) {
         andConditions.push({
             AND: Object.entries(filterData).map(([key, value]) => {
@@ -83,7 +89,19 @@ const getAllFromDB = async (
                         },
                     };
                 }
-
+                else if (courseConditionalFileds.includes(key)) {
+                    const amount = Number(value);
+                    return {
+                        price: {
+                            [courseConditionalFiledsMapper[key]]: amount
+                        }
+                    };
+                }
+                else if (key === 'status') {
+                    return {
+                        status: value as CourseStatus, // Exact match for enum field
+                    };
+                }
                 else {
                     return {
                         [key]: {
@@ -91,6 +109,7 @@ const getAllFromDB = async (
                             mode: 'insensitive'
                         }
                     };
+
                 }
             })
         });
@@ -103,6 +122,10 @@ const getAllFromDB = async (
         skip,
         take: limit,
         where: whereConditons,
+        include: {
+            service: true,
+            courseTutor: true
+        },
         orderBy: { [sortBy]: sortOrder },
     });
     const total = await prisma.course.count({
@@ -123,7 +146,11 @@ const getByIdFromDB = async (id: string): Promise<Course | null> => {
     const result = await prisma.course.findUnique({
         where: {
             id
-        }
+        },
+        include: {
+            service: true,
+            courseTutor: true
+        },
     });
     return result;
 };

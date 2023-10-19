@@ -6,7 +6,7 @@ import { IPaginationOptions } from "../../../interfaces/pagination";
 
 import { prisma } from "../../../shared/prisma";
 
-import { serviceConditionalFileds, serviceConditionalFiledsMapper, serviceSearchableFields } from "./service.constants";
+import { serviceSearchableFields } from "./service.constants";
 import { IServiceFilterRequest } from "./service.interface";
 
 
@@ -27,8 +27,8 @@ const getAllFromDB = async (
     const { searchTerm, ...filterData } = filters;
 
     const andConditions = [];
-    console.log("SEARCH----", filters);
-    console.log("OPtions----", options);
+    // console.log("SEARCH----", filters);
+    // console.log("OPtions----", options);
 
 
     if (searchTerm) {
@@ -41,28 +41,22 @@ const getAllFromDB = async (
             }))
         });
     }
+    console.log("------and condition", searchTerm);
 
     if (Object.keys(filterData).length) {
         andConditions.push({
 
             AND: Object.entries(filterData).map(([key, value]) => {
 
-                if (serviceConditionalFileds.includes(key)) {
-                    const amount = Number(value);
-                    return {
-                        price: {
-                            [serviceConditionalFiledsMapper[key]]: amount
-                        }
-                    };
-                }
-                else {
-                    return {
-                        [key]: {
-                            equals: value,
-                            mode: 'insensitive'
-                        }
-                    };
-                }
+
+
+                return {
+                    [key]: {
+                        equals: value,
+                        mode: 'insensitive'
+                    }
+                };
+
             })
         });
     }
@@ -72,7 +66,7 @@ const getAllFromDB = async (
 
     const result = await prisma.service.findMany({
         include: {
-            course: true,
+            courses: true,
         },
         skip,
         take: limit,

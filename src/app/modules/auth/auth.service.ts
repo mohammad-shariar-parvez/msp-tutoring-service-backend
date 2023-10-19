@@ -11,7 +11,7 @@ import { IChangePassword, ILoginUser, ILoginUserResponse, IRefreshTokenResponse 
 
 const signupUser = async (
 	userData: any
-): Promise<Partial<User | null>> => {
+): Promise<ILoginUserResponse> => {
 	const { password, ...userWithoutPassword } = userData;
 
 	const hashedPassword = await bcryptHelpers.hashedPassword(password);
@@ -22,8 +22,28 @@ const signupUser = async (
 			password: await hashedPassword,
 		},
 	});
-	// console.log("user signup", result);
-	return user;
+	if (!user) {
+		throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist');
+	}
+	//create access token & refresh token
+	const { id: userId, role, email: useEmail } = user;
+	const accessToken = jwtHelpers.createToken(
+		{ userId, role, useEmail },
+		config.jwt.secret as Secret,
+		config.jwt.expires_in as string
+	);
+	const refreshToken = jwtHelpers.createToken(
+		{ userId, role, useEmail },
+		config.jwt.refresh_secret as Secret,
+		config.jwt.refresh_expires_in as string
+	);
+
+	return {
+		accessToken,
+		refreshToken,
+		role,
+		email: useEmail
+	};
 
 };
 
@@ -127,10 +147,11 @@ const changePassword = async (
 	// const isUserExist = await User.isUserExist(user?.userId);
 
 	// alternative way
+	console.log("USREEEE IDD", user);
 
 	const isUserExist = await prisma.user.findUnique({
 		where: {
-			id: user?.id
+			id: user?.userId
 		}
 	});
 
@@ -151,7 +172,7 @@ const changePassword = async (
 	try {
 		const updateUser = await prisma.user.update({
 			where: {
-				id: user?.id
+				id: user?.userId
 			},
 			data: {
 				password: hashedPassword

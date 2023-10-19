@@ -10,10 +10,16 @@ const signupUser = catchAsync(async (req: Request, res: Response) => {
 	const { ...userData } = req.body;
 	const result = await AuthService.signupUser(userData);
 
-	sendResponse(res, {
+	const cookieOptions = {
+		secure: config.env === 'production',
+		httpOnly: true,
+	};
+	res.cookie('refreshToken', refreshToken, cookieOptions);
+
+	sendResponse<ILoginUserResponse>(res, {
 		success: true,
 		statusCode: httpStatus.OK,
-		message: 'User created successfully!',
+		message: 'User signin successfully!',
 		data: result,
 	});
 });

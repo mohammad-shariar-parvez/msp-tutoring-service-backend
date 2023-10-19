@@ -1,8 +1,10 @@
 
-export type IBookingCourse = {
+export type IReview = {
 	courseId: string;
-	startDate: string;
-	startTime: string;
+	userId: string,
+	rating: number,
+	review: string;
+
 };
 
 
@@ -14,4 +16,8 @@ export type IUserSelect = {
 	contactNo: boolean;
 	address: boolean;
 	profileImg: boolean;
+};
+
+export type IReviewFilterRequest = {
+	courseId?: string;
 };

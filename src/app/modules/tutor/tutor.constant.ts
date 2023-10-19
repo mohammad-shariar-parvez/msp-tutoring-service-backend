@@ -1,12 +1,12 @@
-import { IUserSelect } from "./user.interface";
+import { IUserSelect } from "./tutor.interface";
 
-export const userFilterableFields = [
+export const tutorFilterableFields = [
 	'searchTerm',
 	'role',
 	'email',
 ];
 
-export const userSearchableFields = [
+export const tutorSearchableFields = [
 	'email',
 	'role',
 

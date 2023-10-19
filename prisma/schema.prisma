@@ -18,87 +18,81 @@ model User {
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
   reviewAndRatings ReviewAndRating[]
-  courseTutors     CourseTutor[]
   bookings         Booking[]
   blogs            Blog[]
   faqs             FAQ[]
 
+  feedbacks Feedback[]
+  payment   Payment[]
+  profile   Profile?
+
   @@map("users")
 }
 
-model Tutor {
-  id           String   @id @default(uuid())
-  facultyId    String
-  firstName    String
-  lastName     String
-  middleName   String
-  profileImage String
-  email        String
-  contactNo    String
-  gender       String
-  bloodGroup   String
-  designation  String
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+model CourseTutor {
+  id         String   @id @default(uuid())
+  firstName  String
+  middleName String
+  lastName   String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  experience String
+  bio        String
+  imageUrl   String
+  gender     String
+  courses    Course[]
 
-  @@map("tutors")
+  @@map("courseTutors")
 }
 
 model Profile {
   id           String   @id @default(uuid())
-  facultyId    String
-  firstName    String
-  lastName     String
-  middleName   String
-  profileImage String
-  email        String
-  contactNo    String
-  gender       String
-  bloodGroup   String
-  designation  String
+  firstName    String?
+  lastName     String?
+  middleName   String?
+  profileImage String?
+  useEmail     String?
+  contactNo    String?
+  bio          String?
+  userId       String   @unique
+  role         String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  iat          Int?
+  exp          Int?
+  user         User     @relation(fields: [userId], references: [id])
 
   @@map("profiles")
 }
 
 model Service {
-  id    String @id @default(uuid())
-  title String
-
+  id        String   @id @default(uuid())
+  title     String
+  imageUrl  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  course    Course[]
-
-  location String
-  price    Float
+  courses   Course[]
 
   @@map("services")
 }
 
-model CourseTutor {
-  id        String   @id @default(uuid())
-  userId    String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  courseId  String
-
-  user   User   @relation(fields: [userId], references: [id])
-  course Course @relation(fields: [courseId], references: [id])
-
-  @@map("course_tutors")
-}
-
 model Course {
-  id        String   @id @default(uuid())
-  title     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  id               String            @id @default(uuid())
+  title            String
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  location         String
+  price            Float
+  imageUrl         String
+  duration         String?
+  status           CourseStatus      @default(RUNNING)
+  description      String
+  article          String?
   serviceId        String
+  courseTutorId    String
   service          Service           @relation(fields: [serviceId], references: [id])
+  courseTutor      CourseTutor       @relation(fields: [courseTutorId], references: [id])
   reviewAndRatings ReviewAndRating[]
-  courseTutors     CourseTutor[]
   bookings         Booking[]
 
   @@map("courses")
@@ -112,7 +106,7 @@ model ReviewAndRating {
 
   courseId String
   user     User   @relation(fields: [userId], references: [id])
-  service  Course @relation(fields: [courseId], references: [id])
+  course   Course @relation(fields: [courseId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -121,21 +115,21 @@ model ReviewAndRating {
 }
 
 model Booking {
-  id     String @id @default(uuid())
-  userId String
+  id String @id @default(uuid())
 
-  status    Status   @default(PENDING)
-  startDate DateTime
-  endDate   DateTime
+  status    Status @default(PENDING)
+  startDate String
+  startTime String
+  userId    String
   courseId  String
-
-  user   User   @relation(fields: [userId], references: [id])
-  course Course @relation(fields: [courseId], references: [id])
+  user      User   @relation(fields: [userId], references: [id])
+  course    Course @relation(fields: [courseId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  payment   Payment?
 
-  @@map("booking")
+  @@map("bookings")
 }
 
 // Blog model to store blog posts
@@ -148,6 +142,35 @@ model Blog {
   userId    String
   user      User     @relation(fields: [userId], references: [id])
   // ... other blog-related fields ...
+
+  @@map("blogs")
+}
+
+model Question {
+  id          String   @id @default(uuid())
+  name        String
+  location    String
+  phone       String
+  requirement String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // ... other blog-related fields ...
+
+  @@map("questions")
+}
+
+model Feedback {
+  id          String @id @default(uuid())
+  description String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  // ... other blog-related fields ...
+
+  @@map("feedbacks")
 }
 
 // FAQ model to store frequently asked questions
@@ -160,6 +183,24 @@ model FAQ {
   userId    String
   user      User     @relation(fields: [userId], references: [id])
   // ... other FAQ-related fields ...
+
+  @@map("faqs")
+}
+
+model Payment {
+  id            String        @id @default(uuid())
+  amount        String
+  paymentDate   DateTime      @default(now()) @map("payment_date")
+  paymentStatus PaymentStatus @default(PENDING)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  userId    String
+  bookingId String  @unique
+  user      User    @relation(fields: [userId], references: [id])
+  booking   Booking @relation(fields: [bookingId], references: [id])
+
+  @@map("payments")
 }
 
 enum Status {
@@ -174,6 +215,10 @@ enum Role {
 
 enum PaymentStatus {
   PENDING
-  PARTIAL_PAID
-  FULL_PAID
+  PAID
+}
+
+enum CourseStatus {
+  RUNNING
+  UPCOMMING
 }

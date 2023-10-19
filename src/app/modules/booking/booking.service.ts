@@ -6,6 +6,7 @@ import httpStatus from "http-status";
 import ApiError from "../../../errors/ApiError";
 import { paginationHelpers } from "../../../helpers/paginationHelper";
 import { IGenericResponse, IUser } from "../../../interfaces/common";
+import { IPaginationOptions } from "../../../interfaces/pagination";
 import { prisma } from "../../../shared/prisma";
 import { IBookingCourse, } from "./booking.interface";
 
@@ -24,7 +25,8 @@ const insertIntoDB = async (payload: IBookingCourse, user: IUser): Promise<any> 
 			userId,
 			courseId: payload.courseId,
 			startDate: payload.startDate,
-			endDate: payload.endDate
+			startTime: payload.startTime,
+
 		}
 	});
 
@@ -59,9 +61,9 @@ const insertIntoDB = async (payload: IBookingCourse, user: IUser): Promise<any> 
 
 
 
-const getAllFromDB = async (user: IUser): Promise<IGenericResponse<any[]>> => {
+const getAllFromDB = async (user: IUser, options: IPaginationOptions): Promise<IGenericResponse<any[]>> => {
 	const { userId, role } = user;
-	const { limit, page, skip, sortBy, sortOrder, } = paginationHelpers.calculatePagination({});
+	const { limit, page, skip, sortBy, sortOrder, } = paginationHelpers.calculatePagination(options);
 
 	if (role == "user") {
 		const result = await prisma.booking.findMany({

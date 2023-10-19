@@ -1,5 +1,11 @@
 import { z } from 'zod';
 
+const createUserZodSchema = z.object({
+	body: z.object({
+		email: z.string().optional(),
+
+	}),
+});
 const updateUserZodSchema = z.object({
 	body: z.object({
 		name: z.string().optional(),
@@ -12,5 +18,6 @@ const updateUserZodSchema = z.object({
 });
 
 export const userValidation = {
-	updateUserZodSchema
+	updateUserZodSchema,
+	createUserZodSchema
 };
