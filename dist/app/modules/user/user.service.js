@@ -19,11 +19,26 @@ var __rest = (this && this.__rest) || function (s, e) {
         }
     return t;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
+const config_1 = __importDefault(require("../../../config"));
+const bycryptHelpers_1 = require("../../../helpers/bycryptHelpers");
 const paginationHelper_1 = require("../../../helpers/paginationHelper");
 const prisma_1 = require("../../../shared/prisma");
 const user_constant_1 = require("./user.constant");
+const insertIntoDB = (userData) => __awaiter(void 0, void 0, void 0, function* () {
+    const defaultPassword = config_1.default.default_user_pass;
+    const hashedPassword = yield bycryptHelpers_1.bcryptHelpers.hashedPassword(defaultPassword);
+    console.log("USER DATA", Object.assign(Object.assign({}, userData), { password: yield hashedPassword }));
+    const user = yield prisma_1.prisma.user.create({
+        data: Object.assign(Object.assign({}, userData), { password: yield hashedPassword }),
+    });
+    //create access token & refresh token
+    return user;
+});
 const getAllUsers = (filters, paginationOptions) => __awaiter(void 0, void 0, void 0, function* () {
     // Extract searchTerm to implement search query
     const { searchTerm } = filters, filtersData = __rest(filters, ["searchTerm"]);
@@ -53,7 +68,6 @@ const getAllUsers = (filters, paginationOptions) => __awaiter(void 0, void 0, vo
     const whereConditions = andConditions.length > 0 ? { AND: andConditions } : {};
     const result = yield prisma_1.prisma.user.findMany({
         where: whereConditions,
-        select: user_constant_1.userSelect,
         skip,
         take: limit,
         orderBy: { [sortBy]: sortOrder },
@@ -75,7 +89,6 @@ const getSingleUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
         where: {
             id,
         },
-        select: user_constant_1.userSelect
     });
     return result;
 });
@@ -85,7 +98,6 @@ const updateUser = (id, payload) => __awaiter(void 0, void 0, void 0, function* 
             id,
         },
         data: payload,
-        select: user_constant_1.userSelect
     });
     return result;
 });
@@ -93,8 +105,7 @@ const deleteUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield prisma_1.prisma.user.delete({
         where: {
             id,
-        },
-        select: user_constant_1.userSelect
+        }
     });
     return result;
 });
@@ -102,5 +113,6 @@ exports.UserService = {
     getAllUsers,
     getSingleUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    insertIntoDB
 };

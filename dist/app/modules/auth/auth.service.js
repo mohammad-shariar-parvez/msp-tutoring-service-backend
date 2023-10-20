@@ -30,16 +30,25 @@ const ApiError_1 = __importDefault(require("../../../errors/ApiError"));
 const bycryptHelpers_1 = require("../../../helpers/bycryptHelpers");
 const jwtHelpers_1 = require("../../../helpers/jwtHelpers");
 const prisma_1 = require("../../../shared/prisma");
-const user_constant_1 = require("../user/user.constant");
 const signupUser = (userData) => __awaiter(void 0, void 0, void 0, function* () {
     const { password } = userData, userWithoutPassword = __rest(userData, ["password"]);
     const hashedPassword = yield bycryptHelpers_1.bcryptHelpers.hashedPassword(password);
     const user = yield prisma_1.prisma.user.create({
         data: Object.assign(Object.assign({}, userWithoutPassword), { password: yield hashedPassword }),
-        select: user_constant_1.userSelect
     });
-    // console.log("user signup", result);
-    return user;
+    if (!user) {
+        throw new ApiError_1.default(http_status_1.default.NOT_FOUND, 'User does not exist');
+    }
+    //create access token & refresh token
+    const { id: userId, role, email: useEmail } = user;
+    const accessToken = jwtHelpers_1.jwtHelpers.createToken({ userId, role, useEmail }, config_1.default.jwt.secret, config_1.default.jwt.expires_in);
+    const refreshToken = jwtHelpers_1.jwtHelpers.createToken({ userId, role, useEmail }, config_1.default.jwt.refresh_secret, config_1.default.jwt.refresh_expires_in);
+    return {
+        accessToken,
+        refreshToken,
+        role,
+        email: useEmail
+    };
 });
 const signinUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = payload;
@@ -70,9 +79,11 @@ const signinUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
 });
 const refreshToken = (token) => __awaiter(void 0, void 0, void 0, function* () {
     //verify token
+    console.log("TOKENNNNNNNNNNNNNNNNNNNNNNNNN", token);
     let verifiedToken = null;
     try {
         verifiedToken = jwtHelpers_1.jwtHelpers.verifyToken(token, config_1.default.jwt.refresh_secret);
+        console.log("varify token-------", verifiedToken);
     }
     catch (err) {
         throw new ApiError_1.default(http_status_1.default.FORBIDDEN, 'Invalid Refresh Token');
@@ -103,9 +114,10 @@ const changePassword = (user, payload) => __awaiter(void 0, void 0, void 0, func
     // // checking is user exist
     // const isUserExist = await User.isUserExist(user?.userId);
     // alternative way
+    console.log("USREEEE IDD", user);
     const isUserExist = yield prisma_1.prisma.user.findUnique({
         where: {
-            id: user === null || user === void 0 ? void 0 : user.id
+            id: user === null || user === void 0 ? void 0 : user.userId
         }
     });
     if (!isUserExist) {
@@ -121,7 +133,7 @@ const changePassword = (user, payload) => __awaiter(void 0, void 0, void 0, func
     try {
         const updateUser = yield prisma_1.prisma.user.update({
             where: {
-                id: user === null || user === void 0 ? void 0 : user.id
+                id: user === null || user === void 0 ? void 0 : user.userId
             },
             data: {
                 password: hashedPassword

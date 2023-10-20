@@ -9,7 +9,7 @@ import { AuthService } from "./auth.service";
 const signupUser = catchAsync(async (req: Request, res: Response) => {
 	const { ...userData } = req.body;
 	const result = await AuthService.signupUser(userData);
-
+	const { refreshToken } = result;
 	const cookieOptions = {
 		secure: config.env === 'production',
 		httpOnly: true,
@@ -28,10 +28,13 @@ const signupUser = catchAsync(async (req: Request, res: Response) => {
 const signinUser = catchAsync(async (req: Request, res: Response) => {
 	const { ...loginData } = req.body;
 	const result = await AuthService.signinUser(loginData);
+	const { refreshToken } = result;
 	const cookieOptions = {
 		secure: config.env === 'production',
 		httpOnly: true,
 	};
+	console.log(refreshToken, cookieOptions);
+
 	res.cookie('refreshToken', refreshToken, cookieOptions);
 
 	sendResponse<ILoginUserResponse>(res, {
@@ -43,7 +46,9 @@ const signinUser = catchAsync(async (req: Request, res: Response) => {
 });
 
 const refreshToken = catchAsync(async (req: Request, res: Response) => {
+
 	const { refreshToken } = req.cookies;
+	console.log("YEEEEE----------------------", req.cookies);
 	const result = await AuthService.refreshToken(refreshToken);
 
 	// set refresh token into cookie

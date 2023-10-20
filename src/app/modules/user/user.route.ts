@@ -9,23 +9,23 @@ import { userValidation } from './user.validation';
 
 const router = express.Router();
 
-router.get('/', auth(ENUM_USER_ROLE.ADMIN), UserController.getAllUsers);
+router.get('/', auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN), UserController.getAllUsers);
 router.get('/:id', auth(ENUM_USER_ROLE.ADMIN), UserController.getSingleUser);
 router.post(
 	'/',
-	auth(ENUM_USER_ROLE.ADMIN),
+	auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
 	validateRequest(userValidation.createUserZodSchema),
 	UserController.insertIntoDB
 );
 router.patch(
 	'/:id',
-	auth(ENUM_USER_ROLE.ADMIN),
+	auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
 	validateRequest(userValidation.updateUserZodSchema),
 	UserController.updateUser
 );
 router.delete(
 	'/:id',
-	auth(ENUM_USER_ROLE.ADMIN),
+	auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.SUPER_ADMIN),
 	UserController.deleteUser
 );
 

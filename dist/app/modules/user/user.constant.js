@@ -5,23 +5,14 @@ exports.userFilterableFields = [
     'searchTerm',
     'role',
     'email',
-    'contactNo',
 ];
 exports.userSearchableFields = [
     'email',
     'role',
-    'address',
-    'contactNo',
-    'name.fisrtName',
-    'name.middleName',
-    'name.lastName',
 ];
 exports.userSelect = {
     id: true,
     name: true,
     email: true,
     role: true,
-    contactNo: true,
-    address: true,
-    profileImg: true,
 };

@@ -32,16 +32,7 @@ const auth_service_1 = require("./auth.service");
 const signupUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const userData = __rest(req.body, []);
     const result = yield auth_service_1.AuthService.signupUser(userData);
-    (0, sendResponse_1.default)(res, {
-        success: true,
-        statusCode: http_status_1.default.OK,
-        message: 'User created successfully!',
-        data: result,
-    });
-}));
-const signinUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const loginData = __rest(req.body, []);
-    const result = yield auth_service_1.AuthService.signinUser(loginData);
+    const { refreshToken } = result;
     const cookieOptions = {
         secure: config_1.default.env === 'production',
         httpOnly: true,
@@ -54,8 +45,26 @@ const signinUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
         data: result,
     });
 }));
+const signinUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const loginData = __rest(req.body, []);
+    const result = yield auth_service_1.AuthService.signinUser(loginData);
+    const { refreshToken } = result;
+    const cookieOptions = {
+        secure: config_1.default.env === 'production',
+        httpOnly: true,
+    };
+    console.log(refreshToken, cookieOptions);
+    res.cookie('refreshToken', refreshToken, cookieOptions);
+    (0, sendResponse_1.default)(res, {
+        success: true,
+        statusCode: http_status_1.default.OK,
+        message: 'User signin successfully!',
+        data: result,
+    });
+}));
 const refreshToken = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { refreshToken } = req.cookies;
+    console.log("YEEEEE----------------------", req.cookies);
     const result = yield auth_service_1.AuthService.refreshToken(refreshToken);
     // set refresh token into cookie
     (0, sendResponse_1.default)(res, {

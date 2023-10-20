@@ -96,12 +96,16 @@ const signinUser = async (
 
 const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
 	//verify token
+	console.log("TOKENNNNNNNNNNNNNNNNNNNNNNNNN", token);
+
 	let verifiedToken = null;
 	try {
 		verifiedToken = jwtHelpers.verifyToken(
 			token,
 			config.jwt.refresh_secret as Secret
 		);
+		console.log("varify token-------", verifiedToken);
+
 	} catch (err) {
 		throw new ApiError(httpStatus.FORBIDDEN, 'Invalid Refresh Token');
 	}
