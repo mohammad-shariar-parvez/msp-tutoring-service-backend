@@ -21,7 +21,16 @@ const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
 	});
 });
 
-
+const getByIdFromDB = catchAsync(async (req: Request, res: Response) => {
+	const { id } = req.params;
+	const result = await ReviewService.getByIdFromDB(id);
+	sendResponse(res, {
+		statusCode: httpStatus.OK,
+		success: true,
+		message: 'Review  fetched successfully',
+		data: result
+	});
+});
 const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
 	const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
 	const filters = pick(req.query, reviewFilterableFields);
@@ -29,7 +38,7 @@ const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
 	sendResponse(res, {
 		statusCode: httpStatus.OK,
 		success: true,
-		message: 'Booking retrieved successfully !',
+		message: 'Review retrieved successfully !',
 		data: result.data,
 		meta: result.meta,
 	});
@@ -43,5 +52,6 @@ const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
 export const ReviewController = {
 	insertIntoDB,
 	getAllFromDB,
+	getByIdFromDB
 
 };

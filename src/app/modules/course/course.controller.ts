@@ -20,8 +20,8 @@ const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
-    // console.log(req.query);
     const filters = pick(req.query, courseFilterableFields);
+    console.log("filters--------------", req.query);
 
     const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
     const result = await CourseService.getAllFromDB(filters, options);

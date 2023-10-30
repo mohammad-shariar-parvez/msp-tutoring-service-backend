@@ -61,20 +61,25 @@ const getCoursesByService = (serviceId) => __awaiter(void 0, void 0, void 0, fun
 });
 const getAllFromDB = (filters, options) => __awaiter(void 0, void 0, void 0, function* () {
     const { limit, page, skip, sortBy, sortOrder, } = paginationHelper_1.paginationHelpers.calculatePagination(options);
-    const { searchTerm } = filters, filterData = __rest(filters, ["searchTerm"]);
+    const { searchTerm, searchTerm2 } = filters, filterData = __rest(filters, ["searchTerm", "searchTerm2"]);
     const andConditions = [];
-    console.log("SEARCH term", searchTerm);
-    if (searchTerm) {
+    if (searchTerm || searchTerm2) {
         andConditions.push({
             OR: couorse_constants_2.courseSearchableFields.map((field) => ({
                 [field]: {
                     contains: searchTerm,
                     mode: 'insensitive'
-                },
-            })),
+                }
+            })).concat(couorse_constants_2.courseSearchableFields.map((field) => ({
+                [field]: {
+                    contains: searchTerm2,
+                    mode: 'insensitive'
+                }
+            })))
         });
     }
-    console.log("------and condition", filterData);
+    console.log("and condition", andConditions);
+    // console.log("------and condition", filterData);
     if (Object.keys(filterData).length > 0) {
         andConditions.push({
             AND: Object.entries(filterData).map(([key, value]) => {
@@ -83,6 +88,14 @@ const getAllFromDB = (filters, options) => __awaiter(void 0, void 0, void 0, fun
                         [couorse_constants_2.courseRelationalFiledsMapper[key]]: {
                             id: value,
                         },
+                    };
+                }
+                else if (key == 'location' && Array.isArray(value)) {
+                    return {
+                        location: {
+                            in: value,
+                            mode: 'insensitive'
+                        }
                     };
                 }
                 else if (couorse_constants_2.courseConditionalFileds.includes(key)) {
@@ -109,6 +122,8 @@ const getAllFromDB = (filters, options) => __awaiter(void 0, void 0, void 0, fun
             })
         });
     }
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
     const whereConditons = andConditions.length > 0 ? { AND: andConditions } : {};
     const result = yield prisma_1.prisma.course.findMany({
         skip,

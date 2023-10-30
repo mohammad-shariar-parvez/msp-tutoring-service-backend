@@ -47,7 +47,8 @@ const insertIntoDB = (payload, user) => __awaiter(void 0, void 0, void 0, functi
             },
             user: {
                 select: {
-                    email: true
+                    email: true,
+                    profile: true
                 }
             },
         }
@@ -91,7 +92,8 @@ const getAllFromDB = (filters, options) => __awaiter(void 0, void 0, void 0, fun
             },
             user: {
                 select: {
-                    email: true
+                    email: true,
+                    profile: true
                 }
             }
         },

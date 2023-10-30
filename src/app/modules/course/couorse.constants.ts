@@ -1,7 +1,7 @@
 
 export const courseSearchableFields = ['title', 'location',];
 
-export const courseFilterableFields = ['searchTerm', 'title', 'minPrice', 'maxPrice', 'status', 'serviceId'];
+export const courseFilterableFields = ['searchTerm', 'searchTerm2', 'title', 'minPrice', 'maxPrice', 'status', 'serviceId', 'location'];
 
 
 export const courseRelationalFileds = ['serviceId'];

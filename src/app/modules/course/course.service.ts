@@ -27,6 +27,7 @@ const getCoursesByService = async (
     const { limit, page, skip, sortBy, sortOrder, } = paginationHelpers.calculatePagination({});
 
 
+
     const result = await prisma.course.findMany({
         include: {
             service: true,
@@ -61,24 +62,33 @@ const getAllFromDB = async (
     options: IPaginationOptions
 ): Promise<IGenericResponse<Course[]>> => {
     const { limit, page, skip, sortBy, sortOrder, } = paginationHelpers.calculatePagination(options);
-    const { searchTerm, ...filterData } = filters;
+    const { searchTerm, searchTerm2, ...filterData } = filters;
+
+
 
     const andConditions = [];
-    console.log("SEARCH term", searchTerm);
 
-    if (searchTerm) {
+
+    if (searchTerm || searchTerm2) {
         andConditions.push({
             OR: courseSearchableFields.map((field) => ({
                 [field]: {
                     contains: searchTerm,
                     mode: 'insensitive'
-                },
-            })),
-
+                }
+            })).concat(courseSearchableFields.map((field) => ({
+                [field]: {
+                    contains: searchTerm2,
+                    mode: 'insensitive'
+                }
+            })))
         });
     }
 
-    console.log("------and condition", filterData);
+    console.log("and condition", andConditions);
+
+
+    // console.log("------and condition", filterData);
     if (Object.keys(filterData).length > 0) {
         andConditions.push({
             AND: Object.entries(filterData).map(([key, value]) => {
@@ -87,6 +97,14 @@ const getAllFromDB = async (
                         [courseRelationalFiledsMapper[key]]: {
                             id: value,
                         },
+                    };
+                }
+                else if (key == 'location' && Array.isArray(value)) {
+                    return {
+                        location: {
+                            in: value, // Use the 'in' keyword to check if 'location' matches any of the values in the 'locations' array
+                            mode: 'insensitive'
+                        }
                     };
                 }
                 else if (courseConditionalFileds.includes(key)) {
@@ -114,10 +132,10 @@ const getAllFromDB = async (
             })
         });
     }
-
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
     const whereConditons: Prisma.CourseWhereInput =
         andConditions.length > 0 ? { AND: andConditions } : {};
-
     const result = await prisma.course.findMany({
         skip,
         take: limit,

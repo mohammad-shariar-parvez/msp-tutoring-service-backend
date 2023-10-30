@@ -9,7 +9,8 @@ import { ReviewValidation } from './review.validation';
 
 const router = express.Router();
 
-router.get('/', auth(), ReviewController.getAllFromDB);
+router.get('/', ReviewController.getAllFromDB);
+router.get('/:id', ReviewController.getByIdFromDB);
 
 router.post(
 	'/',

@@ -48,7 +48,8 @@ const insertIntoDB = async (payload: IReview, user: IUser): Promise<any> => {
 			},
 			user: {
 				select: {
-					email: true
+					email: true,
+					profile: true
 				}
 			},
 
@@ -116,7 +117,8 @@ const getAllFromDB = async (
 			},
 			user: {
 				select: {
-					email: true
+					email: true,
+					profile: true
 				}
 			}
 
@@ -140,6 +142,28 @@ const getAllFromDB = async (
 
 
 
+const getByIdFromDB = async (courseId: string): Promise<ReviewAndRating | null> => {
+	const result = await prisma.reviewAndRating.findFirst({
+		where: {
+			courseId
+		},
+		include: {
+			course: {
+				select: {
+					title: true
+				}
+			},
+			user: {
+				select: {
+					email: true,
+					profile: true
+				}
+			}
+
+		},
+	});
+	return result;
+};
 
 
 
@@ -149,6 +173,7 @@ const getAllFromDB = async (
 export const ReviewService = {
 	insertIntoDB,
 	getAllFromDB,
+	getByIdFromDB
 
 
 };
