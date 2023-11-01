@@ -36,7 +36,8 @@ const success = async (data: any) => {
 			transactionId: data.tran_id
 		},
 		data: {
-			val_id: data.val_id
+			val_id: data.val_id,
+			paymentStatus: PaymentStatus.PAID
 		}
 	});
 
@@ -98,6 +99,8 @@ const getAllFromDB = async (
 ): Promise<IGenericResponse<Payment[]>> => {
 	const { limit, page, skip } = paginationHelpers.calculatePagination(options);
 	const { searchTerm, ...filterData } = filters;
+	console.log("search tertm--", searchTerm);
+
 
 	const andConditions = [];
 

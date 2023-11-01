@@ -33,7 +33,7 @@ const signinUser = catchAsync(async (req: Request, res: Response) => {
 		secure: config.env === 'production',
 		httpOnly: true,
 	};
-	console.log(refreshToken, cookieOptions);
+	// console.log(refreshToken, cookieOptions);
 
 	res.cookie('refreshToken', refreshToken, cookieOptions);
 
@@ -48,7 +48,7 @@ const signinUser = catchAsync(async (req: Request, res: Response) => {
 const refreshToken = catchAsync(async (req: Request, res: Response) => {
 
 	const { refreshToken } = req.cookies;
-	console.log("YEEEEE----------------------", req.cookies);
+	// console.log("YEEEEE----------------------", req.cookies);
 	const result = await AuthService.refreshToken(refreshToken);
 
 	// set refresh token into cookie
