@@ -79,11 +79,11 @@ const signinUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
 });
 const refreshToken = (token) => __awaiter(void 0, void 0, void 0, function* () {
     //verify token
-    console.log("TOKENNNNNNNNNNNNNNNNNNNNNNNNN", token);
+    // console.log("TOKENNNNNNNNNNNNNNNNNNNNNNNNN", token);
     let verifiedToken = null;
     try {
         verifiedToken = jwtHelpers_1.jwtHelpers.verifyToken(token, config_1.default.jwt.refresh_secret);
-        console.log("varify token-------", verifiedToken);
+        // console.log("varify token-------", verifiedToken);
     }
     catch (err) {
         throw new ApiError_1.default(http_status_1.default.FORBIDDEN, 'Invalid Refresh Token');
@@ -114,7 +114,7 @@ const changePassword = (user, payload) => __awaiter(void 0, void 0, void 0, func
     // // checking is user exist
     // const isUserExist = await User.isUserExist(user?.userId);
     // alternative way
-    console.log("USREEEE IDD", user);
+    // console.log("USREEEE IDD", user);
     const isUserExist = yield prisma_1.prisma.user.findUnique({
         where: {
             id: user === null || user === void 0 ? void 0 : user.userId

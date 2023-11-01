@@ -32,7 +32,10 @@ const user_constant_1 = require("./user.constant");
 const insertIntoDB = (userData) => __awaiter(void 0, void 0, void 0, function* () {
     const defaultPassword = config_1.default.default_user_pass;
     const hashedPassword = yield bycryptHelpers_1.bcryptHelpers.hashedPassword(defaultPassword);
-    console.log("USER DATA", Object.assign(Object.assign({}, userData), { password: yield hashedPassword }));
+    // console.log("USER DATA", {
+    // 	...userData,
+    // 	password: await hashedPassword,
+    // },);
     const user = yield prisma_1.prisma.user.create({
         data: Object.assign(Object.assign({}, userData), { password: yield hashedPassword }),
     });

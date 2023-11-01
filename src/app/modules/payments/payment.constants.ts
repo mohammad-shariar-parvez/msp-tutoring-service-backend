@@ -3,7 +3,7 @@ export const paymentFilterableFields: string[] = [
 	'id',
 	'transactionId',
 	'userId',
-	'status'
+	'paymentStatus'
 ];
 
-export const paymentSearchableFields: string[] = ['transactionId', 'userId', 'status'];
+export const paymentSearchableFields: string[] = ['transactionId', 'userId', 'paymentStatus'];

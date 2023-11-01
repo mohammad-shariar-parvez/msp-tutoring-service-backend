@@ -12,5 +12,6 @@ const review_controller_1 = require("./review.controller");
 const review_validation_1 = require("./review.validation");
 const router = express_1.default.Router();
 router.get('/', review_controller_1.ReviewController.getAllFromDB);
+router.get('/:id', review_controller_1.ReviewController.getByIdFromDB);
 router.post('/', (0, validateRequest_1.default)(review_validation_1.ReviewValidation.create), (0, auth_1.default)(user_1.ENUM_USER_ROLE.USER), review_controller_1.ReviewController.insertIntoDB);
 exports.ReviewRoutes = router;

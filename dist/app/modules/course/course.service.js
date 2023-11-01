@@ -26,7 +26,7 @@ const paginationHelper_1 = require("../../../helpers/paginationHelper");
 const prisma_1 = require("../../../shared/prisma");
 const couorse_constants_2 = require("./couorse.constants");
 const insertIntoDB = (data) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("DATA__", data);
+    // console.log("DATA__", data);
     const result = yield prisma_1.prisma.course.create({
         data
     });
@@ -78,7 +78,7 @@ const getAllFromDB = (filters, options) => __awaiter(void 0, void 0, void 0, fun
             })))
         });
     }
-    console.log("and condition", andConditions);
+    // console.log("and condition", andConditions);
     // console.log("------and condition", filterData);
     if (Object.keys(filterData).length > 0) {
         andConditions.push({

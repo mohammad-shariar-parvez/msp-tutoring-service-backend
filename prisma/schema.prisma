@@ -186,12 +186,15 @@ model FAQ {
 }
 
 model Payment {
-  id            String        @id @default(uuid())
-  amount        String
-  paymentDate   DateTime      @default(now()) @map("payment_date")
-  paymentStatus PaymentStatus @default(PENDING)
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
+  id                 String        @id @default(uuid())
+  amount             Float
+  paymentDate        DateTime      @default(now()) @map("payment_date")
+  paymentStatus      PaymentStatus @default(PENDING)
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  transactionId      String?
+  paymentGatewayData Json?
+  val_id             String?
 
   userId    String
   bookingId String  @unique

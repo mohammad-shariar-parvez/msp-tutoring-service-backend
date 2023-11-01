@@ -29,7 +29,7 @@ const auth = (...requiredRoles) => (req, res, next) => __awaiter(void 0, void 0,
         let verifiedUser = null;
         verifiedUser = jwtHelpers_1.jwtHelpers.verifyToken(token, config_1.default.jwt.secret);
         req.user = verifiedUser; // role  , userid ,email
-        console.log("from auth------", verifiedUser);
+        // console.log("from auth------", verifiedUser);
         //Check whether valid user exist on database
         // case- user deleted but he has refresh token
         // checking deleted user's refresh token
@@ -38,14 +38,13 @@ const auth = (...requiredRoles) => (req, res, next) => __awaiter(void 0, void 0,
                 id: verifiedUser.userId
             }
         });
-        console.log("IS USER", isUserExist);
+        // console.log("IS USER", isUserExist);
         if (!isUserExist) {
             throw new ApiError_1.default(http_status_1.default.NOT_FOUND, 'Token user does not exist in Database');
         }
         //Check whether valid Role exist on database 
         console.log("requiredRoles------", requiredRoles);
         if (requiredRoles.length && !requiredRoles.includes(verifiedUser.role)) {
-            console.log("DHUKSEEEE");
             throw new ApiError_1.default(http_status_1.default.FORBIDDEN, 'Forbidden');
         }
         next();

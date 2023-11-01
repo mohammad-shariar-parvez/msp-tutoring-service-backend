@@ -31,6 +31,16 @@ const insertIntoDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, v
         data: result
     });
 }));
+const getByIdFromDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const result = yield review_service_1.ReviewService.getByIdFromDB(id);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'Review  fetched successfully',
+        data: result
+    });
+}));
 const getAllFromDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const options = (0, pick_1.default)(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
     const filters = (0, pick_1.default)(req.query, review_constants_1.reviewFilterableFields);
@@ -38,7 +48,7 @@ const getAllFromDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, v
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: 'Booking retrieved successfully !',
+        message: 'Review retrieved successfully !',
         data: result.data,
         meta: result.meta,
     });
@@ -46,4 +56,5 @@ const getAllFromDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, v
 exports.ReviewController = {
     insertIntoDB,
     getAllFromDB,
+    getByIdFromDB
 };

@@ -17,7 +17,7 @@ const http_status_1 = __importDefault(require("http-status"));
 const ApiError_1 = __importDefault(require("../../../errors/ApiError"));
 const prisma_1 = require("../../../shared/prisma");
 const insertIntoDB = (data) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("amar data------", data);
+    // console.log("amar data------", data);
     const result = yield prisma_1.prisma.profile.create({
         data
     });
@@ -28,7 +28,7 @@ const insertIntoDB = (data) => __awaiter(void 0, void 0, void 0, function* () {
 });
 const getProfile = (user) => __awaiter(void 0, void 0, void 0, function* () {
     const { userId } = user;
-    console.log("USERID", userId);
+    // console.log("USERID", userId);
     const result = yield prisma_1.prisma.profile.findFirst({
         where: {
             userId
@@ -37,16 +37,16 @@ const getProfile = (user) => __awaiter(void 0, void 0, void 0, function* () {
     return result;
 });
 const updateProfile = (userId, payload) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("iuyaaaaaa----", userId);
+    // console.log("iuyaaaaaa----", userId);
     const result = yield prisma_1.prisma.profile.update({
         where: {
             userId,
         },
         data: payload,
     });
-    console.log("OOOOOOOOOOOOOOOOOOOOOOOO", result);
+    // console.log("OOOOOOOOOOOOOOOOOOOOOOOO", result);
     if (!result) {
-        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        // console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
     }
     return result;
 });

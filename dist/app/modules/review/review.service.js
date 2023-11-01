@@ -23,7 +23,7 @@ const insertIntoDB = (payload, user) => __awaiter(void 0, void 0, void 0, functi
     // if (role != "customer") {
     // 	throw new ApiError(httpStatus.FORBIDDEN, 'Invalid Role. Only Customer can place an order.');
     // }
-    console.log("result", payload);
+    // console.log("result", payload);
     const result = yield prisma_1.prisma.reviewAndRating.create({
         data: {
             userId,
@@ -111,7 +111,29 @@ const getAllFromDB = (filters, options) => __awaiter(void 0, void 0, void 0, fun
         data: result
     };
 });
+const getByIdFromDB = (courseId) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield prisma_1.prisma.reviewAndRating.findFirst({
+        where: {
+            courseId
+        },
+        include: {
+            course: {
+                select: {
+                    title: true
+                }
+            },
+            user: {
+                select: {
+                    email: true,
+                    profile: true
+                }
+            }
+        },
+    });
+    return result;
+});
 exports.ReviewService = {
     insertIntoDB,
     getAllFromDB,
+    getByIdFromDB
 };

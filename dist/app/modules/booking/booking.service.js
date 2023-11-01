@@ -22,7 +22,7 @@ const insertIntoDB = (payload, user) => __awaiter(void 0, void 0, void 0, functi
     // if (role != "customer") {
     // 	throw new ApiError(httpStatus.FORBIDDEN, 'Invalid Role. Only Customer can place an order.');
     // }
-    console.log("result", payload);
+    // console.log("result", payload);
     const result = yield prisma_1.prisma.booking.create({
         data: {
             userId,

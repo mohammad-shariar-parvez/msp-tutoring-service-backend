@@ -21,7 +21,7 @@ const couorse_constants_1 = require("./couorse.constants");
 const course_service_1 = require("./course.service");
 const insertIntoDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield course_service_1.CourseService.insertIntoDB(req.body);
-    console.log("REEESULTT", result);
+    // console.log("REEESULTT", result);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
@@ -31,7 +31,7 @@ const insertIntoDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, v
 }));
 const getAllFromDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const filters = (0, pick_1.default)(req.query, couorse_constants_1.courseFilterableFields);
-    console.log("filters--------------", req.query);
+    // console.log("filters--------------", req.query);
     const options = (0, pick_1.default)(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
     const result = yield course_service_1.CourseService.getAllFromDB(filters, options);
     (0, sendResponse_1.default)(res, {

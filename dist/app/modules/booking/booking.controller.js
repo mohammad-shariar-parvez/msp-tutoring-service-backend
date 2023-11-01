@@ -44,8 +44,8 @@ const getAllFromDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, v
 }));
 const updateOneInDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    console.log("BIKAL", id);
-    console.log("BIKAL", req.body);
+    // console.log("BIKAL", id);
+    // console.log("BIKAL", req.body);
     const result = yield booking_service_1.BookingService.updateOneInDB(id, req.body);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,

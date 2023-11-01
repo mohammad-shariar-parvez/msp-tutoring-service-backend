@@ -53,7 +53,7 @@ const signinUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
         secure: config_1.default.env === 'production',
         httpOnly: true,
     };
-    console.log(refreshToken, cookieOptions);
+    // console.log(refreshToken, cookieOptions);
     res.cookie('refreshToken', refreshToken, cookieOptions);
     (0, sendResponse_1.default)(res, {
         success: true,
@@ -64,7 +64,7 @@ const signinUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
 }));
 const refreshToken = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { refreshToken } = req.cookies;
-    console.log("YEEEEE----------------------", req.cookies);
+    // console.log("YEEEEE----------------------", req.cookies);
     const result = yield auth_service_1.AuthService.refreshToken(refreshToken);
     // set refresh token into cookie
     (0, sendResponse_1.default)(res, {
