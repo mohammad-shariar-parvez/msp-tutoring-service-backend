@@ -10,7 +10,7 @@ import { CourseService } from "./course.service";
 
 const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
     const result = await CourseService.insertIntoDB(req.body);
-    console.log("REEESULTT", result);
+    // console.log("REEESULTT", result);
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
@@ -21,7 +21,7 @@ const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
 
 const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
     const filters = pick(req.query, courseFilterableFields);
-    console.log("filters--------------", req.query);
+    // console.log("filters--------------", req.query);
 
     const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
     const result = await CourseService.getAllFromDB(filters, options);

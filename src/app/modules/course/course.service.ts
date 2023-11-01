@@ -1,6 +1,6 @@
 import { courseConditionalFiledsMapper } from './couorse.constants';
 /* eslint-disable no-undef */
-import { Course, CourseStatus, Prisma } from "@prisma/client";
+import { Course, Prisma } from "@prisma/client";
 import { paginationHelpers } from "../../../helpers/paginationHelper";
 import { IGenericResponse } from "../../../interfaces/common";
 import { IPaginationOptions } from "../../../interfaces/pagination";
@@ -12,7 +12,7 @@ import { ICourseFilterRequest } from "./course.interface";
 
 
 const insertIntoDB = async (data: Course): Promise<Course> => {
-    console.log("DATA__", data);
+    // console.log("DATA__", data);
 
     const result = await prisma.course.create({
         data
@@ -85,7 +85,7 @@ const getAllFromDB = async (
         });
     }
 
-    console.log("and condition", andConditions);
+    // console.log("and condition", andConditions);
 
 
     // console.log("------and condition", filterData);
@@ -115,11 +115,11 @@ const getAllFromDB = async (
                         }
                     };
                 }
-                else if (key === 'status') {
-                    return {
-                        status: value as CourseStatus, // Exact match for enum field
-                    };
-                }
+                // else if (key === 'status') {
+                //     return {
+                //         status: value as CourseStatus, // Exact match for enum field
+                //     };
+                // }
                 else {
                     return {
                         [key]: {
