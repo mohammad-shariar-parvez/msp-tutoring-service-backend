@@ -19,7 +19,7 @@ const insertIntoDB = async (payload: IReview, user: IUser): Promise<any> => {
 	// 	throw new ApiError(httpStatus.FORBIDDEN, 'Invalid Role. Only Customer can place an order.');
 	// }
 
-	console.log("result", payload);
+	// console.log("result", payload);
 
 	const result = await prisma.reviewAndRating.create({
 		data: {
