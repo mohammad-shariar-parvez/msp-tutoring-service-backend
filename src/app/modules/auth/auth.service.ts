@@ -96,7 +96,7 @@ const signinUser = async (
 
 const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
 	//verify token
-	console.log("TOKENNNNNNNNNNNNNNNNNNNNNNNNN", token);
+	// console.log("TOKENNNNNNNNNNNNNNNNNNNNNNNNN", token);
 
 	let verifiedToken = null;
 	try {
@@ -104,7 +104,7 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
 			token,
 			config.jwt.refresh_secret as Secret
 		);
-		console.log("varify token-------", verifiedToken);
+		// console.log("varify token-------", verifiedToken);
 
 	} catch (err) {
 		throw new ApiError(httpStatus.FORBIDDEN, 'Invalid Refresh Token');
@@ -151,7 +151,7 @@ const changePassword = async (
 	// const isUserExist = await User.isUserExist(user?.userId);
 
 	// alternative way
-	console.log("USREEEE IDD", user);
+	// console.log("USREEEE IDD", user);
 
 	const isUserExist = await prisma.user.findUnique({
 		where: {

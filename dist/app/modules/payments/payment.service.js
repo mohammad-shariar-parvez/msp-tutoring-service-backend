@@ -27,36 +27,53 @@ const prisma_1 = require("../../../shared/prisma");
 const ssl_service_1 = require("../ssl/ssl.service");
 const payment_constants_1 = require("./payment.constants");
 const initPayment = (data) => __awaiter(void 0, void 0, void 0, function* () {
+    // console.log("REQ DATAAA__", data);
     const paymentSession = yield ssl_service_1.sslService.initPayment({
-        total_amount: data.amount,
-        tran_id: data.transactionId,
-        cus_name: data.userName,
-        cus_email: data.userEmail,
-        cus_add1: data.address,
-        cus_phone: data.phone,
+        total_amount: data.total_amount,
+        cus_email: data.cus_email,
+        course_name: data.course_name,
     });
-    // await prisma.payment.create({
-    // 	data: {
-    // 		amount: data.amount,
-    // 		transactionId: data.transactionId,
-    // 		userId: data.userId,
-    // 		bookingId: data.bookingId
-    // 	}
-    // });
-    // console.log("payment session", paymentSession);
-    return paymentSession;
+    // console.log("PAYMENT SESSION", paymentSession);
+    yield prisma_1.prisma.payment.create({
+        data: {
+            amount: data.total_amount,
+            userId: data.userId,
+            bookingId: data.bookingId,
+            transactionId: paymentSession === null || paymentSession === void 0 ? void 0 : paymentSession.tranData
+        }
+    });
+    console.log("payment session", paymentSession === null || paymentSession === void 0 ? void 0 : paymentSession.tranData);
+    // console.log("payment session-----", paymentSession);
+    return paymentSession.redirectGatewayURL;
 });
 const success = (data) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("SUCCES DATA", data);
-    return data;
+    console.log("SUCEES DATA", data);
+    const result = yield prisma_1.prisma.payment.updateMany({
+        where: {
+            transactionId: data.tran_id
+        },
+        data: {
+            val_id: data.val_id,
+            paymentStatus: client_1.PaymentStatus.PAID
+        }
+    });
+    return result;
 });
 const cancel = (data) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("CANCEL DATA", data);
-    return data;
+    const result = yield prisma_1.prisma.payment.deleteMany({
+        where: {
+            transactionId: data.tran_id
+        }
+    });
+    return result;
 });
 const fail = (data) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("FAILED DATA", data);
-    return data;
+    const result = yield prisma_1.prisma.payment.deleteMany({
+        where: {
+            transactionId: data.tran_id
+        }
+    });
+    return result;
 });
 const webhook = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     if (!payload || !(payload === null || payload === void 0 ? void 0 : payload.status) || (payload === null || payload === void 0 ? void 0 : payload.status) !== 'VALID') {
@@ -87,6 +104,7 @@ const webhook = (payload) => __awaiter(void 0, void 0, void 0, function* () {
 const getAllFromDB = (filters, options) => __awaiter(void 0, void 0, void 0, function* () {
     const { limit, page, skip } = paginationHelper_1.paginationHelpers.calculatePagination(options);
     const { searchTerm } = filters, filterData = __rest(filters, ["searchTerm"]);
+    console.log("search tertm--", searchTerm);
     const andConditions = [];
     if (searchTerm) {
         andConditions.push({

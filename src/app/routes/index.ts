@@ -6,6 +6,7 @@ import { BookingRoutes } from '../modules/booking/booking.route';
 import { ContentRoutes } from '../modules/contents/content.route';
 import { CourseRoutes } from '../modules/course/course.routes';
 import { FeedbackRoutes } from '../modules/feedback/feedback.route';
+import { paymentRoutes } from '../modules/payments/payment.routes';
 import { ProfileRoutes } from '../modules/profile/profile.route';
 import { ReviewRoutes } from '../modules/review/review.route';
 import { ServiceRoutes } from '../modules/service/service.routes';
@@ -60,6 +61,10 @@ const moduleRoutes = [
   {
     path: '/feedbacks',
     route: FeedbackRoutes,
+  },
+  {
+    path: '/payments',
+    route: paymentRoutes
   }
 ];
 

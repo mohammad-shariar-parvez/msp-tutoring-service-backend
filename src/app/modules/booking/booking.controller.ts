@@ -37,8 +37,8 @@ const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
 const updateOneInDB = catchAsync(async (req: Request, res: Response) => {
 
 	const { id } = req.params;
-	console.log("BIKAL", id);
-	console.log("BIKAL", req.body);
+	// console.log("BIKAL", id);
+	// console.log("BIKAL", req.body);
 	const result = await BookingService.updateOneInDB(id, req.body);
 	sendResponse(res, {
 		statusCode: httpStatus.OK,

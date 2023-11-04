@@ -20,40 +20,24 @@ const payment_constants_1 = require("./payment.constants");
 const payment_service_1 = require("./payment.service");
 const initPayment = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield payment_service_1.PaymentService.initPayment(req.body);
-    res.redirect(result);
-    // sendResponse(res, {
-    // 	success: true,
-    // 	statusCode: httpStatus.OK,
-    // 	message: "Payment init successfully",
-    // 	data: result
-    // });
+    (0, sendResponse_1.default)(res, {
+        success: true,
+        statusCode: http_status_1.default.OK,
+        message: "Payment init successfully",
+        data: result
+    });
 });
 const success = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield payment_service_1.PaymentService.success(req.body);
-    (0, sendResponse_1.default)(res, {
-        success: true,
-        statusCode: http_status_1.default.OK,
-        message: "Success Result",
-        data: result
-    });
+    res.status(200).redirect('http://localhost:3000/payments');
 });
 const cancel = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield payment_service_1.PaymentService.cancel(req.body);
-    (0, sendResponse_1.default)(res, {
-        success: true,
-        statusCode: http_status_1.default.OK,
-        message: "Cancel Result",
-        data: result
-    });
+    res.status(200).redirect('http://localhost:3000/user/bookings');
 });
 const fail = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield payment_service_1.PaymentService.fail(req.body);
-    (0, sendResponse_1.default)(res, {
-        success: true,
-        statusCode: http_status_1.default.OK,
-        message: "Success Result",
-        data: result
-    });
+    res.status(200).redirect('http://localhost:3000/user');
 });
 const webhook = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     console.log("WEBHOOK");

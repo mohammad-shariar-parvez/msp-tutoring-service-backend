@@ -18,10 +18,10 @@ const insertIntoDB = async (
 
 	const defaultPassword = config.default_user_pass as string;
 	const hashedPassword = await bcryptHelpers.hashedPassword(defaultPassword);
-	console.log("USER DATA", {
-		...userData,
-		password: await hashedPassword,
-	},);
+	// console.log("USER DATA", {
+	// 	...userData,
+	// 	password: await hashedPassword,
+	// },);
 
 	const user = await prisma.user.create({
 		data: {

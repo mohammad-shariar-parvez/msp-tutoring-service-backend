@@ -14,61 +14,55 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sslService = void 0;
 const axios_1 = __importDefault(require("axios"));
-const sslcommerz_lts_1 = __importDefault(require("sslcommerz-lts"));
 const http_status_1 = __importDefault(require("http-status"));
+const uuid_1 = require("uuid");
 const config_1 = __importDefault(require("../../../config"));
 const ApiError_1 = __importDefault(require("../../../errors/ApiError"));
 const initPayment = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const data = {
-        store_id: config_1.default.ssl.storeId,
-        store_passwd: config_1.default.ssl.storePass,
-        total_amount: payload.total_amount,
-        currency: 'BDT',
-        tran_id: payload.tran_id,
-        success_url: 'http://localhost:5010/api/v1/payments/success',
-        fail_url: 'http://localhost:5010/api/v1/payments/fail',
-        cancel_url: 'http://localhost:5010/api/v1/payments/cancel',
-        ipn_url: 'http://localhost:5010/api/v1/payments/ipn',
-        shipping_method: 'N/A',
-        product_name: 'Booking Payment',
-        product_category: 'Payment',
-        product_profile: 'Student',
-        cus_name: payload.cus_name,
-        cus_email: payload.cus_email,
-        cus_add1: payload.cus_add1,
-        cus_city: 'Dhaka',
-        cus_state: 'Dhaka',
-        cus_postcode: '1000',
-        cus_country: 'Bangladesh',
-        cus_phone: payload.cus_phone,
-        cus_fax: '01711111111',
-        ship_name: 'Customer Name',
-        ship_add1: 'Dhaka',
-        ship_add2: 'Dhaka',
-        ship_city: 'Dhaka',
-        ship_state: 'Dhaka',
-        ship_postcode: 1000,
-        ship_country: 'Bangladesh',
-    };
-    // const response = await axios({
-    // 	method: 'post',
-    // 	url: config.ssl.sslPaymentUrl,
-    // 	data: data,
-    // 	headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-    // });
-    // catch (err) {
-    // 	throw new ApiError(httpStatus.BAD_REQUEST, "Payment error");
-    // }
-    let GatewayPageURL = "";
-    const sslcz = new sslcommerz_lts_1.default(config_1.default.ssl.storeId, config_1.default.ssl.storePass, false);
-    sslcz.init(data).then((data) => {
-        // Redirect the user to payment gateway
-        GatewayPageURL = data.GatewayPageURL;
-        // console.log('Redirecting to: ', GatewayPageURL);
-    });
-    // console.log("Payment RESPONSE", response);
-    return GatewayPageURL;
-    // return response.data;
+    try {
+        const data = {
+            store_id: config_1.default.ssl.storeId,
+            store_passwd: config_1.default.ssl.storePass,
+            total_amount: payload.total_amount,
+            currency: 'BDT',
+            tran_id: (0, uuid_1.v4)(),
+            success_url: 'http://localhost:5010/api/v1/payments/success',
+            fail_url: 'http://localhost:5010/api/v1/payments/fail',
+            cancel_url: 'http://localhost:5010/api/v1/payments/cancel',
+            ipn_url: 'http://localhost:5010/api/v1/payments/ipn',
+            shipping_method: 'N/A',
+            course_name: payload.course_name,
+            course_category: 'Payment',
+            product_profile: 'User',
+            cus_email: payload.cus_email,
+            cus_add1: 'Natore',
+            cus_city: 'Dhaka',
+            cus_state: 'Dhaka',
+            cus_postcode: '1000',
+            cus_country: 'Bangladesh',
+            cus_fax: '01711111111',
+            ship_name: 'Customer Name',
+            ship_add1: 'Dhaka',
+            ship_add2: 'Dhaka',
+            ship_city: 'Dhaka',
+            ship_state: 'Dhaka',
+            ship_postcode: 1000,
+            ship_country: 'Bangladesh',
+        };
+        // console.log("DAAATTTTAAA__________ ++", data);
+        const response = yield (0, axios_1.default)({
+            method: 'post',
+            url: config_1.default.ssl.sslPaymentUrl,
+            data: data,
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        });
+        // console.log("Payment RESPONSE", response);
+        const tranData = data === null || data === void 0 ? void 0 : data.tran_id;
+        return Object.assign(Object.assign({}, response.data), { tranData });
+    }
+    catch (err) {
+        throw new ApiError_1.default(http_status_1.default.BAD_REQUEST, "Payment error");
+    }
 });
 const validate = (data) => __awaiter(void 0, void 0, void 0, function* () {
     try {

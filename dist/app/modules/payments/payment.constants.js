@@ -6,6 +6,6 @@ exports.paymentFilterableFields = [
     'id',
     'transactionId',
     'userId',
-    'status'
+    'paymentStatus'
 ];
-exports.paymentSearchableFields = ['transactionId', 'userId', 'status'];
+exports.paymentSearchableFields = ['transactionId', 'userId', 'paymentStatus'];

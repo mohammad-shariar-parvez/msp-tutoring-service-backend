@@ -18,7 +18,7 @@ const insertIntoDB = async (payload: IBookingCourse, user: IUser): Promise<any> 
 	// 	throw new ApiError(httpStatus.FORBIDDEN, 'Invalid Role. Only Customer can place an order.');
 	// }
 
-	console.log("result", payload);
+	// console.log("result", payload);
 
 	const result = await prisma.booking.create({
 		data: {
@@ -49,7 +49,8 @@ const insertIntoDB = async (payload: IBookingCourse, user: IUser): Promise<any> 
 				select: {
 					email: true
 				}
-			}
+			},
+			payment: true
 
 		}
 	});
@@ -73,14 +74,16 @@ const getAllFromDB = async (user: IUser, options: IPaginationOptions): Promise<I
 			include: {
 				course: {
 					select: {
-						title: true
+						title: true,
+						price: true
 					}
 				},
 				user: {
 					select: {
 						email: true
 					}
-				}
+				},
+				payment: true
 
 
 			},
@@ -117,7 +120,8 @@ const getAllFromDB = async (user: IUser, options: IPaginationOptions): Promise<I
 					select: {
 						email: true
 					}
-				}
+				},
+				payment: true
 
 			},
 			skip,
@@ -161,7 +165,8 @@ const getByIdFromDB = async (user: IUser, orderId: string): Promise<any | null> 
 					select: {
 						email: true
 					}
-				}
+				},
+				payment: true
 
 			}
 		});
@@ -201,7 +206,8 @@ const updateOneInDB = async (id: string, payload: Partial<Booking>): Promise<Boo
 		where: {
 			id
 		},
-		data: payload
+		data: payload,
+
 	});
 	return result;
 };
@@ -228,7 +234,8 @@ const deleteByIdFromDB = async (id: string): Promise<Booking> => {
 				select: {
 					email: true
 				}
-			}
+			},
+			payment: true
 		}
 	});
 

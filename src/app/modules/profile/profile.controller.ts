@@ -11,7 +11,7 @@ const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
 
 	const myreq = { ...req.body, ...user };
 
-	console.log("PROFILEE--", myreq);
+	// console.log("PROFILEE--", myreq);
 	const result = await ProfileService.insertIntoDB(myreq);
 
 	sendResponse(res, {
@@ -37,8 +37,8 @@ const getProfile = catchAsync(async (req: Request, res: Response) => {
 const updateUser = catchAsync(async (req: Request, res: Response) => {
 	const userId = (req as any).user.userId;
 	const updatedData = req.body;
-	console.log("booody", req.body);
-	console.log("id", userId);
+	// console.log("booody", req.body);
+	// console.log("id", userId);
 
 
 	const result = await ProfileService.updateProfile(userId, updatedData);

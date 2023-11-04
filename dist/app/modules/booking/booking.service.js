@@ -48,7 +48,8 @@ const insertIntoDB = (payload, user) => __awaiter(void 0, void 0, void 0, functi
                 select: {
                     email: true
                 }
-            }
+            },
+            payment: true
         }
     });
     return responseData;
@@ -64,14 +65,16 @@ const getAllFromDB = (user, options) => __awaiter(void 0, void 0, void 0, functi
             include: {
                 course: {
                     select: {
-                        title: true
+                        title: true,
+                        price: true
                     }
                 },
                 user: {
                     select: {
                         email: true
                     }
-                }
+                },
+                payment: true
             },
             skip,
             take: limit,
@@ -103,7 +106,8 @@ const getAllFromDB = (user, options) => __awaiter(void 0, void 0, void 0, functi
                     select: {
                         email: true
                     }
-                }
+                },
+                payment: true
             },
             skip,
             take: limit,
@@ -138,7 +142,8 @@ const getByIdFromDB = (user, orderId) => __awaiter(void 0, void 0, void 0, funct
                     select: {
                         email: true
                     }
-                }
+                },
+                payment: true
             }
         });
         if ((result === null || result === void 0 ? void 0 : result.userId) != userId) {
@@ -172,7 +177,7 @@ const updateOneInDB = (id, payload) => __awaiter(void 0, void 0, void 0, functio
         where: {
             id
         },
-        data: payload
+        data: payload,
     });
     return result;
 });
@@ -191,7 +196,8 @@ const deleteByIdFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () 
                 select: {
                     email: true
                 }
-            }
+            },
+            payment: true
         }
     });
     return result;

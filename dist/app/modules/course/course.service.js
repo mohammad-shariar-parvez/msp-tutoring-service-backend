@@ -106,11 +106,11 @@ const getAllFromDB = (filters, options) => __awaiter(void 0, void 0, void 0, fun
                         }
                     };
                 }
-                else if (key === 'status') {
-                    return {
-                        status: value, // Exact match for enum field
-                    };
-                }
+                // else if (key === 'status') {
+                //     return {
+                //         status: value as CourseStatus, // Exact match for enum field
+                //     };
+                // }
                 else {
                     return {
                         [key]: {

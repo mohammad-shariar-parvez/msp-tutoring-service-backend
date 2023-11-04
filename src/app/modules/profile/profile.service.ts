@@ -8,7 +8,7 @@ import { prisma } from "../../../shared/prisma";
 
 const insertIntoDB = async (data: Profile): Promise<Profile | null> => {
 
-	console.log("amar data------", data);
+	// console.log("amar data------", data);
 
 
 	const result = await prisma.profile.create({
@@ -23,7 +23,7 @@ const insertIntoDB = async (data: Profile): Promise<Profile | null> => {
 
 const getProfile = async (user: IProfile): Promise<Profile | null> => {
 	const { userId } = user;
-	console.log("USERID", userId);
+	// console.log("USERID", userId);
 
 	const result = await prisma.profile.findFirst({
 		where: {
@@ -34,7 +34,7 @@ const getProfile = async (user: IProfile): Promise<Profile | null> => {
 };
 
 const updateProfile = async (userId: string, payload: Partial<Profile>): Promise<Partial<Profile> | null> => {
-	console.log("iuyaaaaaa----", userId);
+	// console.log("iuyaaaaaa----", userId);
 
 	const result = await prisma.profile.update({
 		where: {
@@ -42,10 +42,10 @@ const updateProfile = async (userId: string, payload: Partial<Profile>): Promise
 		},
 		data: payload,
 	});
-	console.log("OOOOOOOOOOOOOOOOOOOOOOOO", result);
+	// console.log("OOOOOOOOOOOOOOOOOOOOOOOO", result);
 
 	if (!result) {
-		console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		// console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
 	}
 
