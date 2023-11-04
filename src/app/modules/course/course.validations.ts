@@ -25,8 +25,8 @@ const create = z.object({
         description: z.string({
             required_error: "description  is required"
         }),
-        serviceId: z.string({
-            required_error: "serviceId  is required"
+        categoryId: z.string({
+            required_error: "categoryId  is required"
         }),
         courseTutorId: z.string({
             required_error: "courseTutorId   is required"
@@ -45,7 +45,7 @@ const update = z.object({
 
         imageUrl: z.string().optional(),
         description: z.string().optional(),
-        serviceId: z.string().optional(),
+        categoryId: z.string().optional(),
         courseTutorId: z.string().optional(),
     })
 });

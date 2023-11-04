@@ -1,13 +1,13 @@
 
 export const courseSearchableFields = ['title', 'location',];
 
-export const courseFilterableFields = ['searchTerm', 'searchTerm2', 'title', 'minPrice', 'maxPrice', 'status', 'serviceId', 'location'];
+export const courseFilterableFields = ['searchTerm', 'searchTerm2', 'title', 'minPrice', 'maxPrice', 'status', 'categoryId', 'location'];
 
 
-export const courseRelationalFileds = ['serviceId'];
+export const courseRelationalFileds = ['categoryId'];
 
 export const courseRelationalFiledsMapper: { [key: string]: string; } = {
-	serviceId: 'service'
+	categoryId: 'category'
 };
 
 export const courseConditionalFileds = ['minPrice', 'maxPrice'];

@@ -21,8 +21,8 @@ const insertIntoDB = async (data: Course): Promise<Course> => {
 };
 
 
-const getCoursesByService = async (
-    serviceId: string
+const getCoursesByCategory = async (
+    categoryId: string
 ): Promise<IGenericResponse<Course[]>> => {
     const { limit, page, skip, sortBy, sortOrder, } = paginationHelpers.calculatePagination({});
 
@@ -30,10 +30,10 @@ const getCoursesByService = async (
 
     const result = await prisma.course.findMany({
         include: {
-            service: true,
+            category: true,
         },
         where: {
-            serviceId
+            categoryId
         },
         skip,
         take: limit,
@@ -42,7 +42,7 @@ const getCoursesByService = async (
 
     const total = await prisma.course.count({
         where: {
-            serviceId
+            categoryId
         },
 
     });
@@ -141,7 +141,7 @@ const getAllFromDB = async (
         take: limit,
         where: whereConditons,
         include: {
-            service: true,
+            category: true,
             courseTutor: true
         },
         orderBy: { [sortBy]: sortOrder },
@@ -166,7 +166,7 @@ const getByIdFromDB = async (id: string): Promise<Course | null> => {
             id
         },
         include: {
-            service: true,
+            category: true,
             courseTutor: true
         },
     });
@@ -198,5 +198,5 @@ export const CourseService = {
     getByIdFromDB,
     updateOneInDB,
     deleteByIdFromDB,
-    getCoursesByService
+    getCoursesByCategory
 };

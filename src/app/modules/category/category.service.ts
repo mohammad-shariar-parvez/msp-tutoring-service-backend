@@ -1,28 +1,29 @@
 /* eslint-disable no-undef */
-import { Prisma, Service } from "@prisma/client";
+import { Category, Prisma } from "@prisma/client";
 import { paginationHelpers } from "../../../helpers/paginationHelper";
 import { IGenericResponse } from "../../../interfaces/common";
 import { IPaginationOptions } from "../../../interfaces/pagination";
 
 import { prisma } from "../../../shared/prisma";
 
-import { serviceSearchableFields } from "./service.constants";
-import { IServiceFilterRequest } from "./service.interface";
+
+import { categorySearchableFields } from "./category.constants";
+import { ICategoryFilterRequest } from "./category.interface";
 
 
 
 
-const insertIntoDB = async (data: Service): Promise<Service> => {
-    const result = await prisma.service.create({
+const insertIntoDB = async (data: Category): Promise<Category> => {
+    const result = await prisma.category.create({
         data
     });
     return result;
 };
 
 const getAllFromDB = async (
-    filters: IServiceFilterRequest,
+    filters: ICategoryFilterRequest,
     options: IPaginationOptions
-): Promise<IGenericResponse<Service[]>> => {
+): Promise<IGenericResponse<Category[]>> => {
     const { limit, page, skip, sortBy, sortOrder, } = paginationHelpers.calculatePagination(options);
     const { searchTerm, ...filterData } = filters;
 
@@ -33,7 +34,7 @@ const getAllFromDB = async (
 
     if (searchTerm) {
         andConditions.push({
-            OR: serviceSearchableFields.map((field) => ({
+            OR: categorySearchableFields.map((field) => ({
                 [field]: {
                     contains: searchTerm,
                     mode: 'insensitive'
@@ -61,10 +62,10 @@ const getAllFromDB = async (
         });
     }
 
-    const whereConditons: Prisma.ServiceWhereInput =
+    const whereConditons: Prisma.CategoryWhereInput =
         andConditions.length > 0 ? { AND: andConditions } : {};
 
-    const result = await prisma.service.findMany({
+    const result = await prisma.category.findMany({
         include: {
             courses: true,
         },
@@ -73,7 +74,7 @@ const getAllFromDB = async (
         where: whereConditons,
         orderBy: { [sortBy]: sortOrder },
     });
-    const total = await prisma.service.count({
+    const total = await prisma.category.count({
         where: whereConditons
     });
 
@@ -87,8 +88,8 @@ const getAllFromDB = async (
     };
 };
 
-const getByIdFromDB = async (id: string): Promise<Service | null> => {
-    const result = await prisma.service.findUnique({
+const getByIdFromDB = async (id: string): Promise<Category | null> => {
+    const result = await prisma.category.findUnique({
         where: {
             id
         }
@@ -96,8 +97,8 @@ const getByIdFromDB = async (id: string): Promise<Service | null> => {
     return result;
 };
 
-const updateOneInDB = async (id: string, payload: Partial<Service>): Promise<Service> => {
-    const result = await prisma.service.update({
+const updateOneInDB = async (id: string, payload: Partial<Category>): Promise<Category> => {
+    const result = await prisma.category.update({
         where: {
             id
         },
@@ -106,8 +107,8 @@ const updateOneInDB = async (id: string, payload: Partial<Service>): Promise<Ser
     return result;
 };
 
-const deleteByIdFromDB = async (id: string): Promise<Service> => {
-    const result = await prisma.service.delete({
+const deleteByIdFromDB = async (id: string): Promise<Category> => {
+    const result = await prisma.category.delete({
         where: {
             id
         }
@@ -115,7 +116,7 @@ const deleteByIdFromDB = async (id: string): Promise<Service> => {
     return result;
 };
 
-export const ServiceService = {
+export const CategoryService = {
     insertIntoDB,
     getAllFromDB,
     getByIdFromDB,

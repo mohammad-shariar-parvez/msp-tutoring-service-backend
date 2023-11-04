@@ -9,7 +9,7 @@ import { CourseValidations } from './course.validations';
 const router = express.Router();
 
 router.get('/', CourseController.getAllFromDB);
-router.get('/:serviceId/service', CourseController.getCoursesByService);
+router.get('/:categoryId/category', CourseController.getCoursesByCategory);
 router.get('/:id', CourseController.getByIdFromDB);
 router.post(
     '/',

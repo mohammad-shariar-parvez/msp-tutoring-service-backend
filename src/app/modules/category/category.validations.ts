@@ -21,7 +21,7 @@ const update = z.object({
     })
 });
 
-export const ServiceValidations = {
+export const CategoryValidations = {
     create,
     update
 };

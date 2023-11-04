@@ -33,14 +33,14 @@ const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
         data: result.data
     });
 });
-const getCoursesByService = catchAsync(async (req: Request, res: Response) => {
-    const { serviceId } = req.params;
-    const result = await CourseService.getCoursesByService(serviceId);
+const getCoursesByCategory = catchAsync(async (req: Request, res: Response) => {
+    const { categoryId } = req.params;
+    const result = await CourseService.getCoursesByCategory(categoryId);
 
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: 'Course with associated service  fetched successfully',
+        message: 'Course with associated category  fetched successfully',
         meta: result.meta,
         data: result.data,
     });
@@ -87,5 +87,5 @@ export const CourseController = {
     getByIdFromDB,
     updateOneInDB,
     deleteByIdFromDB,
-    getCoursesByService
+    getCoursesByCategory
 };

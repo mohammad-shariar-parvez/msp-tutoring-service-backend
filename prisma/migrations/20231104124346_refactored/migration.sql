@@ -23,26 +23,7 @@ CREATE TABLE "users" (
 );
 
 -- CreateTable
-CREATE TABLE "tutors" (
-    "id" TEXT NOT NULL,
-    "facultyId" TEXT NOT NULL,
-    "firstName" TEXT NOT NULL,
-    "lastName" TEXT NOT NULL,
-    "middleName" TEXT NOT NULL,
-    "profileImage" TEXT NOT NULL,
-    "email" TEXT NOT NULL,
-    "contactNo" TEXT NOT NULL,
-    "gender" TEXT NOT NULL,
-    "bloodGroup" TEXT NOT NULL,
-    "designation" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "tutors_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "course_tutors" (
+CREATE TABLE "courseTutors" (
     "id" TEXT NOT NULL,
     "firstName" TEXT NOT NULL,
     "middleName" TEXT NOT NULL,
@@ -50,12 +31,11 @@ CREATE TABLE "course_tutors" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "experience" TEXT NOT NULL,
-    "courseId" TEXT NOT NULL,
     "bio" TEXT NOT NULL,
     "imageUrl" TEXT NOT NULL,
     "gender" TEXT NOT NULL,
 
-    CONSTRAINT "course_tutors_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "courseTutors_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -79,19 +59,21 @@ CREATE TABLE "profiles" (
 );
 
 -- CreateTable
-CREATE TABLE "services" (
+CREATE TABLE "categories" (
     "id" TEXT NOT NULL,
+    "slug" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "imageUrl" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "services_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "categories_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "courses" (
     "id" TEXT NOT NULL,
+    "slug" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -102,7 +84,8 @@ CREATE TABLE "courses" (
     "status" "CourseStatus" NOT NULL DEFAULT 'RUNNING',
     "description" TEXT NOT NULL,
     "article" TEXT,
-    "serviceId" TEXT NOT NULL,
+    "categoryId" TEXT NOT NULL,
+    "courseTutorId" TEXT NOT NULL,
 
     CONSTRAINT "courses_pkey" PRIMARY KEY ("id")
 );
@@ -139,6 +122,7 @@ CREATE TABLE "blogs" (
     "id" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "content" TEXT NOT NULL,
+    "imageUrl" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "userId" TEXT NOT NULL,
@@ -177,7 +161,6 @@ CREATE TABLE "faqs" (
     "answer" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "userId" TEXT NOT NULL,
 
     CONSTRAINT "faqs_pkey" PRIMARY KEY ("id")
 );
@@ -185,11 +168,14 @@ CREATE TABLE "faqs" (
 -- CreateTable
 CREATE TABLE "payments" (
     "id" TEXT NOT NULL,
-    "amount" TEXT NOT NULL,
+    "amount" DOUBLE PRECISION NOT NULL,
     "payment_date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "paymentStatus" "PaymentStatus" NOT NULL DEFAULT 'PENDING',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "transactionId" TEXT,
+    "paymentGatewayData" JSONB,
+    "val_id" TEXT,
     "userId" TEXT NOT NULL,
     "bookingId" TEXT NOT NULL,
 
@@ -203,16 +189,22 @@ CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 CREATE UNIQUE INDEX "profiles_userId_key" ON "profiles"("userId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "payments_bookingId_key" ON "payments"("bookingId");
+CREATE UNIQUE INDEX "categories_slug_key" ON "categories"("slug");
 
--- AddForeignKey
-ALTER TABLE "course_tutors" ADD CONSTRAINT "course_tutors_courseId_fkey" FOREIGN KEY ("courseId") REFERENCES "courses"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+-- CreateIndex
+CREATE UNIQUE INDEX "courses_slug_key" ON "courses"("slug");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "payments_bookingId_key" ON "payments"("bookingId");
 
 -- AddForeignKey
 ALTER TABLE "profiles" ADD CONSTRAINT "profiles_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "courses" ADD CONSTRAINT "courses_serviceId_fkey" FOREIGN KEY ("serviceId") REFERENCES "services"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "courses" ADD CONSTRAINT "courses_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "categories"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "courses" ADD CONSTRAINT "courses_courseTutorId_fkey" FOREIGN KEY ("courseTutorId") REFERENCES "courseTutors"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "review_and_rating" ADD CONSTRAINT "review_and_rating_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -231,9 +223,6 @@ ALTER TABLE "blogs" ADD CONSTRAINT "blogs_userId_fkey" FOREIGN KEY ("userId") RE
 
 -- AddForeignKey
 ALTER TABLE "feedbacks" ADD CONSTRAINT "feedbacks_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "faqs" ADD CONSTRAINT "faqs_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "payments" ADD CONSTRAINT "payments_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -3,8 +3,9 @@ import { ENUM_USER_ROLE } from '../../../enums/user';
 import auth from '../../middlewares/auth';
 import validateRequest from '../../middlewares/validateRequest';
 
-import { ServiceController } from './service.controller';
-import { ServiceValidations } from './service.validations';
+import { ServiceController } from './category.controller';
+import { CategoryValidations } from './category.validations';
+
 
 
 const router = express.Router();
@@ -17,13 +18,13 @@ router.get('/:id', ServiceController.getByIdFromDB);
 router.post(
     '/',
     auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
-    validateRequest(ServiceValidations.create),
+    validateRequest(CategoryValidations.create),
     ServiceController.insertIntoDB);
 
 
 router.patch(
     '/:id',
-    validateRequest(ServiceValidations.update),
+    validateRequest(CategoryValidations.update),
     auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
     ServiceController.updateOneInDB
 );
@@ -34,4 +35,4 @@ router.delete(
     ServiceController.deleteByIdFromDB
 );
 
-export const ServiceRoutes = router;
+export const CategoryRoutes = router;

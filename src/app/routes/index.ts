@@ -3,13 +3,14 @@ import { AuthRoutes } from '../modules/auth/auth.route';
 
 import { BlogRoutes } from '../modules/blogs/blog.route';
 import { BookingRoutes } from '../modules/booking/booking.route';
+
+import { CategoryRoutes } from '../modules/category/category.routes';
 import { ContentRoutes } from '../modules/contents/content.route';
 import { CourseRoutes } from '../modules/course/course.routes';
 import { FeedbackRoutes } from '../modules/feedback/feedback.route';
 import { paymentRoutes } from '../modules/payments/payment.routes';
 import { ProfileRoutes } from '../modules/profile/profile.route';
 import { ReviewRoutes } from '../modules/review/review.route';
-import { ServiceRoutes } from '../modules/service/service.routes';
 import { TutorRoutes } from '../modules/tutor/tutor.route';
 import { UserRoutes } from '../modules/user/user.route';
 
@@ -35,8 +36,8 @@ const moduleRoutes = [
     route: CourseRoutes,
   },
   {
-    path: '/services',
-    route: ServiceRoutes,
+    path: '/categories',
+    route: CategoryRoutes,
   },
   {
     path: '/bookings',
