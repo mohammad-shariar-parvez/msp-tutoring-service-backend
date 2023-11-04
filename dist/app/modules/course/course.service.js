@@ -32,14 +32,14 @@ const insertIntoDB = (data) => __awaiter(void 0, void 0, void 0, function* () {
     });
     return result;
 });
-const getCoursesByService = (serviceId) => __awaiter(void 0, void 0, void 0, function* () {
+const getCoursesByCategory = (categoryId) => __awaiter(void 0, void 0, void 0, function* () {
     const { limit, page, skip, sortBy, sortOrder, } = paginationHelper_1.paginationHelpers.calculatePagination({});
     const result = yield prisma_1.prisma.course.findMany({
         include: {
-            service: true,
+            category: true,
         },
         where: {
-            serviceId
+            categoryId
         },
         skip,
         take: limit,
@@ -47,7 +47,7 @@ const getCoursesByService = (serviceId) => __awaiter(void 0, void 0, void 0, fun
     });
     const total = yield prisma_1.prisma.course.count({
         where: {
-            serviceId
+            categoryId
         },
     });
     return {
@@ -130,7 +130,7 @@ const getAllFromDB = (filters, options) => __awaiter(void 0, void 0, void 0, fun
         take: limit,
         where: whereConditons,
         include: {
-            service: true,
+            category: true,
             courseTutor: true
         },
         orderBy: { [sortBy]: sortOrder },
@@ -153,7 +153,7 @@ const getByIdFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
             id
         },
         include: {
-            service: true,
+            category: true,
             courseTutor: true
         },
     });
@@ -182,5 +182,5 @@ exports.CourseService = {
     getByIdFromDB,
     updateOneInDB,
     deleteByIdFromDB,
-    getCoursesByService
+    getCoursesByCategory
 };

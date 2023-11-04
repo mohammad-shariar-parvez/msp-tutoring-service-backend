@@ -31,6 +31,9 @@ const create = z.object({
         courseTutorId: z.string({
             required_error: "courseTutorId   is required"
         }),
+        slug: z.string({
+            required_error: 'Slug is required',
+        }),
     })
 });
 
@@ -42,7 +45,7 @@ const update = z.object({
         duration: z.string().optional(),
         article: z.string().optional(),
         status: z.enum([...CourseStatus] as [string, ...string[]]).optional(),
-
+        slug: z.string().optional(),
         imageUrl: z.string().optional(),
         description: z.string().optional(),
         categoryId: z.string().optional(),

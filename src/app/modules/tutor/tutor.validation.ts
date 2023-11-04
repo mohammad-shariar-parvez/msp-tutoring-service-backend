@@ -2,13 +2,28 @@ import { z } from 'zod';
 
 const createTutorZodSchema = z.object({
 	body: z.object({
-		firstName: z.string(),
-		middleName: z.string(),
-		lastName: z.string(),
-		experience: z.string(),
-		bio: z.string(),
-		imageUrl: z.string(),
-		gender: z.string(),
+		firstName: z.string({
+			required_error: "firstName  is required"
+		}),
+		middleName: z.string().optional(),
+		lastName: z.string({
+			required_error: "lastName  is required"
+		}),
+		experience: z.string({
+			required_error: "experience  is required"
+		}),
+		bio: z.string({
+			required_error: "bio  is required"
+		}),
+		imageUrl: z.string({
+			required_error: "imageUrl  is required"
+		}),
+		gender: z.string({
+			required_error: "gender  is required"
+		}),
+		location: z.string({
+			required_error: "location  is required"
+		}),
 	}),
 });
 const updateTutorZodSchema = z.object({
@@ -20,6 +35,7 @@ const updateTutorZodSchema = z.object({
 		bio: z.string().optional(),
 		imageUrl: z.string().optional(),
 		gender: z.string().optional(),
+		location: z.string().optional(),
 	}),
 });
 

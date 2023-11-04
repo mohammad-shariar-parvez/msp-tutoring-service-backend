@@ -7,13 +7,13 @@ const express_1 = __importDefault(require("express"));
 const auth_route_1 = require("../modules/auth/auth.route");
 const blog_route_1 = require("../modules/blogs/blog.route");
 const booking_route_1 = require("../modules/booking/booking.route");
+const category_routes_1 = require("../modules/category/category.routes");
 const content_route_1 = require("../modules/contents/content.route");
 const course_routes_1 = require("../modules/course/course.routes");
 const feedback_route_1 = require("../modules/feedback/feedback.route");
 const payment_routes_1 = require("../modules/payments/payment.routes");
 const profile_route_1 = require("../modules/profile/profile.route");
 const review_route_1 = require("../modules/review/review.route");
-const service_routes_1 = require("../modules/service/service.routes");
 const tutor_route_1 = require("../modules/tutor/tutor.route");
 const user_route_1 = require("../modules/user/user.route");
 const router = express_1.default.Router();
@@ -36,8 +36,8 @@ const moduleRoutes = [
         route: course_routes_1.CourseRoutes,
     },
     {
-        path: '/services',
-        route: service_routes_1.ServiceRoutes,
+        path: '/categories',
+        route: category_routes_1.CategoryRoutes,
     },
     {
         path: '/bookings',

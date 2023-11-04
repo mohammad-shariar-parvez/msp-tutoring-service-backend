@@ -30,7 +30,7 @@ model User {
 model CourseTutor {
   id         String   @id @default(uuid())
   firstName  String
-  middleName String
+  middleName String?
   lastName   String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
@@ -38,6 +38,7 @@ model CourseTutor {
   bio        String
   imageUrl   String
   gender     String
+  location   String
   courses    Course[]
 
   @@map("courseTutors")

@@ -1,13 +1,6 @@
-export type IUserFilters = {
+export type ITutorFilters = {
 	searchTerm?: string | undefined;
-	role?: string;
-	email?: string;
-};
-
-export type IUserSelect = {
-	id: boolean;
-	name: boolean;
-	email: boolean;
-	role: boolean;
+	location?: string;
 
 };
+

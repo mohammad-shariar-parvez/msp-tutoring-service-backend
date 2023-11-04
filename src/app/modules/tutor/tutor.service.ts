@@ -1,10 +1,12 @@
 
 
-import { CourseTutor } from "@prisma/client";
+import { CourseTutor, Prisma } from "@prisma/client";
 import { paginationHelpers } from "../../../helpers/paginationHelper";
 import { IGenericResponse } from "../../../interfaces/common";
 import { IPaginationOptions } from "../../../interfaces/pagination";
 import { prisma } from "../../../shared/prisma";
+import { tutorSearchableFields } from "./tutor.constant";
+import { ITutorFilters } from "./tutor.interface";
 
 
 
@@ -20,20 +22,58 @@ const insertIntoDB = async (
 };
 
 const getAllFromDB = async (
+	filters: ITutorFilters,
+	options: IPaginationOptions
 
-	paginationOptions: IPaginationOptions
 ): Promise<IGenericResponse<Partial<CourseTutor>[]>> => {
-	const { limit, page, skip, sortBy, sortOrder, } = paginationHelpers.calculatePagination(paginationOptions);
+	const { limit, page, skip, sortBy, sortOrder, } = paginationHelpers.calculatePagination(options);
+	const { searchTerm, ...filterData } = filters;
 	// Extract searchTerm to implement search query
+
+	const andConditions = [];
+	// console.log("SEARCH----", filters);
+	// console.log("OPtions----", options);
+
+
+	if (searchTerm) {
+		andConditions.push({
+			OR: tutorSearchableFields.map((field) => ({
+				[field]: {
+					contains: searchTerm,
+					mode: 'insensitive'
+				}
+			}))
+		});
+	}
+
+
+	if (Object.keys(filterData).length) {
+		andConditions.push({
+
+			AND: Object.entries(filterData).map(([key, value]) => {
+				return {
+					[key]: {
+						equals: value,
+						mode: 'insensitive'
+					}
+				};
+
+			})
+		});
+	}
+	const whereConditons: Prisma.CourseTutorWhereInput =
+		andConditions.length > 0 ? { AND: andConditions } : {};
 
 
 	const result = await prisma.courseTutor.findMany({
-
 		skip,
 		take: limit,
+		where: whereConditons,
 		orderBy: { [sortBy]: sortOrder },
 	});
-	const total = await prisma.user.count({});
+	const total = await prisma.courseTutor.count({
+		where: whereConditons
+	});
 	return {
 		meta: {
 			total,

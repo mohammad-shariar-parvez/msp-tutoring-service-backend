@@ -25,8 +25,8 @@ const create = zod_1.z.object({
         description: zod_1.z.string({
             required_error: "description  is required"
         }),
-        serviceId: zod_1.z.string({
-            required_error: "serviceId  is required"
+        categoryId: zod_1.z.string({
+            required_error: "categoryId  is required"
         }),
         courseTutorId: zod_1.z.string({
             required_error: "courseTutorId   is required"
@@ -43,7 +43,7 @@ const update = zod_1.z.object({
         status: zod_1.z.enum([...course_interface_1.CourseStatus]).optional(),
         imageUrl: zod_1.z.string().optional(),
         description: zod_1.z.string().optional(),
-        serviceId: zod_1.z.string().optional(),
+        categoryId: zod_1.z.string().optional(),
         courseTutorId: zod_1.z.string().optional(),
     })
 });

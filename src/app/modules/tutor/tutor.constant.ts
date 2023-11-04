@@ -1,22 +1,15 @@
-import { IUserSelect } from "./tutor.interface";
+
 
 export const tutorFilterableFields = [
 	'searchTerm',
-	'role',
-	'email',
+	'location',
+
 ];
 
 export const tutorSearchableFields = [
-	'email',
-	'role',
+	'bio',
+
 
 ];
 
 
-export const userSelect: IUserSelect = {
-	id: true,
-	name: true,
-	email: true,
-	role: true,
-
-};

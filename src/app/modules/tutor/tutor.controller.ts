@@ -5,6 +5,7 @@ import { paginationFields } from "../../../constants/pagination";
 import catchAsync from "../../../shared/catchAsync";
 import pick from "../../../shared/pick";
 import sendResponse from "../../../shared/sendResponse";
+import { tutorFilterableFields } from "./tutor.constant";
 import { UserService } from "./tutor.service";
 
 
@@ -21,11 +22,12 @@ const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
-
-	const paginationOptions = pick(req.query, paginationFields);
+	const filters = pick(req.query, tutorFilterableFields);
+	const options = pick(req.query, paginationFields);
 
 	const result = await UserService.getAllFromDB(
-		paginationOptions
+		filters,
+		options
 	);
 
 	sendResponse(res, {

@@ -12,82 +12,69 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CourseController = void 0;
+exports.ServiceController = void 0;
 const http_status_1 = __importDefault(require("http-status"));
 const catchAsync_1 = __importDefault(require("../../../shared/catchAsync"));
 const pick_1 = __importDefault(require("../../../shared/pick"));
 const sendResponse_1 = __importDefault(require("../../../shared/sendResponse"));
-const couorse_constants_1 = require("./couorse.constants");
-const course_service_1 = require("./course.service");
+const category_constants_1 = require("./category.constants");
+const category_service_1 = require("./category.service");
 const insertIntoDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield course_service_1.CourseService.insertIntoDB(req.body);
-    // console.log("REEESULTT", result);
+    const result = yield category_service_1.CategoryService.insertIntoDB(req.body);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: "Course created successfully!",
+        message: "Category created successfully!",
         data: result
     });
 }));
 const getAllFromDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const filters = (0, pick_1.default)(req.query, couorse_constants_1.courseFilterableFields);
-    // console.log("filters--------------", req.query);
+    // console.log(req.query);
+    const filters = (0, pick_1.default)(req.query, category_constants_1.categoryFilterableFields);
     const options = (0, pick_1.default)(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
-    const result = yield course_service_1.CourseService.getAllFromDB(filters, options);
+    const result = yield category_service_1.CategoryService.getAllFromDB(filters, options);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: "Course fetched successfully!",
+        message: "Category fetched successfully!",
         meta: result.meta,
         data: result.data
     });
 }));
-const getCoursesByCategory = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { categoryId } = req.params;
-    const result = yield course_service_1.CourseService.getCoursesByCategory(categoryId);
-    (0, sendResponse_1.default)(res, {
-        statusCode: http_status_1.default.OK,
-        success: true,
-        message: 'Course with associated category  fetched successfully',
-        meta: result.meta,
-        data: result.data,
-    });
-}));
 const getByIdFromDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    const result = yield course_service_1.CourseService.getByIdFromDB(id);
+    const result = yield category_service_1.CategoryService.getByIdFromDB(id);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: 'Course fetched successfully',
+        message: 'Category fetched successfully',
         data: result
     });
 }));
 const updateOneInDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    const result = yield course_service_1.CourseService.updateOneInDB(id, req.body);
+    const result = yield category_service_1.CategoryService.updateOneInDB(id, req.body);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: 'Course updated successfully',
+        message: 'Category updated successfully',
         data: result
     });
 }));
 const deleteByIdFromDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    const result = yield course_service_1.CourseService.deleteByIdFromDB(id);
+    const result = yield category_service_1.CategoryService.deleteByIdFromDB(id);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: 'Course delete successfully',
+        message: 'Category delete successfully',
         data: result
     });
 }));
-exports.CourseController = {
+exports.ServiceController = {
     insertIntoDB,
     getAllFromDB,
     getByIdFromDB,
     updateOneInDB,
-    deleteByIdFromDB,
-    getCoursesByCategory
+    deleteByIdFromDB
 };
