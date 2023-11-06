@@ -58,6 +58,18 @@ const getByIdFromDB = catchAsync(async (req: Request, res: Response) => {
 		data: result
 	});
 });
+const getBookingByCourseId = catchAsync(async (req: Request, res: Response) => {
+	const user: IUser = (req as any).user;
+	const courseId = req.params.courseId;
+	const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
+	const result = await BookingService.getBookingByCourseId(user, courseId, options);
+	sendResponse(res, {
+		statusCode: httpStatus.OK,
+		success: true,
+		message: 'Booking get successfully !',
+		data: result
+	});
+});
 const deleteByIdFromDB = catchAsync(async (req: Request, res: Response) => {
 
 	const { id } = req.params;
@@ -77,6 +89,7 @@ export const BookingController = {
 	getAllFromDB,
 	getByIdFromDB,
 	updateOneInDB,
-	deleteByIdFromDB
+	deleteByIdFromDB,
+	getBookingByCourseId
 
 };

@@ -174,6 +174,8 @@ const getByIdFromDB = async (id: string): Promise<Course | null> => {
 };
 
 const updateOneInDB = async (id: string, payload: Partial<Course>): Promise<Course> => {
+    // console.log("Payload----------------------------------------------------", id, payload);
+
     const result = await prisma.course.update({
         where: {
             id

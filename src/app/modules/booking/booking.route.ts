@@ -10,7 +10,9 @@ import { BookingValidation } from './booking.validation';
 const router = express.Router();
 
 router.get('/', auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.USER), BookingController.getAllFromDB);
+router.get('/:courseId/course', auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.USER), BookingController.getBookingByCourseId);
 router.get('/:bookingId', auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.USER), BookingController.getByIdFromDB);
+
 router.post(
 	'/',
 	validateRequest(BookingValidation.createBookingZodSchema),

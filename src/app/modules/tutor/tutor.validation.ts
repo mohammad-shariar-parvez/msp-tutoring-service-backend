@@ -5,7 +5,7 @@ const createTutorZodSchema = z.object({
 		firstName: z.string({
 			required_error: "firstName  is required"
 		}),
-		middleName: z.string().optional(),
+		middleName: z.string().nullable().optional(),
 		lastName: z.string({
 			required_error: "lastName  is required"
 		}),
@@ -29,7 +29,7 @@ const createTutorZodSchema = z.object({
 const updateTutorZodSchema = z.object({
 	body: z.object({
 		firstName: z.string().optional(),
-		middleName: z.string().optional(),
+		middleName: z.string().nullable().optional(),
 		lastName: z.string().optional(),
 		experience: z.string().optional(),
 		bio: z.string().optional(),

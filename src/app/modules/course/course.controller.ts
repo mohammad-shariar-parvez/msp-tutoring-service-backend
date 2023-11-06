@@ -60,6 +60,8 @@ const getByIdFromDB = catchAsync(async (req: Request, res: Response) => {
 
 const updateOneInDB = catchAsync(async (req: Request, res: Response) => {
     const { id } = req.params;
+    // console.log(req.body);
+
     const result = await CourseService.updateOneInDB(id, req.body);
     sendResponse(res, {
         statusCode: httpStatus.OK,

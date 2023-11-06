@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -17,12 +14,12 @@ model User {
   role             String            @default("user")
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
-  reviewAndRatings ReviewAndRating[]
-  bookings         Booking[]
   blogs            Blog[]
+  bookings         Booking[]
   feedbacks        Feedback[]
   payment          Payment[]
   profile          Profile?
+  reviewAndRatings ReviewAndRating[]
 
   @@map("users")
 }
@@ -91,49 +88,44 @@ model Course {
   article          String?
   categoryId       String
   courseTutorId    String
+  bookings         Booking[]
   category         Category          @relation(fields: [categoryId], references: [id])
   courseTutor      CourseTutor       @relation(fields: [courseTutorId], references: [id])
   reviewAndRatings ReviewAndRating[]
-  bookings         Booking[]
 
   @@map("courses")
 }
 
 model ReviewAndRating {
-  id     String @id @default(uuid())
-  review String
-  rating Int
-  userId String
-
-  courseId String
-  user     User   @relation(fields: [userId], references: [id])
-  course   Course @relation(fields: [courseId], references: [id])
-
+  id        String   @id @default(uuid())
+  review    String
+  rating    Int
+  userId    String
+  courseId  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  course    Course   @relation(fields: [courseId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
 
   @@map("review_and_rating")
 }
 
 model Booking {
-  id String @id @default(uuid())
-
-  status    Status @default(PENDING)
+  id        String   @id @default(uuid())
+  status    Status   @default(PENDING)
   startDate String
   startTime String
   userId    String
   courseId  String
-  user      User   @relation(fields: [userId], references: [id])
-  course    Course @relation(fields: [courseId], references: [id])
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  course    Course   @relation(fields: [courseId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
   payment   Payment?
 
   @@map("bookings")
 }
 
-// Blog model to store blog posts
 model Blog {
   id        String   @id @default(uuid())
   title     String
@@ -143,7 +135,6 @@ model Blog {
   updatedAt DateTime @updatedAt
   userId    String
   user      User     @relation(fields: [userId], references: [id])
-  // ... other blog-related fields ...
 
   @@map("blogs")
 }
@@ -157,33 +148,26 @@ model Question {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  // ... other blog-related fields ...
-
   @@map("questions")
 }
 
 model Feedback {
-  id          String @id @default(uuid())
+  id          String   @id @default(uuid())
   description String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  // ... other blog-related fields ...
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
 
   @@map("feedbacks")
 }
 
-// FAQ model to store frequently asked questions
 model FAQ {
   id        String   @id @default(uuid())
   question  String
   answer    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  // ... other FAQ-related fields ...
 
   @@map("faqs")
 }
@@ -198,18 +182,17 @@ model Payment {
   transactionId      String?
   paymentGatewayData Json?
   val_id             String?
-
-  userId    String
-  bookingId String  @unique
-  user      User    @relation(fields: [userId], references: [id])
-  booking   Booking @relation(fields: [bookingId], references: [id])
+  userId             String
+  bookingId          String        @unique
+  booking            Booking       @relation(fields: [bookingId], references: [id])
+  user               User          @relation(fields: [userId], references: [id])
 
   @@map("payments")
 }
 
 enum Status {
   PENDING
-  BOOKED
+  CONFIRMED
 }
 
 enum Role {

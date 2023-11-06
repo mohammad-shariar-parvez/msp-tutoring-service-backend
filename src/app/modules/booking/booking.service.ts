@@ -61,6 +61,49 @@ const insertIntoDB = async (payload: IBookingCourse, user: IUser): Promise<any> 
 };
 
 
+const getBookingByCourseId = async (
+	user: IUser, courseId: string, options: IPaginationOptions
+): Promise<IGenericResponse<any>> => {
+	const { userId, role } = user;
+	console.log("_____", user, courseId);
+
+	const { limit, page, skip, sortBy, sortOrder, } = paginationHelpers.calculatePagination(options);
+
+	const result = await prisma.booking.findFirst({
+
+		where: {
+			courseId,
+			userId,
+
+			payment: {
+				paymentStatus: 'PAID'
+			}
+		},
+		skip,
+		take: limit,
+		orderBy: { [sortBy]: sortOrder },
+	});
+
+	const total = await prisma.booking.count({
+		where: {
+			courseId,
+			userId,
+			payment: {
+				paymentStatus: 'PAID'
+			}
+		},
+
+	});
+
+	return {
+		meta: {
+			page,
+			limit,
+			total
+		},
+		data: result
+	};
+};
 
 const getAllFromDB = async (user: IUser, options: IPaginationOptions): Promise<IGenericResponse<any[]>> => {
 	const { userId, role } = user;
@@ -145,9 +188,6 @@ const getAllFromDB = async (user: IUser, options: IPaginationOptions): Promise<I
 const getByIdFromDB = async (user: IUser, orderId: string): Promise<any | null> => {
 
 	const { userId, role } = user;
-
-
-
 
 	if (role == "user") {
 		const result = await prisma.booking.findUnique({
@@ -250,6 +290,8 @@ export const BookingService = {
 	getAllFromDB,
 	getByIdFromDB,
 	updateOneInDB,
-	deleteByIdFromDB
+	deleteByIdFromDB,
+	getBookingByCourseId
+
 
 };

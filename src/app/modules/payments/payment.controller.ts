@@ -4,11 +4,14 @@ import { NextFunction, Request, Response } from "express";
 import httpStatus from "http-status";
 import pick from "../../../shared/pick";
 
+import { IUser } from "../../../interfaces/common";
 import sendResponse from "../../../shared/sendResponse";
 import { paymentFilterableFields } from "./payment.constants";
 import { PaymentService } from "./payment.service";
 
 const initPayment = async (req: Request, res: Response, next: NextFunction) => {
+	console.log("yooo", req.body);
+
 	const result = await PaymentService.initPayment(req.body);
 	sendResponse(res, {
 		success: true,
@@ -44,9 +47,10 @@ const webhook = async (req: Request, res: Response, next: NextFunction) => {
 
 const getAllFromDB = async (req: Request, res: Response, next: NextFunction) => {
 	try {
+		const user: IUser = (req as any).user;
 		const filters = pick(req.query, paymentFilterableFields);
 		const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
-		const result = await PaymentService.getAllFromDB(filters, options);
+		const result = await PaymentService.getAllFromDB(user, filters, options);
 		sendResponse(res, {
 			statusCode: httpStatus.OK,
 			success: true,
@@ -61,8 +65,11 @@ const getAllFromDB = async (req: Request, res: Response, next: NextFunction) => 
 
 const getByIdFromDB = async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		const { id } = req.params;
-		const result = await PaymentService.getByIdFromDB(id);
+		const user: IUser = (req as any).user;
+		console.log("NEWW_____", user);
+
+		const paymentId = req.params.paymentId;
+		const result = await PaymentService.getByIdFromDB(user, paymentId);
 		sendResponse(res, {
 			statusCode: httpStatus.OK,
 			success: true,

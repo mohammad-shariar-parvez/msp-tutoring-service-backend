@@ -13,6 +13,8 @@ import { ITutorFilters } from "./tutor.interface";
 const insertIntoDB = async (
 	data: CourseTutor
 ): Promise<CourseTutor> => {
+	console.log(data);
+
 	const user = await prisma.courseTutor.create({
 		data
 	});

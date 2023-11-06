@@ -42,7 +42,7 @@ const update = z.object({
         title: z.string().optional(),
         price: z.number().optional(),
         location: z.string().optional(),
-        duration: z.string().optional(),
+        duration: z.union([z.string(), z.null()]).optional(),
         article: z.string().optional(),
         status: z.enum([...CourseStatus] as [string, ...string[]]).optional(),
         slug: z.string().optional(),

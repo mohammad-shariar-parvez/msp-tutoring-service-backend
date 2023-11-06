@@ -1,6 +1,8 @@
 import { Payment, PaymentStatus, Prisma } from "@prisma/client";
-import { IGenericResponse } from "../../../interfaces/common";
+import { IGenericResponse, IUser } from "../../../interfaces/common";
 
+import httpStatus from "http-status";
+import ApiError from "../../../errors/ApiError";
 import { paginationHelpers } from "../../../helpers/paginationHelper";
 import { prisma } from "../../../shared/prisma";
 import { sslService } from "../ssl/ssl.service";
@@ -15,6 +17,7 @@ const initPayment = async (data: any) => {
 		course_name: data.course_name,
 	});
 	// console.log("PAYMENT SESSION", paymentSession);
+	console.log(data);
 
 	await prisma.payment.create({
 		data: {
@@ -94,6 +97,7 @@ const webhook = async (payload: any) => {
 
 
 const getAllFromDB = async (
+	user: IUser,
 	filters: any,
 	options: any
 ): Promise<IGenericResponse<Payment[]>> => {
@@ -103,6 +107,13 @@ const getAllFromDB = async (
 
 
 	const andConditions = [];
+
+
+	const { userId, role } = user;
+	if (role == "user") {
+		andConditions.push({ userId: userId });
+	}
+
 
 	if (searchTerm) {
 		andConditions.push({
@@ -127,9 +138,14 @@ const getAllFromDB = async (
 
 	const whereConditions: Prisma.PaymentWhereInput =
 		andConditions.length > 0 ? { AND: andConditions } : {};
+	console.log("WHERE CONDITION", whereConditions);
 
 	const result = await prisma.payment.findMany({
 		where: whereConditions,
+		include: {
+			booking: true,
+			user: true,
+		},
 		skip,
 		take: limit,
 		orderBy:
@@ -153,14 +169,46 @@ const getAllFromDB = async (
 	};
 };
 
-const getByIdFromDB = async (id: string): Promise<Payment | null> => {
-	const result = await prisma.payment.findUnique({
-		where: {
-			id
+
+
+const getByIdFromDB = async (user: IUser, paymentId: string): Promise<any | null> => {
+	console.log("SINGLWEUSWE", user);
+
+	const { userId, role } = user;
+	if (role == "user") {
+		const result = await prisma.payment.findUnique({
+			where: {
+				id: paymentId,
+				userId
+			},
+			include: {
+				booking: true,
+				user: true,
+			}
+		});
+
+		if (result?.userId != userId) {
+			throw new ApiError(httpStatus.FORBIDDEN, 'You Do not have any order with this order id');
 		}
-	});
-	return result;
+		return result;
+
+	}
+	else if (role == "admin") {
+		const result = await prisma.payment.findUniqueOrThrow({
+			where: {
+				id: paymentId,
+
+			},
+			include: {
+				booking: true,
+				user: true,
+			}
+		});
+		return result;
+	}
+
 };
+
 
 export const PaymentService = {
 	initPayment,
