@@ -65,6 +65,7 @@ const initPayment = (payload) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 const validate = (data) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(data);
     try {
         const response = yield (0, axios_1.default)({
             method: 'GET',

@@ -54,6 +54,40 @@ const insertIntoDB = (payload, user) => __awaiter(void 0, void 0, void 0, functi
     });
     return responseData;
 });
+const getBookingByCourseId = (user, courseId, options) => __awaiter(void 0, void 0, void 0, function* () {
+    const { userId, role } = user;
+    // console.log("_____", user, courseId);
+    const { limit, page, skip, sortBy, sortOrder, } = paginationHelper_1.paginationHelpers.calculatePagination(options);
+    const result = yield prisma_1.prisma.booking.findFirst({
+        where: {
+            courseId,
+            userId,
+            payment: {
+                paymentStatus: 'PAID'
+            }
+        },
+        skip,
+        take: limit,
+        orderBy: { [sortBy]: sortOrder },
+    });
+    const total = yield prisma_1.prisma.booking.count({
+        where: {
+            courseId,
+            userId,
+            payment: {
+                paymentStatus: 'PAID'
+            }
+        },
+    });
+    return {
+        meta: {
+            page,
+            limit,
+            total
+        },
+        data: result
+    };
+});
 const getAllFromDB = (user, options) => __awaiter(void 0, void 0, void 0, function* () {
     const { userId, role } = user;
     const { limit, page, skip, sortBy, sortOrder, } = paginationHelper_1.paginationHelpers.calculatePagination(options);
@@ -173,6 +207,7 @@ const getByIdFromDB = (user, orderId) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 const updateOneInDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    // console.log("booking er ", payload);
     const result = yield prisma_1.prisma.booking.update({
         where: {
             id
@@ -181,31 +216,32 @@ const updateOneInDB = (id, payload) => __awaiter(void 0, void 0, void 0, functio
     });
     return result;
 });
-const deleteByIdFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield prisma_1.prisma.booking.delete({
-        where: {
-            id
-        },
-        include: {
-            course: {
-                select: {
-                    title: true
-                }
-            },
-            user: {
-                select: {
-                    email: true
-                }
-            },
-            payment: true
+const deleteByIdFromDB = (bookingId) => __awaiter(void 0, void 0, void 0, function* () {
+    const newDeletedBooking = yield prisma_1.prisma.$transaction((transactionClient) => __awaiter(void 0, void 0, void 0, function* () {
+        const deletedPayment = yield transactionClient.payment.deleteMany({
+            where: {
+                bookingId: "46859146594"
+            }
+        });
+        console.log("deletepayment", deletedPayment);
+        if (deletedPayment.count == 0) {
+            throw new ApiError_1.default(http_status_1.default.BAD_REQUEST, "Unable to Delete from  Payment");
         }
-    });
-    return result;
+        const deletedBooking = yield transactionClient.booking.delete({
+            where: {
+                id: bookingId
+            }
+        });
+        console.log("delete bbooking", deletedBooking);
+        return deletedBooking;
+    }));
+    return newDeletedBooking;
 });
 exports.BookingService = {
     insertIntoDB,
     getAllFromDB,
     getByIdFromDB,
     updateOneInDB,
-    deleteByIdFromDB
+    deleteByIdFromDB,
+    getBookingByCourseId
 };

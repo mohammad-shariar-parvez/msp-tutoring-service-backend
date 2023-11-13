@@ -22,5 +22,8 @@ export default {
     storePass: process.env.STORE_PASS,
     sslPaymentUrl: process.env.SSL_BASE_PAYMENT_URL,
     sslValidationUrl: process.env.SSL_BASE_VALIDATION_URL
-  }
+  },
+  resetlink: process.env.RESET_PASS_UI_LINK,
+  email: process.env.EMAIL,
+  appPass: process.env.APP_PASS
 };

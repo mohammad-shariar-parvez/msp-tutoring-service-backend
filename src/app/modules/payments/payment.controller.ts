@@ -10,7 +10,7 @@ import { paymentFilterableFields } from "./payment.constants";
 import { PaymentService } from "./payment.service";
 
 const initPayment = async (req: Request, res: Response, next: NextFunction) => {
-	console.log("yooo", req.body);
+	// console.log("yooo", req.body);
 
 	const result = await PaymentService.initPayment(req.body);
 	sendResponse(res, {
@@ -34,7 +34,7 @@ const fail = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const webhook = async (req: Request, res: Response, next: NextFunction) => {
-	console.log("WEBHOOK");
+	// console.log("WEBHOOK");
 
 	const result = await PaymentService.webhook(req.query);
 	sendResponse(res, {
@@ -66,7 +66,7 @@ const getAllFromDB = async (req: Request, res: Response, next: NextFunction) => 
 const getByIdFromDB = async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const user: IUser = (req as any).user;
-		console.log("NEWW_____", user);
+		// console.log("NEWW_____", user);
 
 		const paymentId = req.params.paymentId;
 		const result = await PaymentService.getByIdFromDB(user, paymentId);

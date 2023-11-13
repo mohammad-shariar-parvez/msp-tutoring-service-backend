@@ -54,7 +54,7 @@ const getAllFromDB = async (
 		take: limit,
 		orderBy: { [sortBy]: sortOrder },
 	});
-	const total = await prisma.blog.count({});
+	const total = await prisma.fAQ.count({});
 
 	return {
 		meta: {
@@ -68,6 +68,15 @@ const getAllFromDB = async (
 
 
 
+const getByIdFromDB = async (id: string): Promise<FAQ> => {
+	const result = await prisma.fAQ.findUniqueOrThrow({
+		where: {
+			id
+		}
+
+	});
+	return result;
+};
 const updateOneInDB = async (id: string, payload: Partial<FAQ>): Promise<FAQ> => {
 	const result = await prisma.fAQ.update({
 		where: {
@@ -98,5 +107,6 @@ export const ContentService = {
 	getAllFromDB,
 	updateOneInDB,
 	deleteByIdFromDB,
+	getByIdFromDB
 
 };

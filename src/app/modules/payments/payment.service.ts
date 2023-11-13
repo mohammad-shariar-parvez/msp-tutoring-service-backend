@@ -17,7 +17,7 @@ const initPayment = async (data: any) => {
 		course_name: data.course_name,
 	});
 	// console.log("PAYMENT SESSION", paymentSession);
-	console.log(data);
+	// console.log(data);
 
 	await prisma.payment.create({
 		data: {
@@ -27,12 +27,12 @@ const initPayment = async (data: any) => {
 			transactionId: paymentSession?.tranData
 		}
 	});
-	console.log("payment session", paymentSession?.tranData);
+	// console.log("payment session", paymentSession?.tranData);
 	// console.log("payment session-----", paymentSession);
 	return paymentSession.redirectGatewayURL;
 };
 const success = async (data: any) => {
-	console.log("SUCEES DATA", data);
+	// console.log("SUCEES DATA", data);
 
 	const result = await prisma.payment.updateMany({
 		where: {
@@ -103,7 +103,7 @@ const getAllFromDB = async (
 ): Promise<IGenericResponse<Payment[]>> => {
 	const { limit, page, skip } = paginationHelpers.calculatePagination(options);
 	const { searchTerm, ...filterData } = filters;
-	console.log("search tertm--", searchTerm);
+	// console.log("search tertm--", searchTerm);
 
 
 	const andConditions = [];
@@ -138,7 +138,7 @@ const getAllFromDB = async (
 
 	const whereConditions: Prisma.PaymentWhereInput =
 		andConditions.length > 0 ? { AND: andConditions } : {};
-	console.log("WHERE CONDITION", whereConditions);
+	// console.log("WHERE CONDITION", whereConditions);
 
 	const result = await prisma.payment.findMany({
 		where: whereConditions,
@@ -172,7 +172,7 @@ const getAllFromDB = async (
 
 
 const getByIdFromDB = async (user: IUser, paymentId: string): Promise<any | null> => {
-	console.log("SINGLWEUSWE", user);
+	// console.log("SINGLWEUSWE", user);
 
 	const { userId, role } = user;
 	if (role == "user") {

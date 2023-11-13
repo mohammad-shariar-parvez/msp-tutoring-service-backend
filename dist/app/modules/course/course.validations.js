@@ -31,6 +31,9 @@ const create = zod_1.z.object({
         courseTutorId: zod_1.z.string({
             required_error: "courseTutorId   is required"
         }),
+        slug: zod_1.z.string({
+            required_error: 'Slug is required',
+        }),
     })
 });
 const update = zod_1.z.object({
@@ -38,9 +41,10 @@ const update = zod_1.z.object({
         title: zod_1.z.string().optional(),
         price: zod_1.z.number().optional(),
         location: zod_1.z.string().optional(),
-        duration: zod_1.z.string().optional(),
+        duration: zod_1.z.union([zod_1.z.string(), zod_1.z.null()]).optional(),
         article: zod_1.z.string().optional(),
         status: zod_1.z.enum([...course_interface_1.CourseStatus]).optional(),
+        slug: zod_1.z.string().optional(),
         imageUrl: zod_1.z.string().optional(),
         description: zod_1.z.string().optional(),
         categoryId: zod_1.z.string().optional(),

@@ -65,6 +65,18 @@ const getByIdFromDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, 
         data: result
     });
 }));
+const getBookingByCourseId = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = req.user;
+    const courseId = req.params.courseId;
+    const options = (0, pick_1.default)(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
+    const result = yield booking_service_1.BookingService.getBookingByCourseId(user, courseId, options);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: 'Booking get successfully !',
+        data: result
+    });
+}));
 const deleteByIdFromDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const result = yield booking_service_1.BookingService.deleteByIdFromDB(id);
@@ -80,5 +92,6 @@ exports.BookingController = {
     getAllFromDB,
     getByIdFromDB,
     updateOneInDB,
-    deleteByIdFromDB
+    deleteByIdFromDB,
+    getBookingByCourseId
 };

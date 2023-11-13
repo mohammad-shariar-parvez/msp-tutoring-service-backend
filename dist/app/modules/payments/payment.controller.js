@@ -19,6 +19,7 @@ const sendResponse_1 = __importDefault(require("../../../shared/sendResponse"));
 const payment_constants_1 = require("./payment.constants");
 const payment_service_1 = require("./payment.service");
 const initPayment = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    // console.log("yooo", req.body);
     const result = yield payment_service_1.PaymentService.initPayment(req.body);
     (0, sendResponse_1.default)(res, {
         success: true,
@@ -40,7 +41,7 @@ const fail = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () 
     res.status(200).redirect('http://localhost:3000/user');
 });
 const webhook = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("WEBHOOK");
+    // console.log("WEBHOOK");
     const result = yield payment_service_1.PaymentService.webhook(req.query);
     (0, sendResponse_1.default)(res, {
         success: true,
@@ -51,9 +52,10 @@ const webhook = (req, res, next) => __awaiter(void 0, void 0, void 0, function* 
 });
 const getAllFromDB = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        const user = req.user;
         const filters = (0, pick_1.default)(req.query, payment_constants_1.paymentFilterableFields);
         const options = (0, pick_1.default)(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
-        const result = yield payment_service_1.PaymentService.getAllFromDB(filters, options);
+        const result = yield payment_service_1.PaymentService.getAllFromDB(user, filters, options);
         (0, sendResponse_1.default)(res, {
             statusCode: http_status_1.default.OK,
             success: true,
@@ -68,8 +70,10 @@ const getAllFromDB = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
 });
 const getByIdFromDB = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { id } = req.params;
-        const result = yield payment_service_1.PaymentService.getByIdFromDB(id);
+        const user = req.user;
+        // console.log("NEWW_____", user);
+        const paymentId = req.params.paymentId;
+        const result = yield payment_service_1.PaymentService.getByIdFromDB(user, paymentId);
         (0, sendResponse_1.default)(res, {
             statusCode: http_status_1.default.OK,
             success: true,

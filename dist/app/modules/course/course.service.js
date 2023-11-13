@@ -160,6 +160,7 @@ const getByIdFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
     return result;
 });
 const updateOneInDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    // console.log("Payload----------------------------------------------------", id, payload);
     const result = yield prisma_1.prisma.course.update({
         where: {
             id

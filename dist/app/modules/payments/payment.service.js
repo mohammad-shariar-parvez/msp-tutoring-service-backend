@@ -19,9 +19,14 @@ var __rest = (this && this.__rest) || function (s, e) {
         }
     return t;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PaymentService = void 0;
 const client_1 = require("@prisma/client");
+const http_status_1 = __importDefault(require("http-status"));
+const ApiError_1 = __importDefault(require("../../../errors/ApiError"));
 const paginationHelper_1 = require("../../../helpers/paginationHelper");
 const prisma_1 = require("../../../shared/prisma");
 const ssl_service_1 = require("../ssl/ssl.service");
@@ -34,6 +39,7 @@ const initPayment = (data) => __awaiter(void 0, void 0, void 0, function* () {
         course_name: data.course_name,
     });
     // console.log("PAYMENT SESSION", paymentSession);
+    // console.log(data);
     yield prisma_1.prisma.payment.create({
         data: {
             amount: data.total_amount,
@@ -42,12 +48,12 @@ const initPayment = (data) => __awaiter(void 0, void 0, void 0, function* () {
             transactionId: paymentSession === null || paymentSession === void 0 ? void 0 : paymentSession.tranData
         }
     });
-    console.log("payment session", paymentSession === null || paymentSession === void 0 ? void 0 : paymentSession.tranData);
+    // console.log("payment session", paymentSession?.tranData);
     // console.log("payment session-----", paymentSession);
     return paymentSession.redirectGatewayURL;
 });
 const success = (data) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("SUCEES DATA", data);
+    // console.log("SUCEES DATA", data);
     const result = yield prisma_1.prisma.payment.updateMany({
         where: {
             transactionId: data.tran_id
@@ -101,11 +107,15 @@ const webhook = (payload) => __awaiter(void 0, void 0, void 0, function* () {
         massage: 'Payment Success'
     };
 });
-const getAllFromDB = (filters, options) => __awaiter(void 0, void 0, void 0, function* () {
+const getAllFromDB = (user, filters, options) => __awaiter(void 0, void 0, void 0, function* () {
     const { limit, page, skip } = paginationHelper_1.paginationHelpers.calculatePagination(options);
     const { searchTerm } = filters, filterData = __rest(filters, ["searchTerm"]);
-    console.log("search tertm--", searchTerm);
+    // console.log("search tertm--", searchTerm);
     const andConditions = [];
+    const { userId, role } = user;
+    if (role == "user") {
+        andConditions.push({ userId: userId });
+    }
     if (searchTerm) {
         andConditions.push({
             OR: payment_constants_1.paymentSearchableFields.map((field) => ({
@@ -126,8 +136,13 @@ const getAllFromDB = (filters, options) => __awaiter(void 0, void 0, void 0, fun
         });
     }
     const whereConditions = andConditions.length > 0 ? { AND: andConditions } : {};
+    // console.log("WHERE CONDITION", whereConditions);
     const result = yield prisma_1.prisma.payment.findMany({
         where: whereConditions,
+        include: {
+            booking: true,
+            user: true,
+        },
         skip,
         take: limit,
         orderBy: options.sortBy && options.sortOrder
@@ -148,13 +163,37 @@ const getAllFromDB = (filters, options) => __awaiter(void 0, void 0, void 0, fun
         data: result
     };
 });
-const getByIdFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield prisma_1.prisma.payment.findUnique({
-        where: {
-            id
+const getByIdFromDB = (user, paymentId) => __awaiter(void 0, void 0, void 0, function* () {
+    // console.log("SINGLWEUSWE", user);
+    const { userId, role } = user;
+    if (role == "user") {
+        const result = yield prisma_1.prisma.payment.findUnique({
+            where: {
+                id: paymentId,
+                userId
+            },
+            include: {
+                booking: true,
+                user: true,
+            }
+        });
+        if ((result === null || result === void 0 ? void 0 : result.userId) != userId) {
+            throw new ApiError_1.default(http_status_1.default.FORBIDDEN, 'You Do not have any order with this order id');
         }
-    });
-    return result;
+        return result;
+    }
+    else if (role == "admin") {
+        const result = yield prisma_1.prisma.payment.findUniqueOrThrow({
+            where: {
+                id: paymentId,
+            },
+            include: {
+                booking: true,
+                user: true,
+            }
+        });
+        return result;
+    }
 });
 exports.PaymentService = {
     initPayment,

@@ -10,6 +10,7 @@ import { BlogValidation } from './content.validation';
 const router = express.Router();
 
 router.get('/', ContentController.getAllFromDB);
+router.get('/:id', ContentController.getByIdFromDB);
 
 router.post(
 	'/',

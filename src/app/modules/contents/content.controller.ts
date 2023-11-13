@@ -14,7 +14,7 @@ const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
 	sendResponse(res, {
 		statusCode: httpStatus.OK,
 		success: true,
-		message: "Review Fetched Successufully",
+		message: "Contents Fetched Successufully",
 		data: result
 	});
 });
@@ -26,9 +26,20 @@ const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
 	sendResponse(res, {
 		statusCode: httpStatus.OK,
 		success: true,
-		message: 'Blogs retrieved successfully !',
+		message: 'Contents retrieved successfully !',
 		data: result.data,
 		meta: result.meta,
+	});
+});
+const getByIdFromDB = catchAsync(async (req: Request, res: Response) => {
+	const { id } = req.params;
+	const result = await ContentService.getByIdFromDB(id);
+	sendResponse(res, {
+		statusCode: httpStatus.OK,
+		success: true,
+		message: 'Content retrieved successfully !',
+		data: result
+
 	});
 });
 
@@ -36,11 +47,14 @@ const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
 
 const updateOneInDB = catchAsync(async (req: Request, res: Response) => {
 	const { id } = req.params;
+	console.log("FAQ", req.body);
+
 	const result = await ContentService.updateOneInDB(id, req.body);
+
 	sendResponse(res, {
 		statusCode: httpStatus.OK,
 		success: true,
-		message: 'Blog updated successfully',
+		message: 'Contents updated successfully',
 		data: result
 	});
 });
@@ -51,7 +65,7 @@ const deleteByIdFromDB = catchAsync(async (req: Request, res: Response) => {
 	sendResponse(res, {
 		statusCode: httpStatus.OK,
 		success: true,
-		message: 'Content delete successfully',
+		message: 'Contents delete successfully',
 		data: result
 	});
 });
@@ -61,5 +75,6 @@ export const ContentController = {
 	getAllFromDB,
 	updateOneInDB,
 	deleteByIdFromDB,
+	getByIdFromDB
 
 };

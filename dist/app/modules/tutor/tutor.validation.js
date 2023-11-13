@@ -4,24 +4,40 @@ exports.tutorValidation = void 0;
 const zod_1 = require("zod");
 const createTutorZodSchema = zod_1.z.object({
     body: zod_1.z.object({
-        firstName: zod_1.z.string(),
-        middleName: zod_1.z.string(),
-        lastName: zod_1.z.string(),
-        experience: zod_1.z.string(),
-        bio: zod_1.z.string(),
-        imageUrl: zod_1.z.string(),
-        gender: zod_1.z.string(),
+        firstName: zod_1.z.string({
+            required_error: "firstName  is required"
+        }),
+        middleName: zod_1.z.string().nullable().optional(),
+        lastName: zod_1.z.string({
+            required_error: "lastName  is required"
+        }),
+        experience: zod_1.z.string({
+            required_error: "experience  is required"
+        }),
+        bio: zod_1.z.string({
+            required_error: "bio  is required"
+        }),
+        imageUrl: zod_1.z.string({
+            required_error: "imageUrl  is required"
+        }),
+        gender: zod_1.z.string({
+            required_error: "gender  is required"
+        }),
+        location: zod_1.z.string({
+            required_error: "location  is required"
+        }),
     }),
 });
 const updateTutorZodSchema = zod_1.z.object({
     body: zod_1.z.object({
         firstName: zod_1.z.string().optional(),
-        middleName: zod_1.z.string().optional(),
+        middleName: zod_1.z.string().nullable().optional(),
         lastName: zod_1.z.string().optional(),
         experience: zod_1.z.string().optional(),
         bio: zod_1.z.string().optional(),
         imageUrl: zod_1.z.string().optional(),
         gender: zod_1.z.string().optional(),
+        location: zod_1.z.string().optional(),
     }),
 });
 exports.tutorValidation = {

@@ -13,9 +13,12 @@ const hashedPassword = async (password: string): Promise<string> => {
 	return await bcrypt.hash(
 		password,
 		Number(config.bycrypt_salt_rounds));
-}
+};
+
+console.log("NEEWW PASS------", hashedPassword);
+
 
 export const bcryptHelpers = {
 	isPasswordMatched,
 	hashedPassword
-}
+};

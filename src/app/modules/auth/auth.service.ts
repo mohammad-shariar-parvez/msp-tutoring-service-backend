@@ -8,6 +8,7 @@ import { bcryptHelpers } from "../../../helpers/bycryptHelpers";
 import { jwtHelpers } from "../../../helpers/jwtHelpers";
 import { prisma } from "../../../shared/prisma";
 import { IChangePassword, ILoginUser, ILoginUserResponse, IRefreshTokenResponse } from "./auth.interface";
+import { sendEmail } from "./sendResetMail";
 
 const signupUser = async (
 	userData: any
@@ -189,9 +190,96 @@ const changePassword = async (
 
 };
 
+const forgotPass = async (payload: { email: string; }) => {
+
+	const isUserExist = await prisma.user.findUnique({
+		where: {
+			email: payload.email
+		}
+	});
+
+	if (!isUserExist) {
+		throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist');
+	}
+
+
+	const { id: userId } = isUserExist;
+
+	const passResetToken = await jwtHelpers.createToken({ id: userId }, config.jwt.secret as string, '10m');
+
+	const resetLink: string = config.resetlink + `token=${passResetToken}`;
+
+	console.log("passResetToken", passResetToken);
+	console.log("RESET LINK", resetLink);
+
+
+	await sendEmail(payload.email, `
+	      <div>
+	        <p>Hi</p>
+	        <p>Your password reset link: <a href="${resetLink}">Click Here</a></p>
+	        <p>Thank you</p>
+	      </div>
+	  `);
+
+	// return {
+	//   message: "Check your email!"
+	// }
+};
+
+const resetPassword = async (payload: { email: string, newPassword: string; }, token: string) => {
+
+	const { email, newPassword } = payload;
+	console.log("TOKEN", token);
+	console.log("EMAIL", email);
+	console.log("password", newPassword);
+
+	const isUserExist = await prisma.user.findUnique({
+		where: {
+			email
+		}
+	});
+
+	if (!isUserExist) {
+		throw new ApiError(httpStatus.NOT_FOUND, 'User email does not exist');
+	}
+
+	await jwtHelpers.verifyToken(token, config.jwt.secret as string);
+
+	// try {
+	// 	verifiedToken = jwtHelpers.verifyToken(
+	// 		token,
+	// 		config.jwt.refresh_secret as Secret
+	// 	);
+	// 	// console.log("varify token-------", verifiedToken);
+
+	// } catch (err) {
+	// 	throw new ApiError(httpStatus.FORBIDDEN, 'Invalid Refresh Token');
+	// }
+
+	const hashedPassword = await bcryptHelpers.hashedPassword(newPassword);
+	console.log("MY HASH PASS", hashedPassword);
+
+	try {
+		const updateUser = await prisma.user.update({
+			where: {
+				email
+			},
+			data: {
+				password: hashedPassword
+			}
+		});
+		return updateUser;
+	} catch (error) {
+		throw new ApiError(httpStatus.UNAUTHORIZED, 'Password update failed');
+	}
+};
+
+
 export const AuthService = {
 	signupUser,
 	signinUser,
 	refreshToken,
 	changePassword,
+	resetPassword,
+	forgotPass
 };

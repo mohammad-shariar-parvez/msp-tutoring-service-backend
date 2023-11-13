@@ -65,6 +65,7 @@ const getByIdFromDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, 
 }));
 const updateOneInDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
+    // console.log(req.body);
     const result = yield course_service_1.CourseService.updateOneInDB(id, req.body);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,

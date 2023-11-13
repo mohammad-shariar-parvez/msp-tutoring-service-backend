@@ -10,12 +10,16 @@ const create = zod_1.z.object({
         imageUrl: zod_1.z.string({
             required_error: 'Image is required',
         }),
+        slug: zod_1.z.string({
+            required_error: 'Slug is required',
+        }),
     })
 });
 const update = zod_1.z.object({
     body: zod_1.z.object({
         title: zod_1.z.string().optional(),
         imageUrl: zod_1.z.string().optional(),
+        slug: zod_1.z.string().optional(),
     })
 });
 exports.CategoryValidations = {

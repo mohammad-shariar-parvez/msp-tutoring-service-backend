@@ -65,7 +65,7 @@ const getBookingByCourseId = async (
 	user: IUser, courseId: string, options: IPaginationOptions
 ): Promise<IGenericResponse<any>> => {
 	const { userId, role } = user;
-	console.log("_____", user, courseId);
+	// console.log("_____", user, courseId);
 
 	const { limit, page, skip, sortBy, sortOrder, } = paginationHelpers.calculatePagination(options);
 
@@ -242,6 +242,8 @@ const getByIdFromDB = async (user: IUser, orderId: string): Promise<any | null> 
 
 };
 const updateOneInDB = async (id: string, payload: Partial<Booking>): Promise<Booking> => {
+	// console.log("booking er ", payload);
+
 	const result = await prisma.booking.update({
 		where: {
 			id
@@ -252,38 +254,37 @@ const updateOneInDB = async (id: string, payload: Partial<Booking>): Promise<Boo
 	return result;
 };
 
+const deleteByIdFromDB = async (bookingId: string): Promise<Booking> => {
+	const newDeletedBooking = await prisma.$transaction(async (transactionClient) => {
 
 
+		const deletedPayment = await transactionClient.payment.deleteMany({
+			where: {
+				bookingId: "46859146594"
+			}
+		});
 
-const deleteByIdFromDB = async (id: string): Promise<Booking> => {
 
+		console.log("deletepayment", deletedPayment);
 
-
-
-	const result = await prisma.booking.delete({
-		where: {
-			id
-		},
-		include: {
-			course: {
-				select: {
-					title: true
-				}
-			},
-			user: {
-				select: {
-					email: true
-				}
-			},
-			payment: true
+		if (deletedPayment.count == 0) {
+			throw new ApiError(httpStatus.BAD_REQUEST, "Unable to Delete from  Payment");
 		}
+		const deletedBooking = await transactionClient.booking.delete({
+			where: {
+				id: bookingId
+			}
+		});
+
+		console.log("delete bbooking", deletedBooking);
+
+		return deletedBooking;
 	});
 
-	return result;
 
+	return newDeletedBooking;
 
 };
-
 
 export const BookingService = {
 	insertIntoDB,
@@ -292,6 +293,4 @@ export const BookingService = {
 	updateOneInDB,
 	deleteByIdFromDB,
 	getBookingByCourseId
-
-
 };
