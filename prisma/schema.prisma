@@ -20,6 +20,7 @@ model User {
   payment          Payment[]
   profile          Profile?
   reviewAndRatings ReviewAndRating[]
+  notifications    Notification[]
 
   @@map("users")
 }
@@ -188,6 +189,17 @@ model Payment {
   user               User          @relation(fields: [userId], references: [id])
 
   @@map("payments")
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  title     String
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("notifications")
 }
 
 enum Status {

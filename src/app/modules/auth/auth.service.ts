@@ -207,7 +207,7 @@ const forgotPass = async (payload: { email: string; }) => {
 
 	const passResetToken = await jwtHelpers.createToken({ id: userId }, config.jwt.secret as string, '10m');
 
-	const resetLink: string = config.resetlink + `token=${passResetToken}`;
+	const resetLink: string = config.resetlink + `email=${payload.email}&token=${passResetToken}`;
 
 	console.log("passResetToken", passResetToken);
 	console.log("RESET LINK", resetLink);
@@ -217,6 +217,7 @@ const forgotPass = async (payload: { email: string; }) => {
 	      <div>
 	        <p>Hi</p>
 	        <p>Your password reset link: <a href="${resetLink}">Click Here</a></p>
+	       
 	        <p>Thank you</p>
 	      </div>
 	  `);
@@ -226,9 +227,9 @@ const forgotPass = async (payload: { email: string; }) => {
 	// }
 };
 
-const resetPassword = async (payload: { email: string, newPassword: string; }, token: string) => {
+const resetPassword = async (payload: { email: string, newPassword: string; token: string; }) => {
 
-	const { email, newPassword } = payload;
+	const { email, newPassword, token } = payload;
 	console.log("TOKEN", token);
 	console.log("EMAIL", email);
 	console.log("password", newPassword);

@@ -242,7 +242,7 @@ const getByIdFromDB = async (user: IUser, orderId: string): Promise<any | null> 
 
 };
 const updateOneInDB = async (id: string, payload: Partial<Booking>): Promise<Booking> => {
-	// console.log("booking er ", payload);
+	console.log("booking er---++++ ", payload);
 
 	const result = await prisma.booking.update({
 		where: {

@@ -8,6 +8,7 @@ import { CategoryRoutes } from '../modules/category/category.routes';
 import { ContentRoutes } from '../modules/contents/content.route';
 import { CourseRoutes } from '../modules/course/course.routes';
 import { FeedbackRoutes } from '../modules/feedback/feedback.route';
+import { NotificationRoutes } from '../modules/notification/notification.router';
 import { paymentRoutes } from '../modules/payments/payment.routes';
 import { ProfileRoutes } from '../modules/profile/profile.route';
 import { ReviewRoutes } from '../modules/review/review.route';
@@ -66,6 +67,10 @@ const moduleRoutes = [
   {
     path: '/payments',
     route: paymentRoutes
+  },
+  {
+    path: '/notification',
+    route: NotificationRoutes
   }
 ];
 
