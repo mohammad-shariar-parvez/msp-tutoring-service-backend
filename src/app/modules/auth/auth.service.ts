@@ -23,8 +23,11 @@ const signupUser = async (
 			password: await hashedPassword,
 		},
 	});
+	console.log("USER IS 11111 ", user);
+
 	if (!user) {
-		throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist');
+		console.log("USER IS 222222 ", user);
+		throw new ApiError(httpStatus.NOT_FOUND, 'User already exist');
 	}
 	//create access token & refresh token
 	const { id: userId, role, email: useEmail } = user;
@@ -93,11 +96,78 @@ const signinUser = async (
 
 
 };
+const oAuthUser = async (
+	payLoad: { email: string, provider: boolean; }
+): Promise<ILoginUserResponse> => {
+	const { email, provider } = payLoad;
+
+
+
+	const isUserExist = await prisma.user.findUnique({
+		where: {
+			email,
+
+		}
+	});
+	if (!isUserExist) {
+		const user = await prisma.user.create({
+			data: {
+				email,
+				provider
+
+
+			},
+		});
+		//create access token & refresh token
+		const { id: userId, role, email: useEmail } = user;
+		const accessToken = jwtHelpers.createToken(
+			{ userId, role, useEmail },
+			config.jwt.secret as Secret,
+			config.jwt.expires_in as string
+		);
+		const refreshToken = jwtHelpers.createToken(
+			{ userId, role, useEmail },
+			config.jwt.refresh_secret as Secret,
+			config.jwt.refresh_expires_in as string
+		);
+		return {
+			accessToken,
+			refreshToken,
+			role,
+			email: useEmail
+		};
+	}
+
+
+	//create access token & refresh token
+	const { id: userId, role, email: useEmail } = isUserExist;
+	const accessToken = jwtHelpers.createToken(
+		{ userId, role, useEmail },
+		config.jwt.secret as Secret,
+		config.jwt.expires_in as string
+	);
+	const refreshToken = jwtHelpers.createToken(
+		{ userId, role, useEmail },
+		config.jwt.refresh_secret as Secret,
+		config.jwt.refresh_expires_in as string
+	);
+
+	return {
+		accessToken,
+		refreshToken,
+		role,
+		email: useEmail
+	};
+	// console.log("user signup", result);
+	// console.log("login", isUserExist);
+
+
+};
 
 
 const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
 	//verify token
-	// console.log("TOKENNNNNNNNNNNNNNNNNNNNNNNNN", token);
+	console.log("TOKENNNNNNNNNNNNNNNNNNNNNNNNN", token);
 
 	let verifiedToken = null;
 	try {
@@ -282,5 +352,6 @@ export const AuthService = {
 	refreshToken,
 	changePassword,
 	resetPassword,
-	forgotPass
+	forgotPass,
+	oAuthUser
 };

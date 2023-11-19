@@ -17,10 +17,15 @@ router.post(
 	validateRequest(AuthValidation.signinZodSchema),
 	AuthController.signinUser
 );
+router.post(
+	'/oauth',
+
+	AuthController.oAuthUser
+);
 
 router.post(
 	'/refresh-token',
-	validateRequest(AuthValidation.refreshTokenZodSchema),
+	// validateRequest(AuthValidation.refreshTokenZodSchema),
 	AuthController.refreshToken
 );
 

@@ -24,6 +24,13 @@ const signinZodSchema = z.object({
 		}),
 	}),
 });
+const oauthZodSchema = z.object({
+	body: z.object({
+		email: z.string({
+			required_error: 'email is required',
+		}),
+	}),
+});
 
 const refreshTokenZodSchema = z.object({
 	cookies: z.object({
@@ -48,5 +55,6 @@ export const AuthValidation = {
 	signupZodSchema,
 	signinZodSchema,
 	refreshTokenZodSchema,
-	changePasswordZodSchema
+	changePasswordZodSchema,
+	oauthZodSchema
 };

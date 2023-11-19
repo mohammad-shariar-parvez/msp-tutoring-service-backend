@@ -8,7 +8,7 @@ import { NotificationController } from './notification.controller';
 
 const router = express.Router();
 
-router.get('/', auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.USER), NotificationController.getByIdFromDB);
+router.get('/', NotificationController.getByIdFromDB);
 
 router.post(
 	'/', auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.USER),

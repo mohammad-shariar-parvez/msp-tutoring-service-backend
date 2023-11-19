@@ -44,11 +44,34 @@ const signinUser = catchAsync(async (req: Request, res: Response) => {
 		data: result,
 	});
 });
+const oAuthUser = catchAsync(async (req: Request, res: Response) => {
+
+	console.log("EMAI:::------", req.body);
+
+	const result = await AuthService.oAuthUser(req.body);
+	const { refreshToken } = result;
+	const cookieOptions = {
+		secure: config.env === 'production',
+		httpOnly: true,
+	};
+	// console.log(refreshToken, cookieOptions);
+
+	res.cookie('refreshToken', refreshToken, cookieOptions);
+
+	sendResponse<ILoginUserResponse>(res, {
+		success: true,
+		statusCode: httpStatus.OK,
+		message: 'User signin successfully!',
+		data: result,
+	});
+});
 
 const refreshToken = catchAsync(async (req: Request, res: Response) => {
 
-	const { refreshToken } = req.cookies;
-	// console.log("YEEEEE----------------------", req.cookies);
+	const { refreshToken } = req.body;
+
+
+	// console.log("YEEEEE----------------------", req);
 	const result = await AuthService.refreshToken(refreshToken);
 
 	// set refresh token into cookie
@@ -104,5 +127,6 @@ export const AuthController = {
 	refreshToken,
 	changePassword,
 	resetPassword,
-	forgotPass
+	forgotPass,
+	oAuthUser
 };
