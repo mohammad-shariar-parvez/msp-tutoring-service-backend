@@ -35,6 +35,7 @@ const insertQuestionIntoDB = async (payload: IQuestion): Promise<any> => {
 	const result = await prisma.question.create({
 		data: payload
 	});
+
 	if (!result) {
 		throw new ApiError(httpStatus.BAD_REQUEST, "Unable to create Question");
 	}

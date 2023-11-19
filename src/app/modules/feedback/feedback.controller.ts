@@ -1,10 +1,10 @@
+
 import { Request, Response } from "express";
 import httpStatus from "http-status";
 import catchAsync from "../../../shared/catchAsync";
 import pick from "../../../shared/pick";
 import sendResponse from "../../../shared/sendResponse";
 import { FeedbackService } from "./feedback.service";
-
 
 
 
@@ -20,6 +20,11 @@ const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
 	});
 });
 const insertQuestionIntoDB = catchAsync(async (req: Request, res: Response) => {
+
+	// const parsedCookies = cookie.parse(req?.headers?.cookie as string);
+
+	// console.log("COOOOOOOOOOOOOOOKKKKKKKIIIIIIIEEEE", parsedCookies);
+	console.log("COOOOOOOOOOOOOOOKKKKKKKIIIIIIIEEEE", req.headers);
 
 	const result = await FeedbackService.insertQuestionIntoDB(req.body);
 
