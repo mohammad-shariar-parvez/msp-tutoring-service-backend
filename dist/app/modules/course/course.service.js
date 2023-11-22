@@ -115,7 +115,6 @@ const getAllFromDB = (filters, options) => __awaiter(void 0, void 0, void 0, fun
                     return {
                         [key]: {
                             equals: value,
-                            mode: 'insensitive'
                         }
                     };
                 }

@@ -62,9 +62,26 @@ const signinUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
         data: result,
     });
 }));
+const oAuthUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("EMAI:::------", req.body);
+    const result = yield auth_service_1.AuthService.oAuthUser(req.body);
+    const { refreshToken } = result;
+    const cookieOptions = {
+        secure: config_1.default.env === 'production',
+        httpOnly: true,
+    };
+    // console.log(refreshToken, cookieOptions);
+    res.cookie('refreshToken', refreshToken, cookieOptions);
+    (0, sendResponse_1.default)(res, {
+        success: true,
+        statusCode: http_status_1.default.OK,
+        message: 'User signin successfully!',
+        data: result,
+    });
+}));
 const refreshToken = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { refreshToken } = req.cookies;
-    // console.log("YEEEEE----------------------", req.cookies);
+    const { refreshToken } = req.body;
+    // console.log("YEEEEE----------------------", req);
     const result = yield auth_service_1.AuthService.refreshToken(refreshToken);
     // set refresh token into cookie
     (0, sendResponse_1.default)(res, {
@@ -84,9 +101,29 @@ const changePassword = (0, catchAsync_1.default)((req, res) => __awaiter(void 0,
         message: 'Password changed successfully !',
     });
 }));
+const forgotPass = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    yield auth_service_1.AuthService.forgotPass(req.body);
+    (0, sendResponse_1.default)(res, {
+        statusCode: 200,
+        success: true,
+        message: "Check your email!",
+    });
+}));
+const resetPassword = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // const token = req.headers.authorization || "";
+    yield auth_service_1.AuthService.resetPassword(req.body);
+    (0, sendResponse_1.default)(res, {
+        statusCode: 200,
+        success: true,
+        message: "Account recovered!",
+    });
+}));
 exports.AuthController = {
     signupUser,
     signinUser,
     refreshToken,
     changePassword,
+    resetPassword,
+    forgotPass,
+    oAuthUser
 };

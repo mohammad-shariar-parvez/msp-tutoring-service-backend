@@ -12,6 +12,7 @@ const content_controller_1 = require("./content.controller");
 const content_validation_1 = require("./content.validation");
 const router = express_1.default.Router();
 router.get('/', content_controller_1.ContentController.getAllFromDB);
+router.get('/:id', content_controller_1.ContentController.getByIdFromDB);
 router.post('/', (0, validateRequest_1.default)(content_validation_1.BlogValidation.create), (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN), content_controller_1.ContentController.insertIntoDB);
 router.patch('/:id', (0, validateRequest_1.default)(content_validation_1.BlogValidation.update), (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN), content_controller_1.ContentController.updateOneInDB);
 router.delete('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN), content_controller_1.ContentController.deleteByIdFromDB);

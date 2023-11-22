@@ -21,6 +21,8 @@ const auth = (...requiredRoles) => (req, res, next) => __awaiter(void 0, void 0,
     try {
         //get authorization token
         const token = req.headers.authorization;
+        console.log("TUTOR TOKEN", req.headers);
+        console.log("TUTOR TOKEN AUTH", req.headers.authorization);
         //Check whether token exist 
         if (!token) {
             throw new ApiError_1.default(http_status_1.default.UNAUTHORIZED, 'You are not authorized');

@@ -268,7 +268,11 @@ const forgotPass = async (payload: { email: string; }) => {
 		}
 	});
 
+	if (isUserExist && isUserExist.password !== null) {
+		throw new ApiError(httpStatus.NOT_FOUND, 'Google or Github do not have password');
+	}
 	if (!isUserExist) {
+
 		throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist');
 	}
 

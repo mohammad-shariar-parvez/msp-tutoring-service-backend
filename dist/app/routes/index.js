@@ -11,6 +11,7 @@ const category_routes_1 = require("../modules/category/category.routes");
 const content_route_1 = require("../modules/contents/content.route");
 const course_routes_1 = require("../modules/course/course.routes");
 const feedback_route_1 = require("../modules/feedback/feedback.route");
+const notification_router_1 = require("../modules/notification/notification.router");
 const payment_routes_1 = require("../modules/payments/payment.routes");
 const profile_route_1 = require("../modules/profile/profile.route");
 const review_route_1 = require("../modules/review/review.route");
@@ -66,6 +67,10 @@ const moduleRoutes = [
     {
         path: '/payments',
         route: payment_routes_1.paymentRoutes
+    },
+    {
+        path: '/notification',
+        route: notification_router_1.NotificationRoutes
     }
 ];
 moduleRoutes.forEach(route => router.use(route.path, route.route));

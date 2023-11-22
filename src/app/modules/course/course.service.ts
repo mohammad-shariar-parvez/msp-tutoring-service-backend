@@ -124,7 +124,7 @@ const getAllFromDB = async (
                     return {
                         [key]: {
                             equals: value,
-                            mode: 'insensitive'
+
                         }
                     };
 

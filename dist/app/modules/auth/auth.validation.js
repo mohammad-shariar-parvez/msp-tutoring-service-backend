@@ -22,6 +22,13 @@ const signinZodSchema = zod_1.z.object({
         }),
     }),
 });
+const oauthZodSchema = zod_1.z.object({
+    body: zod_1.z.object({
+        email: zod_1.z.string({
+            required_error: 'email is required',
+        }),
+    }),
+});
 const refreshTokenZodSchema = zod_1.z.object({
     cookies: zod_1.z.object({
         refreshToken: zod_1.z.string({
@@ -43,5 +50,6 @@ exports.AuthValidation = {
     signupZodSchema,
     signinZodSchema,
     refreshTokenZodSchema,
-    changePasswordZodSchema
+    changePasswordZodSchema,
+    oauthZodSchema
 };

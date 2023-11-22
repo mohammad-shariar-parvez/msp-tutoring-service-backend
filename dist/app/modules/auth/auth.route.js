@@ -13,6 +13,11 @@ const auth_validation_1 = require("./auth.validation");
 const router = express_1.default.Router();
 router.post('/signup', (0, validateRequest_1.default)(auth_validation_1.AuthValidation.signupZodSchema), auth_controller_1.AuthController.signupUser);
 router.post('/signin', (0, validateRequest_1.default)(auth_validation_1.AuthValidation.signinZodSchema), auth_controller_1.AuthController.signinUser);
-router.post('/refresh-token', (0, validateRequest_1.default)(auth_validation_1.AuthValidation.refreshTokenZodSchema), auth_controller_1.AuthController.refreshToken);
+router.post('/oauth', auth_controller_1.AuthController.oAuthUser);
+router.post('/refresh-token', 
+// validateRequest(AuthValidation.refreshTokenZodSchema),
+auth_controller_1.AuthController.refreshToken);
 router.post('/change-password', (0, validateRequest_1.default)(auth_validation_1.AuthValidation.changePasswordZodSchema), (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN, user_1.ENUM_USER_ROLE.USER, user_1.ENUM_USER_ROLE.SUPER_ADMIN), auth_controller_1.AuthController.changePassword);
+router.post('/forgot-password', auth_controller_1.AuthController.forgotPass);
+router.post('/reset-password', auth_controller_1.AuthController.resetPassword);
 exports.AuthRoutes = router;

@@ -207,7 +207,7 @@ const getByIdFromDB = (user, orderId) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 const updateOneInDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
-    // console.log("booking er ", payload);
+    console.log("booking er---++++ ", payload);
     const result = yield prisma_1.prisma.booking.update({
         where: {
             id

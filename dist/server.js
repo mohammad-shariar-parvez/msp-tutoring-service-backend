@@ -12,13 +12,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const http_1 = __importDefault(require("http"));
 const app_1 = __importDefault(require("./app"));
 const config_1 = __importDefault(require("./config"));
+const socketServer_1 = require("./socketServer");
+const myServer = http_1.default.createServer(app_1.default);
 function bootstrap() {
     return __awaiter(this, void 0, void 0, function* () {
-        const server = app_1.default.listen(config_1.default.port, () => {
+        const server = myServer.listen(config_1.default.port, () => {
             console.log(`Server running on port ${config_1.default.port}`);
         });
+        (0, socketServer_1.initializeSocket)(server);
         const exitHandler = () => {
             if (server) {
                 server.close(() => {

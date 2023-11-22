@@ -12,6 +12,9 @@ const auth =
       try {
         //get authorization token
         const token = req.headers.authorization;
+        console.log("TUTOR TOKEN", req.headers);
+        console.log("TUTOR TOKEN AUTH", req.headers.authorization);
+
 
         //Check whether token exist 
         if (!token) {

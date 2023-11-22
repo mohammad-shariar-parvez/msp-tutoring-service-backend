@@ -12,33 +12,51 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ContentService = void 0;
+exports.NotificationService = void 0;
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 const http_status_1 = __importDefault(require("http-status"));
 const ApiError_1 = __importDefault(require("../../../errors/ApiError"));
 const paginationHelper_1 = require("../../../helpers/paginationHelper");
 const prisma_1 = require("../../../shared/prisma");
 const insertIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield prisma_1.prisma.fAQ.create({
-        data: payload
+    const { title, userId } = payload;
+    console.log("NOTI", title);
+    console.log("USER", userId);
+    const result = yield prisma_1.prisma.notification.create({
+        data: {
+            title,
+            userId,
+        }
     });
     if (!result) {
-        throw new ApiError_1.default(http_status_1.default.BAD_REQUEST, "Unable to create Review");
+        throw new ApiError_1.default(http_status_1.default.BAD_REQUEST, "Unable to create Notification");
     }
-    const responseData = yield prisma_1.prisma.fAQ.findUniqueOrThrow({
+    const responseData = yield prisma_1.prisma.notification.findUniqueOrThrow({
         where: {
             id: result.id
         },
     });
     return responseData;
 });
-const getAllFromDB = (options) => __awaiter(void 0, void 0, void 0, function* () {
+const getByIdFromDB = (user, options) => __awaiter(void 0, void 0, void 0, function* () {
+    const { userId } = user;
     const { limit, page, skip, sortBy, sortOrder, } = paginationHelper_1.paginationHelpers.calculatePagination(options);
-    const result = yield prisma_1.prisma.fAQ.findMany({
+    console.log("USER NOTI", userId);
+    const result = yield prisma_1.prisma.notification.findMany({
+        where: {
+            userId,
+        },
         skip,
         take: limit,
         orderBy: { [sortBy]: sortOrder },
     });
-    const total = yield prisma_1.prisma.fAQ.count({});
+    const total = yield prisma_1.prisma.notification.count({
+        where: {
+            userId,
+        },
+    });
     return {
         meta: {
             page,
@@ -48,35 +66,16 @@ const getAllFromDB = (options) => __awaiter(void 0, void 0, void 0, function* ()
         data: result
     };
 });
-const getByIdFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield prisma_1.prisma.fAQ.findUniqueOrThrow({
-        where: {
-            id
-        }
-    });
-    return result;
-});
-const updateOneInDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield prisma_1.prisma.fAQ.update({
-        where: {
-            id
-        },
-        data: payload
-    });
-    return result;
-});
 const deleteByIdFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield prisma_1.prisma.fAQ.delete({
+    const result = yield prisma_1.prisma.notification.delete({
         where: {
             id
         }
     });
     return result;
 });
-exports.ContentService = {
+exports.NotificationService = {
     insertIntoDB,
-    getAllFromDB,
-    updateOneInDB,
+    getByIdFromDB,
     deleteByIdFromDB,
-    getByIdFromDB
 };
