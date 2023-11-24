@@ -62,29 +62,45 @@ const getAllFromDB = async (
     options: IPaginationOptions
 ): Promise<IGenericResponse<Course[]>> => {
     const { limit, page, skip, sortBy, sortOrder, } = paginationHelpers.calculatePagination(options);
-    const { searchTerm, searchTerm2, ...filterData } = filters;
+    const { searchTerm, ...filterData } = filters;
 
 
 
     const andConditions = [];
 
 
-    if (searchTerm || searchTerm2) {
+    // if (searchTerm || searchTerm2) {
+    //     andConditions.push({
+    //         OR: courseSearchableFields.map((field) => ({
+    //             [field]: {
+    //                 contains: searchTerm,
+    //                 mode: 'insensitive'
+    //             }
+    //         }))
+    //     });
+    // }
+    if (searchTerm) {
+        const terms = Array.isArray(searchTerm) ? searchTerm : [searchTerm];
+
+        console.log("SEEEEEEEEEEEEEEEEEEEEEEE", terms);
         andConditions.push({
-            OR: courseSearchableFields.map((field) => ({
-                [field]: {
-                    contains: searchTerm,
-                    mode: 'insensitive'
-                }
-            })).concat(courseSearchableFields.map((field) => ({
-                [field]: {
-                    contains: searchTerm2,
-                    mode: 'insensitive'
-                }
-            })))
+            OR: courseSearchableFields.flatMap((field) =>
+                terms.map((term) => ({
+                    [field]: {
+                        contains: term,
+                        mode: 'insensitive',
+                    },
+                }))
+            ),
         });
     }
-
+    //for furter query
+    // .concat(courseSearchableFields.map((field) => ({
+    //     [field]: {
+    //         contains: searchTerm2,
+    //         mode: 'insensitive'
+    //     }
+    // })))
     // console.log("and condition", andConditions);
 
 
