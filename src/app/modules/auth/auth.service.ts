@@ -23,10 +23,10 @@ const signupUser = async (
 			password: await hashedPassword,
 		},
 	});
-	console.log("USER IS 11111 ", user);
+	// console.log("USER IS 11111 ", user);
 
 	if (!user) {
-		console.log("USER IS 222222 ", user);
+		// console.log("USER IS 222222 ", user);
 		throw new ApiError(httpStatus.NOT_FOUND, 'User already exist');
 	}
 	//create access token & refresh token
@@ -167,7 +167,7 @@ const oAuthUser = async (
 
 const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
 	//verify token
-	console.log("TOKENNNNNNNNNNNNNNNNNNNNNNNNN", token);
+	// console.log("TOKENNNNNNNNNNNNNNNNNNNNNNNNN", token);
 
 	let verifiedToken = null;
 	try {
@@ -283,8 +283,8 @@ const forgotPass = async (payload: { email: string; }) => {
 
 	const resetLink: string = config.resetlink + `email=${payload.email}&token=${passResetToken}`;
 
-	console.log("passResetToken", passResetToken);
-	console.log("RESET LINK", resetLink);
+	// console.log("passResetToken", passResetToken);
+	// console.log("RESET LINK", resetLink);
 
 
 	await sendEmail(payload.email, `
@@ -304,9 +304,9 @@ const forgotPass = async (payload: { email: string; }) => {
 const resetPassword = async (payload: { email: string, newPassword: string; token: string; }) => {
 
 	const { email, newPassword, token } = payload;
-	console.log("TOKEN", token);
-	console.log("EMAIL", email);
-	console.log("password", newPassword);
+	// console.log("TOKEN", token);
+	// console.log("EMAIL", email);
+	// console.log("password", newPassword);
 
 	const isUserExist = await prisma.user.findUnique({
 		where: {
