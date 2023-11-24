@@ -19,6 +19,7 @@ const pick_1 = __importDefault(require("../../../shared/pick"));
 const sendResponse_1 = __importDefault(require("../../../shared/sendResponse"));
 const notification_service_1 = require("./notification.service");
 const insertIntoDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("NOT666666666666-------------I");
     const result = yield notification_service_1.NotificationService.insertIntoDB(req.body);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
@@ -29,9 +30,10 @@ const insertIntoDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, v
 }));
 const getByIdFromDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = req.user;
+    console.log("NOTIFIIIII-------------I", user);
     const options = (0, pick_1.default)(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
     const result = yield notification_service_1.NotificationService.getByIdFromDB(user, options);
-    console.log("RESULKT", result);
+    // console.log("RESULKT", result);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,

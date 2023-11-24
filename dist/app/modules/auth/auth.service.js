@@ -37,9 +37,9 @@ const signupUser = (userData) => __awaiter(void 0, void 0, void 0, function* () 
     const user = yield prisma_1.prisma.user.create({
         data: Object.assign(Object.assign({}, userWithoutPassword), { password: yield hashedPassword }),
     });
-    console.log("USER IS 11111 ", user);
+    // console.log("USER IS 11111 ", user);
     if (!user) {
-        console.log("USER IS 222222 ", user);
+        // console.log("USER IS 222222 ", user);
         throw new ApiError_1.default(http_status_1.default.NOT_FOUND, 'User already exist');
     }
     //create access token & refresh token
@@ -120,7 +120,7 @@ const oAuthUser = (payLoad) => __awaiter(void 0, void 0, void 0, function* () {
 });
 const refreshToken = (token) => __awaiter(void 0, void 0, void 0, function* () {
     //verify token
-    console.log("TOKENNNNNNNNNNNNNNNNNNNNNNNNN", token);
+    // console.log("TOKENNNNNNNNNNNNNNNNNNNNNNNNN", token);
     let verifiedToken = null;
     try {
         verifiedToken = jwtHelpers_1.jwtHelpers.verifyToken(token, config_1.default.jwt.refresh_secret);
@@ -201,8 +201,8 @@ const forgotPass = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const { id: userId } = isUserExist;
     const passResetToken = yield jwtHelpers_1.jwtHelpers.createToken({ id: userId }, config_1.default.jwt.secret, '10m');
     const resetLink = config_1.default.resetlink + `email=${payload.email}&token=${passResetToken}`;
-    console.log("passResetToken", passResetToken);
-    console.log("RESET LINK", resetLink);
+    // console.log("passResetToken", passResetToken);
+    // console.log("RESET LINK", resetLink);
     yield (0, sendResetMail_1.sendEmail)(payload.email, `
 	      <div>
 	        <p>Hi</p>
@@ -217,9 +217,9 @@ const forgotPass = (payload) => __awaiter(void 0, void 0, void 0, function* () {
 });
 const resetPassword = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, newPassword, token } = payload;
-    console.log("TOKEN", token);
-    console.log("EMAIL", email);
-    console.log("password", newPassword);
+    // console.log("TOKEN", token);
+    // console.log("EMAIL", email);
+    // console.log("password", newPassword);
     const isUserExist = yield prisma_1.prisma.user.findUnique({
         where: {
             email

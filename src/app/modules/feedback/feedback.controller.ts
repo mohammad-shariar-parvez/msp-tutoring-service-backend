@@ -24,7 +24,7 @@ const insertQuestionIntoDB = catchAsync(async (req: Request, res: Response) => {
 	// const parsedCookies = cookie.parse(req?.headers?.cookie as string);
 
 	// console.log("COOOOOOOOOOOOOOOKKKKKKKIIIIIIIEEEE", parsedCookies);
-	console.log("COOOOOOOOOOOOOOOKKKKKKKIIIIIIIEEEE", req.headers);
+	// console.log("COOOOOOOOOOOOOOOKKKKKKKIIIIIIIEEEE", req.headers);
 
 	const result = await FeedbackService.insertQuestionIntoDB(req.body);
 

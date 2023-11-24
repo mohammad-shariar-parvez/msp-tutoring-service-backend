@@ -61,23 +61,37 @@ const getCoursesByCategory = (categoryId) => __awaiter(void 0, void 0, void 0, f
 });
 const getAllFromDB = (filters, options) => __awaiter(void 0, void 0, void 0, function* () {
     const { limit, page, skip, sortBy, sortOrder, } = paginationHelper_1.paginationHelpers.calculatePagination(options);
-    const { searchTerm, searchTerm2 } = filters, filterData = __rest(filters, ["searchTerm", "searchTerm2"]);
+    const { searchTerm } = filters, filterData = __rest(filters, ["searchTerm"]);
     const andConditions = [];
-    if (searchTerm || searchTerm2) {
+    // if (searchTerm || searchTerm2) {
+    //     andConditions.push({
+    //         OR: courseSearchableFields.map((field) => ({
+    //             [field]: {
+    //                 contains: searchTerm,
+    //                 mode: 'insensitive'
+    //             }
+    //         }))
+    //     });
+    // }
+    if (searchTerm) {
+        const terms = Array.isArray(searchTerm) ? searchTerm : [searchTerm];
+        console.log("SEEEEEEEEEEEEEEEEEEEEEEE", terms);
         andConditions.push({
-            OR: couorse_constants_2.courseSearchableFields.map((field) => ({
+            OR: couorse_constants_2.courseSearchableFields.flatMap((field) => terms.map((term) => ({
                 [field]: {
-                    contains: searchTerm,
-                    mode: 'insensitive'
-                }
-            })).concat(couorse_constants_2.courseSearchableFields.map((field) => ({
-                [field]: {
-                    contains: searchTerm2,
-                    mode: 'insensitive'
-                }
-            })))
+                    contains: term,
+                    mode: 'insensitive',
+                },
+            }))),
         });
     }
+    //for furter query
+    // .concat(courseSearchableFields.map((field) => ({
+    //     [field]: {
+    //         contains: searchTerm2,
+    //         mode: 'insensitive'
+    //     }
+    // })))
     // console.log("and condition", andConditions);
     // console.log("------and condition", filterData);
     if (Object.keys(filterData).length > 0) {

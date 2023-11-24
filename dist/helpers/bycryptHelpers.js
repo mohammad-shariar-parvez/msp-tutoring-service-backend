@@ -23,7 +23,7 @@ const isPasswordMatched = function (givenPassword, savedPassword) {
 const hashedPassword = (password) => __awaiter(void 0, void 0, void 0, function* () {
     return yield bcrypt_1.default.hash(password, Number(config_1.default.bycrypt_salt_rounds));
 });
-console.log("NEEWW PASS------", hashedPassword);
+// console.log("NEEWW PASS------", hashedPassword);
 exports.bcryptHelpers = {
     isPasswordMatched,
     hashedPassword

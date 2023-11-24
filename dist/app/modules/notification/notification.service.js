@@ -22,8 +22,8 @@ const paginationHelper_1 = require("../../../helpers/paginationHelper");
 const prisma_1 = require("../../../shared/prisma");
 const insertIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const { title, userId } = payload;
-    console.log("NOTI", title);
-    console.log("USER", userId);
+    // console.log("NOTI", title);
+    // console.log("USER", userId);
     const result = yield prisma_1.prisma.notification.create({
         data: {
             title,
@@ -41,9 +41,10 @@ const insertIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function* ()
     return responseData;
 });
 const getByIdFromDB = (user, options) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("YEE55555555555555555555555555555", user);
     const { userId } = user;
     const { limit, page, skip, sortBy, sortOrder, } = paginationHelper_1.paginationHelpers.calculatePagination(options);
-    console.log("USER NOTI", userId);
+    // console.log("USER NOTI", userId);
     const result = yield prisma_1.prisma.notification.findMany({
         where: {
             userId,

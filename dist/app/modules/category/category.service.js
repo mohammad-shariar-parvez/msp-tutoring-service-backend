@@ -46,7 +46,7 @@ const getAllFromDB = (filters, options) => __awaiter(void 0, void 0, void 0, fun
             }))
         });
     }
-    console.log("------and condition", searchTerm);
+    // console.log("------and condition", searchTerm);
     if (Object.keys(filterData).length) {
         andConditions.push({
             AND: Object.entries(filterData).map(([key, value]) => {

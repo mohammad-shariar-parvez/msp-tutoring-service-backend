@@ -31,7 +31,7 @@ const insertIntoDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, v
 const insertQuestionIntoDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // const parsedCookies = cookie.parse(req?.headers?.cookie as string);
     // console.log("COOOOOOOOOOOOOOOKKKKKKKIIIIIIIEEEE", parsedCookies);
-    console.log("COOOOOOOOOOOOOOOKKKKKKKIIIIIIIEEEE", req.headers);
+    // console.log("COOOOOOOOOOOOOOOKKKKKKKIIIIIIIEEEE", req.headers);
     const result = yield feedback_service_1.FeedbackService.insertQuestionIntoDB(req.body);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,

@@ -1,19 +1,19 @@
 
-import http, { Server } from "http";
+import { Server } from "http";
 import app from './app';
 import config from './config';
-import { initializeSocket } from "./socketServer";
+// import { initializeSocket } from "./socketServer";
 
-const myServer = http.createServer(app);
+// const myServer = http.createServer(app);
 
 
 
 async function bootstrap() {
 
-  const server: Server = myServer.listen(config.port, () => {
+  const server: Server = app.listen(config.port, () => {
     console.log(`Server running on port ${config.port}`);
   });
-  initializeSocket(server);
+  // initializeSocket(server);
   const exitHandler = () => {
 
     if (server) {

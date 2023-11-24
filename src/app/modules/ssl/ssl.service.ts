@@ -61,7 +61,7 @@ const initPayment = async (payload: any) => {
 };
 
 const validate = async (data: any) => {
-	console.log(data);
+	// console.log(data);
 
 	try {
 		const response = await axios({

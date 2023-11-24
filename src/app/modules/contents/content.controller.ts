@@ -47,7 +47,7 @@ const getByIdFromDB = catchAsync(async (req: Request, res: Response) => {
 
 const updateOneInDB = catchAsync(async (req: Request, res: Response) => {
 	const { id } = req.params;
-	console.log("FAQ", req.body);
+	// console.log("FAQ", req.body);
 
 	const result = await ContentService.updateOneInDB(id, req.body);
 

@@ -30,6 +30,7 @@ const catchAsync_1 = __importDefault(require("../../../shared/catchAsync"));
 const sendResponse_1 = __importDefault(require("../../../shared/sendResponse"));
 const auth_service_1 = require("./auth.service");
 const signupUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("111111111111111");
     const userData = __rest(req.body, []);
     const result = yield auth_service_1.AuthService.signupUser(userData);
     const { refreshToken } = result;
@@ -46,6 +47,7 @@ const signupUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
     });
 }));
 const signinUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("2222222222222222");
     const loginData = __rest(req.body, []);
     const result = yield auth_service_1.AuthService.signinUser(loginData);
     const { refreshToken } = result;
@@ -63,7 +65,8 @@ const signinUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
     });
 }));
 const oAuthUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("EMAI:::------", req.body);
+    console.log("333333333333333");
+    // console.log("EMAI:::------", req.body);
     const result = yield auth_service_1.AuthService.oAuthUser(req.body);
     const { refreshToken } = result;
     const cookieOptions = {
@@ -80,6 +83,7 @@ const oAuthUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void
     });
 }));
 const refreshToken = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("444444444444444");
     const { refreshToken } = req.body;
     // console.log("YEEEEE----------------------", req);
     const result = yield auth_service_1.AuthService.refreshToken(refreshToken);
@@ -92,6 +96,7 @@ const refreshToken = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, v
     });
 }));
 const changePassword = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("5555555555555555");
     const user = req.user;
     const passwordData = __rest(req.body, []);
     yield auth_service_1.AuthService.changePassword(user, passwordData);
@@ -102,6 +107,7 @@ const changePassword = (0, catchAsync_1.default)((req, res) => __awaiter(void 0,
     });
 }));
 const forgotPass = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("6666666666666666666");
     yield auth_service_1.AuthService.forgotPass(req.body);
     (0, sendResponse_1.default)(res, {
         statusCode: 200,
@@ -110,6 +116,7 @@ const forgotPass = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
     });
 }));
 const resetPassword = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("777777777777777777");
     // const token = req.headers.authorization || "";
     yield auth_service_1.AuthService.resetPassword(req.body);
     (0, sendResponse_1.default)(res, {

@@ -25,7 +25,7 @@ const paginationHelper_1 = require("../../../helpers/paginationHelper");
 const prisma_1 = require("../../../shared/prisma");
 const tutor_constant_1 = require("./tutor.constant");
 const insertIntoDB = (data) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(data);
+    // console.log(data);
     const user = yield prisma_1.prisma.courseTutor.create({
         data
     });

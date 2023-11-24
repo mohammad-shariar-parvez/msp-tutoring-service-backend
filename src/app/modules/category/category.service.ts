@@ -42,7 +42,7 @@ const getAllFromDB = async (
             }))
         });
     }
-    console.log("------and condition", searchTerm);
+    // console.log("------and condition", searchTerm);
 
     if (Object.keys(filterData).length) {
         andConditions.push({

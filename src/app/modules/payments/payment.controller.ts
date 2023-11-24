@@ -4,6 +4,7 @@ import { NextFunction, Request, Response } from "express";
 import httpStatus from "http-status";
 import pick from "../../../shared/pick";
 
+import config from "../../../config";
 import { IUser } from "../../../interfaces/common";
 import sendResponse from "../../../shared/sendResponse";
 import { paymentFilterableFields } from "./payment.constants";
@@ -22,15 +23,15 @@ const initPayment = async (req: Request, res: Response, next: NextFunction) => {
 };
 const success = async (req: Request, res: Response, next: NextFunction) => {
 	const result = await PaymentService.success(req.body);
-	res.status(200).redirect('http://localhost:3000/payments');
+	res.status(200).redirect(`${config.frontEnd_url}/payments`);
 };
 const cancel = async (req: Request, res: Response, next: NextFunction) => {
 	const result = await PaymentService.cancel(req.body);
-	res.status(200).redirect('http://localhost:3000/user/bookings');
+	res.status(200).redirect(`${config.frontEnd_url}/bookings`);
 };
 const fail = async (req: Request, res: Response, next: NextFunction) => {
 	const result = await PaymentService.fail(req.body);
-	res.status(200).redirect('http://localhost:3000/user');
+	res.status(200).redirect(`${config.frontEnd_url}/user`);
 };
 
 const webhook = async (req: Request, res: Response, next: NextFunction) => {
