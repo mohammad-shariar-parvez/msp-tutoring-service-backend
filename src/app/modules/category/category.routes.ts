@@ -3,6 +3,7 @@ import { ENUM_USER_ROLE } from '../../../enums/user';
 import auth from '../../middlewares/auth';
 import validateRequest from '../../middlewares/validateRequest';
 
+
 import { ServiceController } from './category.controller';
 import { CategoryValidations } from './category.validations';
 
@@ -17,6 +18,7 @@ router.get('/:id', ServiceController.getByIdFromDB);
 
 router.post(
     '/',
+
     auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
     validateRequest(CategoryValidations.create),
     ServiceController.insertIntoDB);

@@ -13,10 +13,26 @@ import { ICategoryFilterRequest } from "./category.interface";
 
 
 
-const insertIntoDB = async (data: Category): Promise<Category> => {
+const insertIntoDB = async (data: any): Promise<Category> => {
+    // const file = data as any;
+    // console.log("FILEEEE", data.file);
+    // const uploadPromises = async (element: Express.Multer.File) => {
+    //     const result = await cloudinary.uploader.upload(file: element.path);
+    //     return result;
+    // };
+    // const uploadImage = await Promise.all(uploadPromises);
+
+    // const uploadedImage = await FileUploadHelper.uploadToCloudinary(data.file);
+    // console.log("UPLOAD IOMAGEEE+++++++++++++++++", uploadedImage);
+    // if (uploadedImage) {
+    //     data.imageUrl = uploadedImage.secure_url;
+    // }
+
     const result = await prisma.category.create({
         data
     });
+    console.log("result", result);
+
     return result;
 };
 
