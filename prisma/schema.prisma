@@ -18,10 +18,10 @@ model User {
   blogs            Blog[]
   bookings         Booking[]
   feedbacks        Feedback[]
+  notifications    Notification[]
   payment          Payment[]
   profile          Profile?
   reviewAndRatings ReviewAndRating[]
-  notifications    Notification[]
 
   @@map("users")
 }
@@ -38,9 +38,34 @@ model CourseTutor {
   imageUrl   String
   gender     String
   location   String
-  courses    Course[]
+
+  courses  Course[]
+  subjects SubjectTutor[]
 
   @@map("courseTutors")
+}
+
+model Subject {
+  id        String   @id @default(uuid())
+  title     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  courses      Course[]
+  courseTutors SubjectTutor[]
+
+  @@map("subjects")
+}
+
+model SubjectTutor {
+  courseTutorId String
+  courseTutor   CourseTutor @relation(fields: [courseTutorId], references: [id])
+
+  subjectId String
+  subject   Subject @relation(fields: [subjectId], references: [id])
+
+  @@id([courseTutorId, subjectId])
+  @@map("course_faculties")
 }
 
 model Profile {
@@ -77,8 +102,8 @@ model Category {
 
 model Course {
   id               String            @id @default(uuid())
+  title            String            @unique
   slug             String            @unique
-  title            String
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
   location         String
@@ -90,9 +115,11 @@ model Course {
   article          String?
   categoryId       String
   courseTutorId    String
+  subjectId        String
   bookings         Booking[]
   category         Category          @relation(fields: [categoryId], references: [id])
   courseTutor      CourseTutor       @relation(fields: [courseTutorId], references: [id])
+  subject          Subject           @relation(fields: [subjectId], references: [id])
   reviewAndRatings ReviewAndRating[]
 
   @@map("courses")

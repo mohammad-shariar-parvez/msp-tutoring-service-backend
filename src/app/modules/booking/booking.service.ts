@@ -260,7 +260,7 @@ const deleteByIdFromDB = async (bookingId: string): Promise<Booking> => {
 
 		const deletedPayment = await transactionClient.payment.deleteMany({
 			where: {
-				bookingId: "46859146594"
+				bookingId
 			}
 		});
 

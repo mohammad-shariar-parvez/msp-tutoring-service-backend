@@ -4,6 +4,7 @@ import { Secret } from 'jsonwebtoken';
 import config from '../../config';
 import ApiError from '../../errors/ApiError';
 import { jwtHelpers } from '../../helpers/jwtHelpers';
+import { prisma } from '../../shared/prisma';
 
 const auth =
   (...requiredRoles: string[]) =>
@@ -28,16 +29,18 @@ const auth =
         //Check whether valid user exist on database
         // case- user deleted but he has refresh token
         // checking deleted user's refresh token
-        // const isUserExist = await prisma.user.findUnique({
-        //   where: {
-        //     id: verifiedUser.userId
-        //   }
-        // });
-        // console.log("IS USER-----------", isUserExist);
+        // console.log("VARIFIED", verifiedUser);
 
-        // if (!isUserExist) {
-        //   throw new ApiError(httpStatus.NOT_FOUND, 'Token user does not exist in Database');
-        // }
+        const isUserExist = await prisma.user.findUnique({
+          where: {
+            id: verifiedUser.userId
+          }
+        });
+        console.log("IS USER-----------", verifiedUser);
+
+        if (!isUserExist) {
+          throw new ApiError(httpStatus.NOT_FOUND, 'Token user does not exist in Database');
+        }
         //Check whether valid Role exist on database 
         // console.log("requiredRoles------", requiredRoles);
         if (requiredRoles.length && !requiredRoles.includes(verifiedUser.role)) {
