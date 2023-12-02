@@ -13,6 +13,7 @@ import { ICourseFilterRequest } from "./course.interface";
 
 const insertIntoDB = async (data: Course): Promise<Course> => {
     // console.log("DATA__", data);
+    console.log("COURSEEE DATA", data);
 
     const result = await prisma.course.create({
         data
