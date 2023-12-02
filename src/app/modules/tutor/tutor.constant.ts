@@ -3,13 +3,15 @@
 export const tutorFilterableFields = [
 	'searchTerm',
 	'location',
+	"subjectId"
 
 ];
 
 export const tutorSearchableFields = [
-	'bio',
-
-
+	'firstName',
+	'lastName',
+	'middleName',
+	'location'
 ];
 
 

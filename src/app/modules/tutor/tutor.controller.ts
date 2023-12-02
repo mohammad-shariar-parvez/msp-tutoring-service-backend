@@ -6,13 +6,14 @@ import catchAsync from "../../../shared/catchAsync";
 import pick from "../../../shared/pick";
 import sendResponse from "../../../shared/sendResponse";
 import { tutorFilterableFields } from "./tutor.constant";
-import { UserService } from "./tutor.service";
+import { TutorService } from "./tutor.service";
+
 
 
 
 
 const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
-	const result = await UserService.insertIntoDB(req.body);
+	const result = await TutorService.insertIntoDB(req.body);
 	sendResponse(res, {
 		statusCode: httpStatus.OK,
 		success: true,
@@ -25,7 +26,7 @@ const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
 	const filters = pick(req.query, tutorFilterableFields);
 	const options = pick(req.query, paginationFields);
 
-	const result = await UserService.getAllFromDB(
+	const result = await TutorService.getAllFromDB(
 		filters,
 		options
 	);
@@ -41,7 +42,7 @@ const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
 
 const getByIdFromDB = catchAsync(async (req: Request, res: Response) => {
 	const id = req.params.id;
-	const result = await UserService.getByIdFromDB(id);
+	const result = await TutorService.getByIdFromDB(id);
 
 	sendResponse(res, {
 		statusCode: httpStatus.OK,
@@ -55,7 +56,7 @@ const updateOneInDB = catchAsync(async (req: Request, res: Response) => {
 	const id = req.params.id;
 	const updatedData = req.body;
 
-	const result = await UserService.updateOneInDB(id, updatedData);
+	const result = await TutorService.updateOneInDB(id, updatedData);
 
 	sendResponse(res, {
 		statusCode: httpStatus.OK,
@@ -69,7 +70,7 @@ const updateOneInDB = catchAsync(async (req: Request, res: Response) => {
 const deleteByIdFromDB = catchAsync(async (req: Request, res: Response) => {
 	const id = req.params.id;
 
-	const result = await UserService.deleteByIdFromDB(id);
+	const result = await TutorService.deleteByIdFromDB(id);
 
 	sendResponse(res, {
 		statusCode: httpStatus.OK,
@@ -79,7 +80,7 @@ const deleteByIdFromDB = catchAsync(async (req: Request, res: Response) => {
 	});
 });
 
-export const UserController = {
+export const TutorController = {
 
 	insertIntoDB,
 	getAllFromDB,
