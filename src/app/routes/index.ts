@@ -12,6 +12,7 @@ import { NotificationRoutes } from '../modules/notification/notification.router'
 import { paymentRoutes } from '../modules/payments/payment.routes';
 import { ProfileRoutes } from '../modules/profile/profile.route';
 import { ReviewRoutes } from '../modules/review/review.route';
+import { SubjectRoutes } from '../modules/subject/subject.routes';
 import { TutorRoutes } from '../modules/tutor/tutor.route';
 import { UserRoutes } from '../modules/user/user.route';
 
@@ -31,6 +32,10 @@ const moduleRoutes = [
   {
     path: '/profile',
     route: ProfileRoutes,
+  },
+  {
+    path: '/subjects',
+    route: SubjectRoutes,
   },
   {
     path: '/courses',
