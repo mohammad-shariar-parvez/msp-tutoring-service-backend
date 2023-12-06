@@ -242,7 +242,7 @@ const getByIdFromDB = async (user: IUser, orderId: string): Promise<any | null> 
 
 };
 const updateOneInDB = async (id: string, payload: Partial<Booking>): Promise<Booking> => {
-	console.log("booking er---++++ ", payload);
+	// console.log("booking er---++++ ", payload);
 
 	const result = await prisma.booking.update({
 		where: {
@@ -265,7 +265,7 @@ const deleteByIdFromDB = async (bookingId: string): Promise<Booking> => {
 		});
 
 
-		console.log("deletepayment", deletedPayment);
+		// console.log("deletepayment", deletedPayment);
 
 		if (deletedPayment.count == 0) {
 			throw new ApiError(httpStatus.BAD_REQUEST, "Unable to Delete from  Payment");
@@ -276,7 +276,7 @@ const deleteByIdFromDB = async (bookingId: string): Promise<Booking> => {
 			}
 		});
 
-		console.log("delete bbooking", deletedBooking);
+		// console.log("delete bbooking", deletedBooking);
 
 		return deletedBooking;
 	});
