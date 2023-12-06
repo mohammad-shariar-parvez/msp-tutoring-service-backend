@@ -38,6 +38,7 @@ const insertIntoDB = async (
 				subjects,
 				async (subjectId: string) => {
 
+					// eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
 					const createTutorResult = await transactionClient.subjectTutor.create({
 
 						data: {
@@ -46,7 +47,7 @@ const insertIntoDB = async (
 						}
 
 					});
-					console.log("createPrerequisite", createTutorResult);
+					// console.log("createPrerequisite", createTutorResult);
 				}
 			);
 		}
@@ -79,7 +80,7 @@ const getAllFromDB = async (
 ): Promise<IGenericResponse<Partial<CourseTutor>[]>> => {
 	const { limit, page, skip, sortBy, sortOrder, } = paginationHelpers.calculatePagination(options);
 	const { searchTerm, subjectId, ...filterData } = filters;
-	console.log("MY LOCATOIN", subjectId);
+	// console.log("MY LOCATOIN", subjectId);
 
 	// Extract searchTerm to implement search query
 
@@ -100,7 +101,7 @@ const getAllFromDB = async (
 		});
 	}
 
-	console.log("MY AND", andConditions);
+	// console.log("MY AND", andConditions);
 	if (searchTerm) {
 		andConditions.push({
 			OR: tutorSearchableFields.map((field) => ({
@@ -133,7 +134,7 @@ const getAllFromDB = async (
 	//@ts-ignore
 	const whereConditons: Prisma.CourseTutorWhereInput =
 		andConditions.length > 0 ? { AND: andConditions } : {};
-	console.log(whereConditons);
+	// console.log(whereConditons);
 
 
 	const result = await prisma.courseTutor.findMany({
@@ -205,6 +206,7 @@ const updateOneInDB = async (id: string, payload: Partial<BackendCourseTutor>): 
 				subjects,
 				async (subjectId: string) => {
 
+					// eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
 					const createTutorResult = await transactionClient.subjectTutor.create({
 
 						data: {
@@ -213,7 +215,7 @@ const updateOneInDB = async (id: string, payload: Partial<BackendCourseTutor>): 
 						}
 
 					});
-					console.log("createPrerequisite", createTutorResult);
+					// console.log("createPrerequisite", createTutorResult);
 				}
 			);
 		}
@@ -247,6 +249,7 @@ const deleteByIdFromDB = async (id: string): Promise<Partial<CourseTutor> | null
 
 
 
+		// eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
 		const deletedFromSubjetTutor = await transactionClient.subjectTutor.deleteMany({
 			where: {
 				courseTutorId: id
@@ -254,7 +257,7 @@ const deleteByIdFromDB = async (id: string): Promise<Partial<CourseTutor> | null
 		});
 
 
-		console.log("deletepayment===============", deletedFromSubjetTutor);
+		// console.log("deletepayment===============", deletedFromSubjetTutor);
 
 		// if (deletedFromSubjetTutor?.count == 0) {
 		// 	throw new ApiError(httpStatus.BAD_REQUEST, "Unable to Delete from SubjetTutor Database");
