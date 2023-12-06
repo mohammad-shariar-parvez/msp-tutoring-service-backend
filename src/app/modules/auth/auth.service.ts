@@ -198,7 +198,7 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
 	//generate new token
 	const newAccessToken = jwtHelpers.createToken(
 		{
-			id: isUserExist.id,
+			userId: isUserExist.id,
 			role: isUserExist.role,
 			email: isUserExist.email
 		},

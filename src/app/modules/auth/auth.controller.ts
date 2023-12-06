@@ -7,7 +7,7 @@ import { ILoginUserResponse, IRefreshTokenResponse } from "./auth.interface";
 import { AuthService } from "./auth.service";
 
 const signupUser = catchAsync(async (req: Request, res: Response) => {
-	console.log("111111111111111");
+	// console.log("111111111111111");
 
 
 
@@ -32,7 +32,7 @@ const signupUser = catchAsync(async (req: Request, res: Response) => {
 
 
 const signinUser = catchAsync(async (req: Request, res: Response) => {
-	console.log("2222222222222222");
+	// console.log("2222222222222222");
 	const { ...loginData } = req.body;
 	const result = await AuthService.signinUser(loginData);
 	const { refreshToken } = result;
@@ -78,8 +78,8 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
 	const { refreshToken } = req.body;
 
 
-	// console.log("YEEEEE----------------------", req);
 	const result = await AuthService.refreshToken(refreshToken);
+	// console.log("YEEEEE----------------------", result);
 
 	// set refresh token into cookie
 
@@ -93,7 +93,7 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
 });
 
 const changePassword = catchAsync(async (req: Request, res: Response) => {
-	console.log("5555555555555555");
+	// console.log("5555555555555555");
 	const user = req.user;
 	const { ...passwordData } = req.body;
 
@@ -107,7 +107,7 @@ const changePassword = catchAsync(async (req: Request, res: Response) => {
 });
 
 const forgotPass = catchAsync(async (req: Request, res: Response) => {
-	console.log("6666666666666666666");
+	// console.log("6666666666666666666");
 	await AuthService.forgotPass(req.body);
 
 	sendResponse(res, {
@@ -118,7 +118,7 @@ const forgotPass = catchAsync(async (req: Request, res: Response) => {
 });
 
 const resetPassword = catchAsync(async (req: Request, res: Response) => {
-	console.log("777777777777777777");
+	// console.log("777777777777777777");
 	// const token = req.headers.authorization || "";
 	await AuthService.resetPassword(req.body);
 
