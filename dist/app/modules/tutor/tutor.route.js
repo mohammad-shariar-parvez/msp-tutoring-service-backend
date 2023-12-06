@@ -11,9 +11,10 @@ const validateRequest_1 = __importDefault(require("../../middlewares/validateReq
 const tutor_controller_1 = require("./tutor.controller");
 const tutor_validation_1 = require("./tutor.validation");
 const router = express_1.default.Router();
-router.get('/', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN), tutor_controller_1.UserController.getAllFromDB);
-router.get('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN), tutor_controller_1.UserController.getByIdFromDB);
-router.post('/', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN), (0, validateRequest_1.default)(tutor_validation_1.tutorValidation.createTutorZodSchema), tutor_controller_1.UserController.insertIntoDB);
-router.patch('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN), (0, validateRequest_1.default)(tutor_validation_1.tutorValidation.updateTutorZodSchema), tutor_controller_1.UserController.updateOneInDB);
-router.delete('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN), tutor_controller_1.UserController.deleteByIdFromDB);
+router.get('/', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN), tutor_controller_1.TutorController.getAllFromDB);
+// router.get('/', auth(ENUM_USER_ROLE.ADMIN), UserController.getAllFromDB);
+router.get('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN), tutor_controller_1.TutorController.getByIdFromDB);
+router.post('/', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN), (0, validateRequest_1.default)(tutor_validation_1.tutorValidation.createTutorZodSchema), tutor_controller_1.TutorController.insertIntoDB);
+router.patch('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN), (0, validateRequest_1.default)(tutor_validation_1.tutorValidation.updateTutorZodSchema), tutor_controller_1.TutorController.updateOneInDB);
+router.delete('/:id', (0, auth_1.default)(user_1.ENUM_USER_ROLE.ADMIN), tutor_controller_1.TutorController.deleteByIdFromDB);
 exports.TutorRoutes = router;

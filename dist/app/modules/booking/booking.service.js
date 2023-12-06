@@ -207,7 +207,7 @@ const getByIdFromDB = (user, orderId) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 const updateOneInDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("booking er---++++ ", payload);
+    // console.log("booking er---++++ ", payload);
     const result = yield prisma_1.prisma.booking.update({
         where: {
             id
@@ -220,10 +220,10 @@ const deleteByIdFromDB = (bookingId) => __awaiter(void 0, void 0, void 0, functi
     const newDeletedBooking = yield prisma_1.prisma.$transaction((transactionClient) => __awaiter(void 0, void 0, void 0, function* () {
         const deletedPayment = yield transactionClient.payment.deleteMany({
             where: {
-                bookingId: "46859146594"
+                bookingId
             }
         });
-        console.log("deletepayment", deletedPayment);
+        // console.log("deletepayment", deletedPayment);
         if (deletedPayment.count == 0) {
             throw new ApiError_1.default(http_status_1.default.BAD_REQUEST, "Unable to Delete from  Payment");
         }
@@ -232,7 +232,7 @@ const deleteByIdFromDB = (bookingId) => __awaiter(void 0, void 0, void 0, functi
                 id: bookingId
             }
         });
-        console.log("delete bbooking", deletedBooking);
+        // console.log("delete bbooking", deletedBooking);
         return deletedBooking;
     }));
     return newDeletedBooking;

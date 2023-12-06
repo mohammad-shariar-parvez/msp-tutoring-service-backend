@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserController = void 0;
+exports.TutorController = void 0;
 const http_status_1 = __importDefault(require("http-status"));
 const pagination_1 = require("../../../constants/pagination");
 const catchAsync_1 = __importDefault(require("../../../shared/catchAsync"));
@@ -21,7 +21,7 @@ const sendResponse_1 = __importDefault(require("../../../shared/sendResponse"));
 const tutor_constant_1 = require("./tutor.constant");
 const tutor_service_1 = require("./tutor.service");
 const insertIntoDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield tutor_service_1.UserService.insertIntoDB(req.body);
+    const result = yield tutor_service_1.TutorService.insertIntoDB(req.body);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
@@ -32,7 +32,7 @@ const insertIntoDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, v
 const getAllFromDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const filters = (0, pick_1.default)(req.query, tutor_constant_1.tutorFilterableFields);
     const options = (0, pick_1.default)(req.query, pagination_1.paginationFields);
-    const result = yield tutor_service_1.UserService.getAllFromDB(filters, options);
+    const result = yield tutor_service_1.TutorService.getAllFromDB(filters, options);
     (0, sendResponse_1.default)(res, {
         success: true,
         statusCode: http_status_1.default.OK,
@@ -43,7 +43,7 @@ const getAllFromDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, v
 }));
 const getByIdFromDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const result = yield tutor_service_1.UserService.getByIdFromDB(id);
+    const result = yield tutor_service_1.TutorService.getByIdFromDB(id);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
@@ -54,7 +54,7 @@ const getByIdFromDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, 
 const updateOneInDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     const updatedData = req.body;
-    const result = yield tutor_service_1.UserService.updateOneInDB(id, updatedData);
+    const result = yield tutor_service_1.TutorService.updateOneInDB(id, updatedData);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
@@ -64,7 +64,7 @@ const updateOneInDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, 
 }));
 const deleteByIdFromDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
-    const result = yield tutor_service_1.UserService.deleteByIdFromDB(id);
+    const result = yield tutor_service_1.TutorService.deleteByIdFromDB(id);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
@@ -72,7 +72,7 @@ const deleteByIdFromDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 
         data: result,
     });
 }));
-exports.UserController = {
+exports.TutorController = {
     insertIntoDB,
     getAllFromDB,
     getByIdFromDB,

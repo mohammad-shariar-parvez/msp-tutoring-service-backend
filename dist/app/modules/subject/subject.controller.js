@@ -12,72 +12,69 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ServiceController = void 0;
+exports.SubjectController = void 0;
 const http_status_1 = __importDefault(require("http-status"));
 const catchAsync_1 = __importDefault(require("../../../shared/catchAsync"));
 const pick_1 = __importDefault(require("../../../shared/pick"));
 const sendResponse_1 = __importDefault(require("../../../shared/sendResponse"));
-const category_constants_1 = require("./category.constants");
-const category_service_1 = require("./category.service");
+const subject_constants_1 = require("./subject.constants");
+const subject_service_1 = require("./subject.service");
 const insertIntoDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("CATEEEEE---------", req.body);
-    const picture = req.file;
-    console.log("Pictireeeeeeee==========", picture);
-    const result = yield category_service_1.CategoryService.insertIntoDB(req.body, req.file);
+    const result = yield subject_service_1.SubjectService.insertIntoDB(req.body);
+    // console.log("REEESULTT", result);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: "Category created successfully!",
+        message: "Subject created successfully!",
         data: result
     });
 }));
 const getAllFromDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // console.log(req.query);
-    const filters = (0, pick_1.default)(req.query, category_constants_1.categoryFilterableFields);
+    const filters = (0, pick_1.default)(req.query, subject_constants_1.subjectFilterableFields);
     const options = (0, pick_1.default)(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
-    const result = yield category_service_1.CategoryService.getAllFromDB(filters, options);
+    const result = yield subject_service_1.SubjectService.getAllFromDB(options, filters);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: "Category fetched successfully!",
+        message: "Subject fetched successfully!",
         meta: result.meta,
         data: result.data
     });
 }));
 const getByIdFromDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    const result = yield category_service_1.CategoryService.getByIdFromDB(id);
+    const result = yield subject_service_1.SubjectService.getByIdFromDB(id);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: 'Category fetched successfully',
+        message: 'Subject fetched successfully',
         data: result
     });
 }));
 const updateOneInDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    const result = yield category_service_1.CategoryService.updateOneInDB(id, req.body);
+    const result = yield subject_service_1.SubjectService.updateOneInDB(id, req.body);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: 'Category updated successfully',
+        message: 'Subject updated successfully',
         data: result
     });
 }));
 const deleteByIdFromDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    const result = yield category_service_1.CategoryService.deleteByIdFromDB(id);
+    const result = yield subject_service_1.SubjectService.deleteByIdFromDB(id);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: 'Category delete successfully',
+        message: 'Subject delete successfully',
         data: result
     });
 }));
-exports.ServiceController = {
+exports.SubjectController = {
     insertIntoDB,
     getAllFromDB,
     getByIdFromDB,
     updateOneInDB,
-    deleteByIdFromDB
+    deleteByIdFromDB,
 };

@@ -41,7 +41,7 @@ const insertIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function* ()
     return responseData;
 });
 const getByIdFromDB = (user, options) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("YEE55555555555555555555555555555", user);
+    // console.log("YEE55555555555555555555555555555", user);
     const { userId } = user;
     const { limit, page, skip, sortBy, sortOrder, } = paginationHelper_1.paginationHelpers.calculatePagination(options);
     // console.log("USER NOTI", userId);

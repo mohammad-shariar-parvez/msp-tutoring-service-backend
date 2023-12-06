@@ -9,7 +9,7 @@ import { NotificationService } from "./notification.service";
 
 
 const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
-	console.log("NOT666666666666-------------I",);
+	// console.log("NOT666666666666-------------I",);
 	const result = await NotificationService.insertIntoDB(req.body);
 
 	sendResponse(res, {
@@ -25,7 +25,7 @@ const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
 const getByIdFromDB = catchAsync(async (req: Request, res: Response) => {
 
 	const user: IUser = (req as any).user;
-	console.log("NOTIFIIIII-------------I", user);
+	// console.log("NOTIFIIIII-------------I", user);
 
 	const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
 	const result = await NotificationService.getByIdFromDB(user, options);

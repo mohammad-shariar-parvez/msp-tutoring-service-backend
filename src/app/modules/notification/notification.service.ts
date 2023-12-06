@@ -44,7 +44,7 @@ const insertIntoDB = async (payload: INotification): Promise<Notification> => {
 const getByIdFromDB = async (
 	user: IUser, options: IPaginationOptions
 ): Promise<IGenericResponse<any[]>> => {
-	console.log("YEE55555555555555555555555555555", user);
+	// console.log("YEE55555555555555555555555555555", user);
 
 	const { userId } = user;
 

@@ -10,6 +10,7 @@ dotenv_1.default.config({ path: path_1.default.join(process.cwd(), '.env') });
 exports.default = {
     env: process.env.NODE_ENV,
     port: process.env.PORT,
+    frontEnd_url: process.env.FRONTEND_URL,
     database_url: process.env.DATABASE_URL,
     default_user_pass: process.env.DEFAULT_USER_PASS,
     default_admin_pass: process.env.DEFAULT_ADMIN_PASS,
@@ -25,6 +26,11 @@ exports.default = {
         storePass: process.env.STORE_PASS,
         sslPaymentUrl: process.env.SSL_BASE_PAYMENT_URL,
         sslValidationUrl: process.env.SSL_BASE_VALIDATION_URL
+    },
+    cloudinary: {
+        cloudName: process.env.CLOUDINARY_CLOUD_NAME,
+        apiKey: process.env.CLOUDINARY_API_KEY,
+        apiSecret: process.env.CLOUDINARY_API_SECRET
     },
     resetlink: process.env.RESET_PASS_UI_LINK,
     email: process.env.EMAIL,

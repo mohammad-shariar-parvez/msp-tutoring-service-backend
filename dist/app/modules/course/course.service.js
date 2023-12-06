@@ -27,6 +27,7 @@ const prisma_1 = require("../../../shared/prisma");
 const couorse_constants_2 = require("./couorse.constants");
 const insertIntoDB = (data) => __awaiter(void 0, void 0, void 0, function* () {
     // console.log("DATA__", data);
+    // console.log("COURSEEE DATA", data);
     const result = yield prisma_1.prisma.course.create({
         data
     });
@@ -62,6 +63,7 @@ const getCoursesByCategory = (categoryId) => __awaiter(void 0, void 0, void 0, f
 const getAllFromDB = (filters, options) => __awaiter(void 0, void 0, void 0, function* () {
     const { limit, page, skip, sortBy, sortOrder, } = paginationHelper_1.paginationHelpers.calculatePagination(options);
     const { searchTerm } = filters, filterData = __rest(filters, ["searchTerm"]);
+    // console.log("FILTER DATA", filterData);
     const andConditions = [];
     // if (searchTerm || searchTerm2) {
     //     andConditions.push({
@@ -75,7 +77,7 @@ const getAllFromDB = (filters, options) => __awaiter(void 0, void 0, void 0, fun
     // }
     if (searchTerm) {
         const terms = Array.isArray(searchTerm) ? searchTerm : [searchTerm];
-        console.log("SEEEEEEEEEEEEEEEEEEEEEEE", terms);
+        // console.log("SEEEEEEEEEEEEEEEEEEEEEEE", terms);
         andConditions.push({
             OR: couorse_constants_2.courseSearchableFields.flatMap((field) => terms.map((term) => ({
                 [field]: {

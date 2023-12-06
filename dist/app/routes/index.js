@@ -15,6 +15,7 @@ const notification_router_1 = require("../modules/notification/notification.rout
 const payment_routes_1 = require("../modules/payments/payment.routes");
 const profile_route_1 = require("../modules/profile/profile.route");
 const review_route_1 = require("../modules/review/review.route");
+const subject_routes_1 = require("../modules/subject/subject.routes");
 const tutor_route_1 = require("../modules/tutor/tutor.route");
 const user_route_1 = require("../modules/user/user.route");
 const router = express_1.default.Router();
@@ -31,6 +32,10 @@ const moduleRoutes = [
     {
         path: '/profile',
         route: profile_route_1.ProfileRoutes,
+    },
+    {
+        path: '/subjects',
+        route: subject_routes_1.SubjectRoutes,
     },
     {
         path: '/courses',

@@ -102,7 +102,7 @@ model Category {
 
 model Course {
   id               String            @id @default(uuid())
-  title            String            @unique
+  title            String
   slug             String            @unique
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt

@@ -16,6 +16,7 @@ const http_status_1 = __importDefault(require("http-status"));
 const config_1 = __importDefault(require("../../config"));
 const ApiError_1 = __importDefault(require("../../errors/ApiError"));
 const jwtHelpers_1 = require("../../helpers/jwtHelpers");
+const prisma_1 = require("../../shared/prisma");
 const auth = (...requiredRoles) => (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         //get authorization token
@@ -28,21 +29,22 @@ const auth = (...requiredRoles) => (req, res, next) => __awaiter(void 0, void 0,
         }
         // verify token
         let verifiedUser = null;
-        verifiedUser = jwtHelpers_1.jwtHelpers.verifyToken(token, config_1.default.jwt.secret);
+        verifiedUser = yield jwtHelpers_1.jwtHelpers.verifyToken(token, config_1.default.jwt.secret);
         // console.log("from auth----______________--", verifiedUser);
         req.user = verifiedUser; // role  , userid ,email
         //Check whether valid user exist on database
         // case- user deleted but he has refresh token
         // checking deleted user's refresh token
-        // const isUserExist = await prisma.user.findUnique({
-        //   where: {
-        //     id: verifiedUser.userId
-        //   }
-        // });
-        // console.log("IS USER-----------", isUserExist);
-        // if (!isUserExist) {
-        //   throw new ApiError(httpStatus.NOT_FOUND, 'Token user does not exist in Database');
-        // }
+        // console.log("VARIFIED++++++++++++++++", verifiedUser);
+        const isUserExist = yield prisma_1.prisma.user.findUnique({
+            where: {
+                id: verifiedUser.userId
+            }
+        });
+        // console.log("IS USER-----------", verifiedUser);
+        if (!isUserExist) {
+            throw new ApiError_1.default(http_status_1.default.NOT_FOUND, 'Token user does not exist in Database');
+        }
         //Check whether valid Role exist on database 
         // console.log("requiredRoles------", requiredRoles);
         if (requiredRoles.length && !requiredRoles.includes(verifiedUser.role)) {

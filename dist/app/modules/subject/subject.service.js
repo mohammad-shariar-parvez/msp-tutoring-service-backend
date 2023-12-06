@@ -1,4 +1,5 @@
 "use strict";
+/* eslint-disable no-undef */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -20,31 +21,23 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CategoryService = void 0;
+exports.SubjectService = void 0;
 const paginationHelper_1 = require("../../../helpers/paginationHelper");
 const prisma_1 = require("../../../shared/prisma");
-const cloudinary_helper_1 = require("../../../cloudinary/cloudinary.helper");
-const category_constants_1 = require("./category.constants");
-const insertIntoDB = (data, picture) => __awaiter(void 0, void 0, void 0, function* () {
-    let image = null;
-    if (picture) {
-        image = yield cloudinary_helper_1.cloudinaryHelper.uploadToCloudinary(picture, '/samples');
-    }
-    console.log("dataaaaa", data);
-    const result = yield prisma_1.prisma.category.create({
-        data: Object.assign(Object.assign({}, data), image)
+const subject_constants_1 = require("./subject.constants");
+const insertIntoDB = (data) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield prisma_1.prisma.subject.create({
+        data
     });
     return result;
 });
-const getAllFromDB = (filters, options) => __awaiter(void 0, void 0, void 0, function* () {
+const getAllFromDB = (options, filters) => __awaiter(void 0, void 0, void 0, function* () {
     const { limit, page, skip, sortBy, sortOrder, } = paginationHelper_1.paginationHelpers.calculatePagination(options);
     const { searchTerm } = filters, filterData = __rest(filters, ["searchTerm"]);
     const andConditions = [];
-    // console.log("SEARCH----", filters);
-    // console.log("OPtions----", options);
     if (searchTerm) {
         andConditions.push({
-            OR: category_constants_1.categorySearchableFields.map((field) => ({
+            OR: subject_constants_1.subjectSearchableFields.map((field) => ({
                 [field]: {
                     contains: searchTerm,
                     mode: 'insensitive'
@@ -52,32 +45,34 @@ const getAllFromDB = (filters, options) => __awaiter(void 0, void 0, void 0, fun
             }))
         });
     }
-    // console.log("------and condition", searchTerm);
-    if (Object.keys(filterData).length) {
+    if (Object.keys(filterData).length > 0) {
         andConditions.push({
-            AND: Object.entries(filterData).map(([key, value]) => {
+            AND: Object.keys(filterData).map((key) => {
                 return {
                     [key]: {
-                        equals: value,
-                        mode: 'insensitive'
+                        equals: filterData[key]
                     }
                 };
             })
         });
     }
-    const whereConditons = andConditions.length > 0 ? { AND: andConditions } : {};
-    const result = yield prisma_1.prisma.category.findMany({
-        include: {
-            courses: true,
-        },
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    const whereConditions = andConditions.length > 0 ? { AND: andConditions } : {};
+    const result = yield prisma_1.prisma.subject.findMany({
+        where: whereConditions,
         skip,
         take: limit,
-        where: whereConditons,
         orderBy: { [sortBy]: sortOrder },
     });
-    const total = yield prisma_1.prisma.category.count({
-        where: whereConditons
+    const total = yield prisma_1.prisma.subject.count({
+        where: whereConditions
     });
+    // const total = await prisma.subject.count({
+    //     where: {
+    //         id: filterData.subjectId
+    //     },
+    // });
     return {
         meta: {
             page,
@@ -88,15 +83,16 @@ const getAllFromDB = (filters, options) => __awaiter(void 0, void 0, void 0, fun
     };
 });
 const getByIdFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield prisma_1.prisma.category.findUnique({
+    const result = yield prisma_1.prisma.subject.findFirst({
         where: {
-            id
-        }
+            id,
+        },
     });
     return result;
 });
 const updateOneInDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield prisma_1.prisma.category.update({
+    // console.log("Payload----------------------------------------------------", id, payload);
+    const result = yield prisma_1.prisma.subject.update({
         where: {
             id
         },
@@ -105,17 +101,17 @@ const updateOneInDB = (id, payload) => __awaiter(void 0, void 0, void 0, functio
     return result;
 });
 const deleteByIdFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield prisma_1.prisma.category.delete({
+    const result = yield prisma_1.prisma.subject.delete({
         where: {
             id
         }
     });
     return result;
 });
-exports.CategoryService = {
+exports.SubjectService = {
     insertIntoDB,
     getAllFromDB,
     getByIdFromDB,
     updateOneInDB,
-    deleteByIdFromDB
+    deleteByIdFromDB,
 };

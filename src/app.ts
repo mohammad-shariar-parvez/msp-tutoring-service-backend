@@ -5,6 +5,7 @@ import globalErrorHandler from './app/middlewares/globalErrorHandler';
 import routes from './app/routes';
 
 import cookieParser from 'cookie-parser';
+import Cloudinary from './cloudinary/cloudinary.config';
 
 const app: Application = express();
 
@@ -12,7 +13,8 @@ app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 // app.use(cors({ origin: 'https://msp-tutoring-service.vercel.app', credentials: true }));
 // app.use(cors({ origin: 'https://msp-tutoring-service-frontend.up.railway.app', credentials: true }));
 app.use(cookieParser());
-
+// cloudinarys
+Cloudinary();
 //parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

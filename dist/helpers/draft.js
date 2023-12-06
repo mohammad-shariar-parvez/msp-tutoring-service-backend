@@ -1,0 +1,217 @@
+"use strict";
+// generator client {
+// 	provider = "prisma-client-js";
+// }
+// datasource db {
+// 	provider = "postgresql";
+// 	url = env("DATABASE_URL");
+// }
+// model User {
+//   id               String @id @default (uuid())
+//   email            String @unique
+//   password         String ?
+// 		provider         Boolean @default (false)
+//   role             String @default ("user")
+//   createdAt        DateTime @default (now())
+//   updatedAt        DateTime @updatedAt
+//   blogs            Blog[]
+//   bookings         Booking[]
+//   feedbacks        Feedback[]
+//   notifications    Notification[]
+//   payment          Payment[]
+//   profile          Profile ?
+// 		reviewAndRatings ReviewAndRating[];
+// 	@@map("users")
+// }
+// model CourseTutor {
+//   id           String @id @default (uuid())
+//   firstName    String
+//   middleName   String ?
+// 		lastName     String
+//   createdAt    DateTime @default (now())
+//   updatedAt    DateTime @updatedAt
+//   experience   String
+//   bio          String
+//   imageUrl     String
+//   gender       String
+//   location     String
+//   subjectId    String
+//   subject      Subject @relation(fields: [subjectId], references: [id])
+//   courses      Course[]
+//   SubjectTutor SubjectTutor[];
+// 	@@map("courseTutors")
+// }
+// model Subject {
+//   id           String @id @default (uuid())
+//   title        String @unique
+//   createdAt    DateTime @default (now())
+//   updatedAt    DateTime @updatedAt
+//   courseTutors CourseTutor[]
+//   courses      Course[]
+//   SubjectTutor SubjectTutor[];
+// 	@@map("subjects")
+// }
+// model SubjectTutor {
+//   courseTutorId String
+//   CourseTutor   CourseTutor @relation(fields: [courseTutorId], references: [id])
+//   subjectId String
+//   Subject   Subject @relation(fields: [subjectId], references: [id])
+// 	@@id([courseTutorId, subjectId])
+// 	@@map("course_faculties")
+// }
+// model Profile {
+//   id           String @id @default (uuid())
+//   firstName    String ?
+// 		lastName     String ?
+// 			middleName   String ?
+// 				profileImage String ?
+// 					useEmail     String ?
+// 						contactNo    String ?
+// 							bio          String ?
+// 								userId       String @unique
+//   role         String ?
+// 		createdAt    DateTime @default (now())
+//   updatedAt    DateTime @updatedAt
+//   iat          Int ?
+// 		exp          Int ?
+// 			user         User @relation(fields: [userId], references: [id])
+// 	@@map("profiles")
+// }
+// model Category {
+//   id        String @id @default (uuid())
+//   slug      String @unique
+//   title     String
+//   imageUrl  String
+//   createdAt DateTime @default (now())
+//   updatedAt DateTime @updatedAt
+//   courses   Course[];
+// 	@@map("categories")
+// }
+// model Course {
+//   id               String @id @default (uuid())
+//   title            String @unique
+//   slug             String @unique
+//   createdAt        DateTime @default (now())
+//   updatedAt        DateTime @updatedAt
+//   location         String
+//   price            Float
+//   imageUrl         String
+//   duration         String ?
+// 		status           CourseStatus @default (RUNNING)
+//   description      String
+//   article          String ?
+// 		categoryId       String
+//   courseTutorId    String
+//   subjectId        String
+//   bookings         Booking[]
+//   category         Category @relation(fields: [categoryId], references: [id])
+//   courseTutor      CourseTutor @relation(fields: [courseTutorId], references: [id])
+//   subject          Subject @relation(fields: [subjectId], references: [id])
+//   reviewAndRatings ReviewAndRating[];
+// 	@@map("courses")
+// }
+// model ReviewAndRating {
+//   id        String @id @default (uuid())
+//   review    String
+//   rating    Int
+//   userId    String
+//   courseId  String
+//   createdAt DateTime @default (now())
+//   updatedAt DateTime @updatedAt
+//   course    Course @relation(fields: [courseId], references: [id])
+//   user      User @relation(fields: [userId], references: [id])
+// 	@@map("review_and_rating")
+// }
+// model Booking {
+//   id        String @id @default (uuid())
+//   status    Status @default (PENDING)
+//   startDate String
+//   startTime String
+//   userId    String
+//   courseId  String
+//   createdAt DateTime @default (now())
+//   updatedAt DateTime @updatedAt
+//   course    Course @relation(fields: [courseId], references: [id])
+//   user      User @relation(fields: [userId], references: [id])
+//   payment   Payment ?
+// 		@@map("bookings")
+// }
+// model Blog {
+//   id        String @id @default (uuid())
+//   title     String
+//   content   String
+//   imageUrl  String
+//   createdAt DateTime @default (now())
+//   updatedAt DateTime @updatedAt
+//   userId    String
+//   user      User @relation(fields: [userId], references: [id])
+// 	@@map("blogs")
+// }
+// model Question {
+//   id          String @id @default (uuid())
+//   name        String
+//   location    String
+//   phone       String
+//   requirement String
+//   createdAt   DateTime @default (now())
+//   updatedAt   DateTime @updatedAt
+// 	@@map("questions")
+// }
+// model Feedback {
+//   id          String @id @default (uuid())
+//   description String
+//   createdAt   DateTime @default (now())
+//   updatedAt   DateTime @updatedAt
+//   userId      String
+//   user        User @relation(fields: [userId], references: [id])
+// 	@@map("feedbacks")
+// }
+// model FAQ {
+//   id        String @id @default (uuid())
+//   question  String
+//   answer    String
+//   createdAt DateTime @default (now())
+//   updatedAt DateTime @updatedAt
+// 	@@map("faqs")
+// }
+// model Payment {
+//   id                 String @id @default (uuid())
+//   amount             Float
+//   paymentDate        DateTime @default (now()) @map("payment_date")
+//   paymentStatus      PaymentStatus @default (PENDING)
+//   createdAt          DateTime @default (now())
+//   updatedAt          DateTime @updatedAt
+//   transactionId      String ?
+// 		paymentGatewayData Json ?
+// 			val_id             String ?
+// 				userId             String
+//   bookingId          String @unique
+//   booking            Booking @relation(fields: [bookingId], references: [id])
+//   user               User @relation(fields: [userId], references: [id])
+// 	@@map("payments")
+// }
+// model Notification {
+//   id        String @id @default (uuid())
+//   title     String
+//   userId    String
+//   createdAt DateTime @default (now())
+//   updatedAt DateTime @updatedAt
+//   user      User @relation(fields: [userId], references: [id])
+// 	@@map("notifications")
+// }
+// enum Status {
+// 	PENDING
+//   CONFIRMED
+// }
+// enum Role {
+// 	admin
+//   customer
+// }
+// enum PaymentStatus {
+// 	PENDING
+//   PAID
+// }
+// enum CourseStatus {
+// 	RUNNING
+//   UPCOMMING
+// }

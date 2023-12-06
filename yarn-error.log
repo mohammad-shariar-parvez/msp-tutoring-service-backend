@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\DELL\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add --dev @types/multer-storage-cloudinary
+  C:\Program Files\nodejs\node.exe C:\Users\DELL\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add datauri
 
 PATH: 
   C:\Python311\Scripts\;C:\Python311\;C:\Users\DELL\AppData\Local\Programs\Python\Python39\Scripts\;C:\Users\DELL\AppData\Local\Programs\Python\Python39\;C:\Python310\Scripts\;C:\Python310\;C:\Python39\Scripts\;C:\Python39\;C:\MinGW\bin;"C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files\Java\jdk\bin;C:\Program Files\Java\jre\bin";C:\Program Files\Microsoft MPI\Bin\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\Microsoft SQL Server\100\Tools\Binn\;C:\Program Files\Microsoft SQL Server\100\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\100\Tools\Binn\VSShell\Common7\IDE\;C:\Program Files (x86)\Microsoft SQL Server\100\DTS\Binn\;C:\Program Files\Azure Data Studio\bin;C:\Program Files (x86)\Microsoft SQL Server\110\DTS\Binn\;C:\Program Files (x86)\Microsoft SQL Server\120\DTS\Binn\;C:\Program Files\Java\jdk1.8.0_202\bin;C:\Program Files\Java\jdk1.8.0_202\bin;C:\Program Files\Apache Software Foundation\Tomcat 9.0\bin;C:\ProgramData\chocolatey\bin;C:\Program Files\Git\cmd;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Program Files\dotnet\;C:\Users\DELL\anaconda3\Scripts;C:\Program Files\Java\jdk-18.0.1.1\bin;C:\Program Files\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\MongoDB\Server\6.0\bin;C:\mongosh-1.9.0\bin;C:\Program Files\nodejs\;C:\Program Files\nodejs;C:\Program Files\Redis\;C:\Users\DELL\.console-ninja\.bin;C:\Program Files\MySQL\MySQL Shell 8.0\bin\;C:\Users\DELL\AppData\Local\Programs\Python\Python38\Scripts\;C:\Users\DELL\AppData\Local\Programs\Python\Python38\;C:\Users\DELL\New folder\Scripts\;C:\Users\DELL\New folder\;C:\Users\DELL\AppData\Local\Microsoft\WindowsApps;e:\Program Files\JetBrains\PyCharm 2019.3.3\bin;C:\Program Files\JetBrains\PyCharm 2020.2.3\bin;C:\Users\DELL\AppData\Local\Microsoft\WindowsApps;C:\Program Files\JetBrains\IntelliJ IDEA 2020.2.1\bin;C:\MinGW\bin;C:\Program Files\Azure Data Studio\bin;C:\Program Files\Java\jdk1.8.0_202\bin;C:\Program Files\Java\jdk1.8.0_202\bin;C:\Program Files\Apache Software Foundation\Tomcat 9.0\bin;C:\Users\DELL\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files\heroku\bin;C:\Program Files\MongoDB\Server\5.0\bin\;C:\Users\DELL\.dotnet\tools;C:\Program Files\MongoDB\Server\6.0\bin\;C:\Program Files (x86)\MongoDB Atlas CLI\;C:\Users\DELL\AppData\Roaming\npm;C:\Program Files\nodejs;
@@ -14,17 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@types%2fmulter-storage-cloudinary: Not found
-      at params.callback [as _callback] (C:\Users\DELL\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:66138:18)
-      at self.callback (C:\Users\DELL\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:140883:22)
-      at Request.emit (node:events:513:28)
-      at Request.<anonymous> (C:\Users\DELL\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141855:10)
-      at Request.emit (node:events:513:28)
-      at IncomingMessage.<anonymous> (C:\Users\DELL\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141777:12)
-      at Object.onceWrapper (node:events:627:28)
-      at IncomingMessage.emit (node:events:525:35)
-      at endReadableNT (node:internal/streams/readable:1359:12)
-      at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+  Error: EPERM: operation not permitted, unlink 'E:\PG-HERO-2\assignments\assignment-9\tutor-server\node_modules\prisma\engines\2804dc98259d2ea960602aca6b8e7fdc03c1758f\query_engine-windows.dll.node'
 
 npm manifest: 
   {
@@ -80,6 +70,7 @@ npm manifest:
       "http-status": "^1.6.2",
       "jsonwebtoken": "^9.0.0",
       "multer": "^1.4.5-lts.1",
+      "multer-storage-cloudinary": "^4.0.0",
       "nodemailer": "^6.9.7",
       "prisma": "^5.2.0",
       "socket.io": "^4.7.2",
@@ -2050,6 +2041,11 @@ Lockfile:
     version "2.1.3"
     resolved "https://registry.npmjs.org/ms/-/ms-2.1.3.tgz"
     integrity sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==
+  
+  multer-storage-cloudinary@^4.0.0:
+    version "4.0.0"
+    resolved "https://registry.yarnpkg.com/multer-storage-cloudinary/-/multer-storage-cloudinary-4.0.0.tgz#afc9e73c353668c57dda5b73b7bb84bae6635f6f"
+    integrity sha512-25lm9R6o5dWrHLqLvygNX+kBOxprzpmZdnVKH4+r68WcfCt8XV6xfQaMuAg+kUE5Xmr8mJNA4gE0AcBj9FJyWA==
   
   multer@^1.4.5-lts.1:
     version "1.4.5-lts.1"

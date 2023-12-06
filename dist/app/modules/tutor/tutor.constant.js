@@ -4,7 +4,11 @@ exports.tutorSearchableFields = exports.tutorFilterableFields = void 0;
 exports.tutorFilterableFields = [
     'searchTerm',
     'location',
+    "subjectId"
 ];
 exports.tutorSearchableFields = [
-    'bio',
+    'firstName',
+    'lastName',
+    'middleName',
+    'location'
 ];

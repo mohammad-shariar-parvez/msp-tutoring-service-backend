@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PaymentController = void 0;
 const http_status_1 = __importDefault(require("http-status"));
 const pick_1 = __importDefault(require("../../../shared/pick"));
+const config_1 = __importDefault(require("../../../config"));
 const sendResponse_1 = __importDefault(require("../../../shared/sendResponse"));
 const payment_constants_1 = require("./payment.constants");
 const payment_service_1 = require("./payment.service");
@@ -30,15 +31,15 @@ const initPayment = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
 });
 const success = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield payment_service_1.PaymentService.success(req.body);
-    res.status(200).redirect('http://localhost:3000/payments');
+    res.status(200).redirect(`${config_1.default.frontEnd_url}/payments`);
 });
 const cancel = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield payment_service_1.PaymentService.cancel(req.body);
-    res.status(200).redirect('http://localhost:3000/user/bookings');
+    res.status(200).redirect(`${config_1.default.frontEnd_url}/bookings`);
 });
 const fail = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield payment_service_1.PaymentService.fail(req.body);
-    res.status(200).redirect('http://localhost:3000/user');
+    res.status(200).redirect(`${config_1.default.frontEnd_url}/user`);
 });
 const webhook = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     // console.log("WEBHOOK");

@@ -19,26 +19,77 @@ var __rest = (this && this.__rest) || function (s, e) {
         }
     return t;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserService = void 0;
+exports.TutorService = void 0;
+const http_status_1 = __importDefault(require("http-status"));
+const ApiError_1 = __importDefault(require("../../../errors/ApiError"));
 const paginationHelper_1 = require("../../../helpers/paginationHelper");
 const prisma_1 = require("../../../shared/prisma");
+const utils_1 = require("../../../shared/utils");
 const tutor_constant_1 = require("./tutor.constant");
 const insertIntoDB = (data) => __awaiter(void 0, void 0, void 0, function* () {
-    // console.log(data);
-    const user = yield prisma_1.prisma.courseTutor.create({
-        data
-    });
-    //create access token & refresh token
-    return user;
+    // console.log("REAL DATAAAAAA++++++++", data);
+    const { subjects } = data, tutorDetails = __rest(data, ["subjects"]);
+    const newTutor = yield prisma_1.prisma.$transaction((transactionClient) => __awaiter(void 0, void 0, void 0, function* () {
+        const result = yield transactionClient.courseTutor.create({
+            data: tutorDetails
+        });
+        if (!result) {
+            throw new ApiError_1.default(http_status_1.default.BAD_REQUEST, "Unable to create Tutor");
+        }
+        if (subjects && subjects.length > 0) {
+            //------
+            yield (0, utils_1.asyncForEach)(subjects, (subjectId) => __awaiter(void 0, void 0, void 0, function* () {
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+                const createTutorResult = yield transactionClient.subjectTutor.create({
+                    data: {
+                        courseTutorId: result.id,
+                        subjectId
+                    }
+                });
+                // console.log("createPrerequisite", createTutorResult);
+            }));
+        }
+        return result;
+    }));
+    if (newTutor) {
+        const responseData = yield prisma_1.prisma.subjectTutor.findMany({
+            where: {
+                courseTutorId: newTutor.id
+            },
+            include: {
+                subject: true,
+                courseTutor: true
+            }
+        });
+        return responseData;
+    }
 });
 const getAllFromDB = (filters, options) => __awaiter(void 0, void 0, void 0, function* () {
     const { limit, page, skip, sortBy, sortOrder, } = paginationHelper_1.paginationHelpers.calculatePagination(options);
-    const { searchTerm } = filters, filterData = __rest(filters, ["searchTerm"]);
+    const { searchTerm, subjectId } = filters, filterData = __rest(filters, ["searchTerm", "subjectId"]);
+    // console.log("MY LOCATOIN", subjectId);
     // Extract searchTerm to implement search query
     const andConditions = [];
     // console.log("SEARCH----", filters);
     // console.log("OPtions----", options);
+    if (subjectId) {
+        // Add condition to filter courses based on the location
+        andConditions.push({
+            subjects: {
+                some: {
+                    subjectId: {
+                        contains: subjectId,
+                        mode: 'insensitive'
+                    }
+                }
+            }
+        });
+    }
+    // console.log("MY AND", andConditions);
     if (searchTerm) {
         andConditions.push({
             OR: tutor_constant_1.tutorSearchableFields.map((field) => ({
@@ -61,11 +112,17 @@ const getAllFromDB = (filters, options) => __awaiter(void 0, void 0, void 0, fun
             })
         });
     }
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
     const whereConditons = andConditions.length > 0 ? { AND: andConditions } : {};
+    // console.log(whereConditons);
     const result = yield prisma_1.prisma.courseTutor.findMany({
         skip,
         take: limit,
         where: whereConditons,
+        include: {
+            subjects: true
+        },
         orderBy: { [sortBy]: sortOrder },
     });
     const total = yield prisma_1.prisma.courseTutor.count({
@@ -85,27 +142,84 @@ const getByIdFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
         where: {
             id,
         },
+        include: {
+            subjects: {
+                include: {
+                    courseTutor: true,
+                    subject: true
+                }
+            }
+        },
     });
     return result;
 });
 const updateOneInDB = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield prisma_1.prisma.courseTutor.update({
+    const { subjects } = payload, tutorsData = __rest(payload, ["subjects"]);
+    const updateTutor = yield prisma_1.prisma.$transaction((transactionClient) => __awaiter(void 0, void 0, void 0, function* () {
+        const updateTutorResult = yield transactionClient.courseTutor.update({
+            where: {
+                id,
+            },
+            data: tutorsData,
+        });
+        if (!updateTutorResult) {
+            throw new ApiError_1.default(http_status_1.default.BAD_REQUEST, "Unable to update Tutor");
+        }
+        // Delete existing subject-tutor associations
+        yield transactionClient.subjectTutor.deleteMany({
+            where: { courseTutorId: id },
+        });
+        if (subjects && subjects.length > 0) {
+            //------
+            yield (0, utils_1.asyncForEach)(subjects, (subjectId) => __awaiter(void 0, void 0, void 0, function* () {
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+                const createTutorResult = yield transactionClient.subjectTutor.create({
+                    data: {
+                        courseTutorId: id,
+                        subjectId
+                    }
+                });
+                // console.log("createPrerequisite", createTutorResult);
+            }));
+        }
+        return updateTutorResult;
+    }));
+    const responseData = yield prisma_1.prisma.subjectTutor.findMany({
         where: {
-            id,
-        },
-        data: payload,
-    });
-    return result;
-});
-const deleteByIdFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield prisma_1.prisma.courseTutor.delete({
-        where: {
-            id,
+            courseTutorId: updateTutor.id
         }
     });
-    return result;
+    return responseData;
 });
-exports.UserService = {
+const deleteByIdFromDB = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    // return result;
+    const newDeletedBooking = yield prisma_1.prisma.$transaction((transactionClient) => __awaiter(void 0, void 0, void 0, function* () {
+        // const findTutor = await transactionClient.subjectTutor.findFirst({
+        // 	where: {
+        // 		courseTutorId: id
+        // 	}
+        // });
+        // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+        const deletedFromSubjetTutor = yield transactionClient.subjectTutor.deleteMany({
+            where: {
+                courseTutorId: id
+            }
+        });
+        // console.log("deletepayment===============", deletedFromSubjetTutor);
+        // if (deletedFromSubjetTutor?.count == 0) {
+        // 	throw new ApiError(httpStatus.BAD_REQUEST, "Unable to Delete from SubjetTutor Database");
+        // }
+        const deletedTutor = yield transactionClient.courseTutor.delete({
+            where: {
+                id,
+            }
+        });
+        // console.log("delete bbooking", deletedTutor);
+        return deletedTutor;
+    }));
+    return newDeletedBooking;
+});
+exports.TutorService = {
     insertIntoDB,
     getAllFromDB,
     getByIdFromDB,
