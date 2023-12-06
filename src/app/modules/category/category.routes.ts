@@ -20,6 +20,7 @@ router.post(
     '/',
 
     auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
+    // singleUpload,
     validateRequest(CategoryValidations.create),
     ServiceController.insertIntoDB);
 
