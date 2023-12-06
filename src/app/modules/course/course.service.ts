@@ -13,7 +13,7 @@ import { ICourseFilterRequest } from "./course.interface";
 
 const insertIntoDB = async (data: Course): Promise<Course> => {
     // console.log("DATA__", data);
-    console.log("COURSEEE DATA", data);
+    // console.log("COURSEEE DATA", data);
 
     const result = await prisma.course.create({
         data
@@ -65,6 +65,7 @@ const getAllFromDB = async (
     const { limit, page, skip, sortBy, sortOrder, } = paginationHelpers.calculatePagination(options);
     const { searchTerm, ...filterData } = filters;
 
+    // console.log("FILTER DATA", filterData);
 
 
     const andConditions = [];
@@ -83,7 +84,7 @@ const getAllFromDB = async (
     if (searchTerm) {
         const terms = Array.isArray(searchTerm) ? searchTerm : [searchTerm];
 
-        console.log("SEEEEEEEEEEEEEEEEEEEEEEE", terms);
+        // console.log("SEEEEEEEEEEEEEEEEEEEEEEE", terms);
         andConditions.push({
             OR: courseSearchableFields.flatMap((field) =>
                 terms.map((term) => ({

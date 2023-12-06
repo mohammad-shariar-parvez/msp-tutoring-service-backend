@@ -22,9 +22,11 @@ const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
 const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
     const filters = pick(req.query, courseFilterableFields);
     // console.log("filters--------------", req.query);
+    // console.log("real reult", filters);
 
     const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
     const result = await CourseService.getAllFromDB(filters, options);
+
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
