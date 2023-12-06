@@ -22,21 +22,21 @@ const auth =
         }
         // verify token
         let verifiedUser = null;
-        verifiedUser = jwtHelpers.verifyToken(token, config.jwt.secret as Secret);
+        verifiedUser = await jwtHelpers.verifyToken(token, config.jwt.secret as Secret);
         // console.log("from auth----______________--", verifiedUser);
         req.user = verifiedUser; // role  , userid ,email
 
         //Check whether valid user exist on database
         // case- user deleted but he has refresh token
         // checking deleted user's refresh token
-        // console.log("VARIFIED", verifiedUser);
+        // console.log("VARIFIED++++++++++++++++", verifiedUser);
 
         const isUserExist = await prisma.user.findUnique({
           where: {
             id: verifiedUser.userId
           }
         });
-        console.log("IS USER-----------", verifiedUser);
+        // console.log("IS USER-----------", verifiedUser);
 
         if (!isUserExist) {
           throw new ApiError(httpStatus.NOT_FOUND, 'Token user does not exist in Database');
