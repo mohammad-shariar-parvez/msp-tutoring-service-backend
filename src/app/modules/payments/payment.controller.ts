@@ -23,7 +23,7 @@ const initPayment = async (req: Request, res: Response, next: NextFunction) => {
 };
 const success = async (req: Request, res: Response, next: NextFunction) => {
 	const result = await PaymentService.success(req.body);
-	res.status(200).redirect(`${config.frontEnd_url}/payments`);
+	res.status(200).redirect(`${config.frontEnd_url}/payment?status=success`);
 };
 const cancel = async (req: Request, res: Response, next: NextFunction) => {
 	const result = await PaymentService.cancel(req.body);
@@ -31,7 +31,7 @@ const cancel = async (req: Request, res: Response, next: NextFunction) => {
 };
 const fail = async (req: Request, res: Response, next: NextFunction) => {
 	const result = await PaymentService.fail(req.body);
-	res.status(200).redirect(`${config.frontEnd_url}/user`);
+	res.status(200).redirect(`${config.frontEnd_url}/payment?status=fail`);
 };
 
 const webhook = async (req: Request, res: Response, next: NextFunction) => {
