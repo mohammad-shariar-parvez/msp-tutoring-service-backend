@@ -76,6 +76,9 @@ const getAllUsers = async (
 		skip,
 		take: limit,
 		orderBy: { [sortBy]: sortOrder },
+		include: {
+			profile: true
+		}
 	});
 	const total = await prisma.user.count({
 		where: whereConditions
@@ -96,6 +99,9 @@ const getSingleUser = async (id: string): Promise<Partial<User> | null> => {
 		where: {
 			id,
 		},
+		include: {
+			profile: true
+		}
 	});
 
 	return result;
