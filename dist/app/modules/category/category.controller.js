@@ -20,10 +20,7 @@ const sendResponse_1 = __importDefault(require("../../../shared/sendResponse"));
 const category_constants_1 = require("./category.constants");
 const category_service_1 = require("./category.service");
 const insertIntoDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("CATEEEEE---------", req.body);
-    const picture = req.file;
-    console.log("Pictireeeeeeee==========", picture);
-    const result = yield category_service_1.CategoryService.insertIntoDB(req.body, req.file);
+    const result = yield category_service_1.CategoryService.insertIntoDB(req.body);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,

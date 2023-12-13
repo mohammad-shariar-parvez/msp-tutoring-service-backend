@@ -74,6 +74,9 @@ const getAllUsers = (filters, paginationOptions) => __awaiter(void 0, void 0, vo
         skip,
         take: limit,
         orderBy: { [sortBy]: sortOrder },
+        include: {
+            profile: true
+        }
     });
     const total = yield prisma_1.prisma.user.count({
         where: whereConditions
@@ -92,6 +95,9 @@ const getSingleUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
         where: {
             id,
         },
+        include: {
+            profile: true
+        }
     });
     return result;
 });

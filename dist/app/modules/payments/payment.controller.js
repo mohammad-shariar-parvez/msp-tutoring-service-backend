@@ -31,7 +31,7 @@ const initPayment = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
 });
 const success = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield payment_service_1.PaymentService.success(req.body);
-    res.status(200).redirect(`${config_1.default.frontEnd_url}/payments`);
+    res.status(200).redirect(`${config_1.default.frontEnd_url}/payment?status=success`);
 });
 const cancel = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield payment_service_1.PaymentService.cancel(req.body);
@@ -39,7 +39,7 @@ const cancel = (req, res, next) => __awaiter(void 0, void 0, void 0, function* (
 });
 const fail = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield payment_service_1.PaymentService.fail(req.body);
-    res.status(200).redirect(`${config_1.default.frontEnd_url}/user`);
+    res.status(200).redirect(`${config_1.default.frontEnd_url}/payment?status=fail`);
 });
 const webhook = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     // console.log("WEBHOOK");

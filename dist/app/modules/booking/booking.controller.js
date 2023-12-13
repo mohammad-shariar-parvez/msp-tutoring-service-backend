@@ -79,6 +79,7 @@ const getBookingByCourseId = (0, catchAsync_1.default)((req, res) => __awaiter(v
 }));
 const deleteByIdFromDB = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
+    console.log("DELETED IDD CONTROLLER", id);
     const result = yield booking_service_1.BookingService.deleteByIdFromDB(id);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,

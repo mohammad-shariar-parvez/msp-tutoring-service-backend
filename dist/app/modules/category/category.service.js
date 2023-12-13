@@ -23,16 +23,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.CategoryService = void 0;
 const paginationHelper_1 = require("../../../helpers/paginationHelper");
 const prisma_1 = require("../../../shared/prisma");
-const cloudinary_helper_1 = require("../../../cloudinary/cloudinary.helper");
 const category_constants_1 = require("./category.constants");
-const insertIntoDB = (data, picture) => __awaiter(void 0, void 0, void 0, function* () {
-    let image = null;
-    if (picture) {
-        image = yield cloudinary_helper_1.cloudinaryHelper.uploadToCloudinary(picture, '/samples');
-    }
-    console.log("dataaaaa", data);
+// const insertIntoDB = async (data: any, picture: Express.Multer.File | undefined): Promise<Category> => {
+//     let image = null;
+//     if (picture) {
+//         image = await cloudinaryHelper.uploadToCloudinary(
+//             picture,
+//             '/samples'
+//         );
+//     }
+//     console.log("dataaaaa", data);
+//     const result = await prisma.category.create({
+//         data: {
+//             ...data,
+//             ...image
+//         }
+//     });
+//     return result;
+// };
+const insertIntoDB = (data) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield prisma_1.prisma.category.create({
-        data: Object.assign(Object.assign({}, data), image)
+        data
     });
     return result;
 });
