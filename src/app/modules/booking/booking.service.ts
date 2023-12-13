@@ -255,6 +255,7 @@ const updateOneInDB = async (id: string, payload: Partial<Booking>): Promise<Boo
 };
 
 const deleteByIdFromDB = async (bookingId: string): Promise<Booking> => {
+	console.log("BOOKINGIDD BOOKING", bookingId);
 	const newDeletedBooking = await prisma.$transaction(async (transactionClient) => {
 
 
@@ -267,9 +268,9 @@ const deleteByIdFromDB = async (bookingId: string): Promise<Booking> => {
 
 		// console.log("deletepayment", deletedPayment);
 
-		if (deletedPayment.count == 0) {
-			throw new ApiError(httpStatus.BAD_REQUEST, "Unable to Delete from  Payment");
-		}
+		// if (deletedPayment.count == 0) {
+		// 	throw new ApiError(httpStatus.BAD_REQUEST, "Unable to Delete from  Payment");
+		// }
 		const deletedBooking = await transactionClient.booking.delete({
 			where: {
 				id: bookingId

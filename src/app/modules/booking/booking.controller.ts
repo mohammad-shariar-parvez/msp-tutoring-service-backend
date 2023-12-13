@@ -58,6 +58,7 @@ const getByIdFromDB = catchAsync(async (req: Request, res: Response) => {
 		data: result
 	});
 });
+
 const getBookingByCourseId = catchAsync(async (req: Request, res: Response) => {
 	const user: IUser = (req as any).user;
 	const courseId = req.params.courseId;
@@ -72,7 +73,9 @@ const getBookingByCourseId = catchAsync(async (req: Request, res: Response) => {
 });
 const deleteByIdFromDB = catchAsync(async (req: Request, res: Response) => {
 
+
 	const { id } = req.params;
+	console.log("DELETED IDD CONTROLLER", id);
 	const result = await BookingService.deleteByIdFromDB(id);
 	sendResponse(res, {
 		statusCode: httpStatus.OK,
